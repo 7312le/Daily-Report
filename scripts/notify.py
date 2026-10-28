@@ -246,11 +246,13 @@ def main() -> int:
     parser.add_argument("--dry-run", action="store_true", help="只打印消息，不发送")
     args = parser.parse_args()
 
-    # 环境变量检查放在流程开头
+    # 环境变量检查放在流程开头。
+    # 未配置 Webhook 视为「未启用通知」：打印日志后正常退出，
+    # 不返回非零码，避免在 GitHub Actions 里被误判为失败。
     webhook = os.environ.get("WECOM_WEBHOOK", "").strip()
     if not webhook and not args.dry_run:
-        print("[error] 缺少环境变量 WECOM_WEBHOOK", file=sys.stderr)
-        return 1
+        print("[skip] 未配置 WECOM_WEBHOOK，跳过企业微信推送")
+        return 0
 
     try:
         base_url = resolve_pages_base()

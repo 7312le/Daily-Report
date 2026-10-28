@@ -22,6 +22,10 @@ jobs:
     name: Generate & publish
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # 提升到 job 级：step 的 if 条件只能读到 job 级 env，
+    # 无法读到同一 step 内定义的 env，故在此声明。
+    env:
+      WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
 
     steps:
       - name: Checkout
@@ -46,12 +50,13 @@ jobs:
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
         run: python scripts/generate.py
 
-      # 通知失败不应阻断日报提交，因此 continue-on-error
+      # 未配置 WECOM_WEBHOOK 时整步跳过（notify.py 内部也会优雅跳过，双保险）。
+      # 通知失败不应阻断日报提交，因此 continue-on-error。
       # 注意：Pages 部署在 push 之后才完成，链接会有 1-2 分钟延迟
-      - name: Notify WeCom
+      - name: Notify WeCom (optional)
+        if: ${{ env.WECOM_WEBHOOK != '' }}
         continue-on-error: true
         env:
-          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
           # 未配置该变量时，notify.py 会用 GITHUB_REPOSITORY 自动推导 Pages 地址
           PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}
         run: python scripts/notify.py
