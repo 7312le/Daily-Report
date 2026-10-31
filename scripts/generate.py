@@ -701,8 +701,9 @@ def main() -> int:
     try:
         client = anthropic.Anthropic(api_key=api_key, timeout=120.0, max_retries=2)
         data = call_claude(client, system_prompt, user_prompt)
-    except anthropic.AuthenticationError:
-        print("[error] ANTHROPIC_API_KEY 无效或已过期", file=sys.stderr)
+    except anthropic.AuthenticationError as exc:
+        # 输出 API 返回的原文（如 invalid x-api-key），便于区分密钥错误与其他鉴权问题
+        print(f"[error] ANTHROPIC_API_KEY 无效或已过期：{exc}", file=sys.stderr)
         return 1
     except Exception as exc:  # noqa: BLE001 - 顶层兜底，保证退出码正确
         print(f"[error] 生成日报失败：{exc}", file=sys.stderr)
