@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人成长日报 · 2026-10-31</title>
+  <meta name="description" content="把「忙」翻译成组织问题，把「便宜」翻译成概率问题，今天练拆解。">
+  <meta name="report-summary" content="把「忙」翻译成组织问题，把「便宜」翻译成概率问题，今天练拆解。 ｜ 技能：HRBP 视角：业务复盘会上的组织诊断 ｜ 财富：安全边际：把「便宜」翻译成概率与容错空间 ｜ 认知：机会成本 ｜ 英语：虚拟语气中的倒装：Were I / Had we">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --radius: 22px;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.7;
+      background:
+        radial-gradient(900px 420px at 12% -8%, rgba(79, 124, 255, 0.14), transparent 65%),
+        radial-gradient(760px 380px at 92% 2%, rgba(18, 163, 122, 0.10), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 64px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4f7cff;
+    }
+
+    .back-link {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .page-head { margin-bottom: 22px; }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4f7cff;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .meta .chip {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #e8eeff;
+      color: #3b5bdb;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 32px 36px;
+      border-radius: var(--radius);
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -90px;
+      top: -150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero p {
+      position: relative;
+      margin: 0;
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 26px 26px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    .card-skills {
+      --accent: #4f7cff;
+      --soft: #eef3ff;
+    }
+
+    .card-wealth {
+      --accent: #12a37a;
+      --soft: #e9f9f3;
+    }
+
+    .card-cognition {
+      --accent: #8b5cf6;
+      --soft: #f3efff;
+    }
+
+    .card-english {
+      --accent: #f59e0b;
+      --soft: #fff7e6;
+      grid-column: 1 / -1;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--soft);
+      font-size: 20px;
+    }
+
+    .card-kicker {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card-title {
+      margin: 2px 0 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .field { margin-top: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      color: #1e293b;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .action-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      background: var(--soft);
+    }
+
+    .action-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1e293b;
+    }
+
+    .source-tag {
+      display: inline-block;
+      margin: 14px 0 0;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #0f766e;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .steps {
+      margin: 6px 0 0;
+      padding-left: 20px;
+      color: #1e293b;
+      font-size: 15px;
+    }
+
+    .steps li { margin: 6px 0; }
+
+    .reflection {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .reflection p {
+      margin: 0;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- 英语 ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #eef2f7;
+      border-radius: 16px;
+      background: #fbfcfe;
+    }
+
+    .english-block h3 {
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .task-line,
+    .scenario-line {
+      margin: 0 0 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--soft);
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .vocab-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .vocab-item {
+      padding: 10px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .vocab-item:last-child { border-bottom: 0; padding-bottom: 0; }
+    .vocab-item:first-child { padding-top: 0; }
+
+    .vocab-word {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .vocab-word strong {
+      font-size: 15px;
+      color: #0f172a;
+    }
+
+    .phonetic {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .vocab-meaning {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .vocab-example {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .dialogue {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 94%;
+      padding: 10px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .bubble-right {
+      align-self: flex-end;
+      background: var(--soft);
+      border-color: transparent;
+    }
+
+    .bubble-speaker {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .bubble-en {
+      margin: 2px 0 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #0f172a;
+    }
+
+    .bubble-zh {
+      margin: 2px 0 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .grammar-point {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .example-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #334155;
+      font-size: 13.5px;
+    }
+
+    .example-list li { margin: 5px 0; }
+
+    .tip-line {
+      margin: 10px 0 0;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    /* ---------- 明日预览 ---------- */
+    .tomorrow {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 24px;
+      padding: 22px 26px;
+      border: 1px dashed #c7d2fe;
+      border-radius: var(--radius);
+      background: #eef2ff;
+    }
+
+    .tomorrow-icon {
+      flex: 0 0 auto;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .tomorrow h2 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4338ca;
+    }
+
+    .tomorrow p {
+      margin: 0;
+      color: #312e81;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    footer {
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .muted { color: var(--muted); }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-english { grid-column: auto; }
+      .english-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: calc(100% - 28px);
+        padding: 26px 0 48px;
+      }
+      .hero { padding: 26px 24px; }
+      .card { padding: 22px 20px; }
+      .tomorrow { padding: 18px 20px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .card, .hero { box-shadow: none; }
+      .back-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="brand">Daily Growth Report</span>
+      <a class="back-link" href="../index.html">← 返回归档</a>
+    </div>
+
+    <header class="page-head">
+      <p class="eyebrow">星期六 · 每日精进</p>
+      <h1>2026-10-31</h1>
+      <p class="meta">
+        <span class="chip">HR 纵深</span>
+        <span class="chip">投资方法</span>
+        <span class="chip">认知模型</span>
+        <span class="chip">英语精进</span>
+      </p>
+    </header>
+
+    <section class="hero" aria-label="今日一句话">
+      <span class="hero-label">今日一句话</span>
+      <p>把「忙」翻译成组织问题，把「便宜」翻译成概率问题，今天练拆解。</p>
+    </section>
+
+    <main class="grid">
+      <article class="card card-skills"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 技能栈</p><h2 class="card-title">HRBP 视角：业务复盘会上的组织诊断</h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">组织诊断是把业务结果问题翻译成组织能力问题的过程。韦斯伯德六个盒子（目的、结构、关系、奖励、领导、支持机制）适合在业务复盘会上快速定位卡点，边界是「找原因而非定责任」；不适用于裁员名单、绩效排名等需要正式程序的场合。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">一家 600 人的 SaaS 公司，季度复盘会上销售 VP 说线索转化率跌了三成，归因于市场部线索质量差；市场部反指销售跟进慢。会议陷入互相举证，CEO 要求 HRBP 两周内给出组织层面的解释。</p></div><div class="field"><p class="field-label">诊断问题</p><p class="field-text">这场会之前，线索从市场到销售要经过几个交接点，每个交接点的负责人是谁；奖励机制里市场和销售的考核指标是否指向同一个结果；如果明天把两个部门合并成一个增长团队，谁会最先反对、为什么。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚画一张线索流转图：标出 3 个交接点和对应责任人，写 5 个只问事实不问评价的追问，明天约市场与销售各一位一线员工各聊 20 分钟。</p></div></article>
+<article class="card card-wealth"><header class="card-head"><span class="card-icon" aria-hidden="true">💰</span><div><p class="card-kicker">02 · 财富自由</p><h2 class="card-title">安全边际：把「便宜」翻译成概率与容错空间</h2></div></header><div class="field"><p class="field-label">核心概念</p><p class="field-text">安全边际指买入价格与估算内在价值之间的折扣，本质是为「估算必然出错」预留的缓冲。判断标准不是折扣数字越大越好，而是折扣要匹配业务的不确定性：现金流越难预测，所需折扣越大。适用前提是你能给出一个区间估值而非单点估值；不适用于靠消息和短期情绪驱动的决策。</p></div><div class="field"><p class="field-label">案例剖析</p><p class="field-text">巴菲特在 1988 年致股东信中讨论可口可乐时，强调以合理价格买入优秀企业优于以便宜价格买入平庸企业，并说明价格与价值之间的差距就是容错空间。这一表述属于公开可查的股东信文本，可对照阅读其中关于「价格与价值」的段落，理解安全边际如何与确定性挂钩。</p></div><div class="field"><p class="field-label">常见误区</p><p class="field-text">最常见误区是把低估值指标等同于安全边际，忽略业务本身可能正在恶化，导致「越跌越便宜、越便宜越跌」。它之所以发生，是因为人把历史价格当作参照锚点，用过去的价格证明现在便宜。</p></div><p class="source-tag">[一手] 伯克希尔·哈撒韦公司历年年报及致股东信原文；[二手] 经典投资教材中关于估值与安全边际的章节讨论。</p><div class="action-box"><span class="action-label">今晚动作</span><p>今晚挑一个你熟悉的行业，写下该行业影响现金流的 3 个关键变量，并给每个变量标一个「乐观/中性/悲观」区间，体会估值为何只能给出区间而非单点。</p></div></article>
+<article class="card card-cognition"><header class="card-head"><span class="card-icon" aria-hidden="true">🧠</span><div><p class="card-kicker">03 · 认知</p><h2 class="card-title">机会成本</h2></div></header><div class="field"><p class="field-label">通俗解释</p><p class="field-text">机会成本是你选择 A 时放弃的最好那个 B 的价值。职场里最常见的误判是只看「做这件事有什么好处」，不看「同一段时间不做别的事损失了什么」。比如你花整个周六打磨一份汇报 PPT，好处是版面精致，机会成本却是本可以用来做完那份真正影响决策的数据分析。把时间当成有限预算，选择才变得可比较。</p></div><div class="field"><p class="field-label">应用步骤</p><ol class="steps"><li>列出今天投入最大的三件事及耗时</li><li>为每件事写出被挤掉的最佳替代项</li><li>比较两者的长期收益差距</li><li>砍掉或压缩收益最低的一项</li></ol></div><div class="reflection"><span class="field-label">反思问题</span><p>你本周最忙碌的那件事，如果换成另一件事，三个月后回看会更值得吗？你是因为它重要，还是因为它紧急、熟悉、容易交付？</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">04 · 多国语言</p><h2 class="card-title">英语精进 · 每天 20 分钟</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="task-line">在金山词霸依次查以下 5 个词，逐个点击发音跟读 3 遍，收藏进「职场沟通」生词本，并用每个词各造一句与你工作相关的句子，写在词霸的例句笔记里。</p><ul class="vocab-list"><li class="vocab-item"><div class="vocab-word"><strong>escalate</strong><span class="phonetic">/ˈeskəleɪt/</span></div><p class="vocab-meaning">升级（问题、冲突）；上报</p><p class="vocab-example">If we don&#x27;t get a response by Friday, I&#x27;ll escalate this to the steering committee.</p></li><li class="vocab-item"><div class="vocab-word"><strong>bandwidth</strong><span class="phonetic">/ˈbændwɪdθ/</span></div><p class="vocab-meaning">（口）精力、可支配时间</p><p class="vocab-example">I don&#x27;t have the bandwidth to take on another project this quarter.</p></li><li class="vocab-item"><div class="vocab-word"><strong>alignment</strong><span class="phonetic">/əˈlaɪnmənt/</span></div><p class="vocab-meaning">一致、对齐；协同</p><p class="vocab-example">Let&#x27;s make sure there&#x27;s alignment between marketing and sales on the target account list.</p></li><li class="vocab-item"><div class="vocab-word"><strong>pushback</strong><span class="phonetic">/ˈpʊʃbæk/</span></div><p class="vocab-meaning">反对意见、阻力</p><p class="vocab-example">We got some pushback from the engineering team on the timeline.</p></li><li class="vocab-item"><div class="vocab-word"><strong>takeaway</strong><span class="phonetic">/ˈteɪkəweɪ/</span></div><p class="vocab-meaning">要点、关键结论</p><p class="vocab-example">The main takeaway from the review is that our handover process is leaking leads.</p></li></ul></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="scenario-line">AI Talk：你作为 HRBP 与销售负责人沟通线索转化下滑的组织原因</p><div class="dialogue"><div class="bubble bubble-left"><span class="bubble-speaker">A</span><p class="bubble-en">Thanks for making time. I want to understand the lead conversion drop before we jump to solutions.</p><p class="bubble-zh">谢谢你抽时间。在急着找方案之前，我想先搞清楚线索转化下滑的原因。</p></div><div class="bubble bubble-right"><span class="bubble-speaker">B</span><p class="bubble-en">Honestly, the leads from marketing just aren&#x27;t qualified. My reps waste hours on them.</p><p class="bubble-zh">说实话，市场部给的线索质量不行，我的销售在上面浪费了好几个小时。</p></div><div class="bubble bubble-left"><span class="bubble-speaker">A</span><p class="bubble-en">That&#x27;s a strong signal. When a lead is passed to your team, who decides whether it&#x27;s qualified?</p><p class="bubble-zh">这是个很强的信号。线索转到你们团队时，是谁来判断它是否合格？</p></div><div class="bubble bubble-right"><span class="bubble-speaker">B</span><p class="bubble-en">In theory, marketing scores it. In practice, reps just call whoever is on the list.</p><p class="bubble-zh">理论上市场部会打分，实际上销售就是照着名单挨个打。</p></div><div class="bubble bubble-left"><span class="bubble-speaker">A</span><p class="bubble-en">So the handover has no shared definition. How are both teams measured right now?</p><p class="bubble-zh">也就是说交接环节没有共同定义。那现在两个团队的考核标准是什么？</p></div><div class="bubble bubble-right"><span class="bubble-speaker">B</span><p class="bubble-en">Marketing is measured on lead volume, we&#x27;re measured on closed deals. That&#x27;s probably part of it.</p><p class="bubble-zh">市场部考核线索数量，我们考核成交。这大概也是原因之一。</p></div><div class="bubble bubble-left"><span class="bubble-speaker">A</span><p class="bubble-en">Let&#x27;s not escalate it yet. I&#x27;ll map the handover points and bring a shared definition to next week&#x27;s review.</p><p class="bubble-zh">先不急着往上捅。我会把交接点梳理出来，下周复盘会上带一个共同定义过去。</p></div><div class="bubble bubble-right"><span class="bubble-speaker">B</span><p class="bubble-en">Works for me. If we fix the definition, I think half the finger-pointing goes away.</p><p class="bubble-zh">可以。要是定义修好了，我觉得一半的互相指责就没了。</p></div></div></section><section class="english-block"><h3>语法点</h3><p class="grammar-point">虚拟语气中的倒装：Were I / Had we</p><p class="field-text">省略 if 时把 were、had、should 提前构成倒装，用于正式书面与会议表达。</p><ul class="example-list"><li>Were I in your position, I would raise the resourcing issue before the review.</li><li>Had we defined the handover criteria earlier, we wouldn&#x27;t be losing leads now.</li></ul></section><section class="english-block"><h3>听力跟读</h3><p class="field-text"><strong>材料：</strong>BBC 6 Minute English 或 TED Business 中关于职场沟通与团队协作的对话类节目</p><p class="field-text"><strong>任务：</strong>选一段 6 分钟音频：第一遍盲听记下 3 个关键词；第二遍对照字幕跟读，逐句模仿语调；第三遍不看字幕影子跟读 2 遍，重点模仿句尾降调和重音位置。</p><p class="tip-line"><strong>技巧：</strong>英语句子的信息重心常落在最后一个实词上，跟读时先找到那句的「重读词」，其余弱读，节奏自然就出来了。</p></section></div></article>
+    </main>
+
+    <section class="tomorrow" aria-label="明日预览">
+      <span class="tomorrow-icon" aria-hidden="true">🔭</span>
+      <div>
+        <h2>明日预览</h2>
+        <p>明日：COE 视角的绩效方案设计边界；财富板块转向现金流质量识别。</p>
+      </div>
+    </section>
+
+    <footer>
+      <span>生成于 2026-10-31 16:12（北京时间）</span>
+      <span>仅供个人学习记录，不构成投资建议。</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-31",
+  "one_line": "把「忙」翻译成组织问题，把「便宜」翻译成概率问题，今天练拆解。",
+  "skills": {
+    "topic": "HRBP 视角：业务复盘会上的组织诊断",
+    "concept": "组织诊断是把业务结果问题翻译成组织能力问题的过程。韦斯伯德六个盒子（目的、结构、关系、奖励、领导、支持机制）适合在业务复盘会上快速定位卡点，边界是「找原因而非定责任」；不适用于裁员名单、绩效排名等需要正式程序的场合。",
+    "scenario": "一家 600 人的 SaaS 公司，季度复盘会上销售 VP 说线索转化率跌了三成，归因于市场部线索质量差；市场部反指销售跟进慢。会议陷入互相举证，CEO 要求 HRBP 两周内给出组织层面的解释。",
+    "diagnosis": "这场会之前，线索从市场到销售要经过几个交接点，每个交接点的负责人是谁；奖励机制里市场和销售的考核指标是否指向同一个结果；如果明天把两个部门合并成一个增长团队，谁会最先反对、为什么。",
+    "action": "今晚画一张线索流转图：标出 3 个交接点和对应责任人，写 5 个只问事实不问评价的追问，明天约市场与销售各一位一线员工各聊 20 分钟。"
+  },
+  "wealth": {
+    "topic": "安全边际：把「便宜」翻译成概率与容错空间",
+    "concept": "安全边际指买入价格与估算内在价值之间的折扣，本质是为「估算必然出错」预留的缓冲。判断标准不是折扣数字越大越好，而是折扣要匹配业务的不确定性：现金流越难预测，所需折扣越大。适用前提是你能给出一个区间估值而非单点估值；不适用于靠消息和短期情绪驱动的决策。",
+    "case": "巴菲特在 1988 年致股东信中讨论可口可乐时，强调以合理价格买入优秀企业优于以便宜价格买入平庸企业，并说明价格与价值之间的差距就是容错空间。这一表述属于公开可查的股东信文本，可对照阅读其中关于「价格与价值」的段落，理解安全边际如何与确定性挂钩。",
+    "pitfall": "最常见误区是把低估值指标等同于安全边际，忽略业务本身可能正在恶化，导致「越跌越便宜、越便宜越跌」。它之所以发生，是因为人把历史价格当作参照锚点，用过去的价格证明现在便宜。",
+    "source": "[一手] 伯克希尔·哈撒韦公司历年年报及致股东信原文；[二手] 经典投资教材中关于估值与安全边际的章节讨论。",
+    "action": "今晚挑一个你熟悉的行业，写下该行业影响现金流的 3 个关键变量，并给每个变量标一个「乐观/中性/悲观」区间，体会估值为何只能给出区间而非单点。"
+  },
+  "cognition": {
+    "model": "机会成本",
+    "explain": "机会成本是你选择 A 时放弃的最好那个 B 的价值。职场里最常见的误判是只看「做这件事有什么好处」，不看「同一段时间不做别的事损失了什么」。比如你花整个周六打磨一份汇报 PPT，好处是版面精致，机会成本却是本可以用来做完那份真正影响决策的数据分析。把时间当成有限预算，选择才变得可比较。",
+    "steps": [
+      "列出今天投入最大的三件事及耗时",
+      "为每件事写出被挤掉的最佳替代项",
+      "比较两者的长期收益差距",
+      "砍掉或压缩收益最低的一项"
+    ],
+    "reflection": "你本周最忙碌的那件事，如果换成另一件事，三个月后回看会更值得吗？你是因为它重要，还是因为它紧急、熟悉、容易交付？"
+  },
+  "english": {
+    "vocab_task": "在金山词霸依次查以下 5 个词，逐个点击发音跟读 3 遍，收藏进「职场沟通」生词本，并用每个词各造一句与你工作相关的句子，写在词霸的例句笔记里。",
+    "vocab": [
+      {
+        "word": "escalate",
+        "phonetic": "/ˈeskəleɪt/",
+        "meaning": "升级（问题、冲突）；上报",
+        "example": "If we don't get a response by Friday, I'll escalate this to the steering committee."
+      },
+      {
+        "word": "bandwidth",
+        "phonetic": "/ˈbændwɪdθ/",
+        "meaning": "（口）精力、可支配时间",
+        "example": "I don't have the bandwidth to take on another project this quarter."
+      },
+      {
+        "word": "alignment",
+        "phonetic": "/əˈlaɪnmənt/",
+        "meaning": "一致、对齐；协同",
+        "example": "Let's make sure there's alignment between marketing and sales on the target account list."
+      },
+      {
+        "word": "pushback",
+        "phonetic": "/ˈpʊʃbæk/",
+        "meaning": "反对意见、阻力",
+        "example": "We got some pushback from the engineering team on the timeline."
+      },
+      {
+        "word": "takeaway",
+        "phonetic": "/ˈteɪkəweɪ/",
+        "meaning": "要点、关键结论",
+        "example": "The main takeaway from the review is that our handover process is leaking leads."
+      }
+    ],
+    "dialogue": {
+      "scenario": "AI Talk：你作为 HRBP 与销售负责人沟通线索转化下滑的组织原因",
+      "lines": [
+        {
+          "speaker": "A",
+          "en": "Thanks for making time. I want to understand the lead conversion drop before we jump to solutions.",
+          "zh": "谢谢你抽时间。在急着找方案之前，我想先搞清楚线索转化下滑的原因。"
+        },
+        {
+          "speaker": "B",
+          "en": "Honestly, the leads from marketing just aren't qualified. My reps waste hours on them.",
+          "zh": "说实话，市场部给的线索质量不行，我的销售在上面浪费了好几个小时。"
+        },
+        {
+          "speaker": "A",
+          "en": "That's a strong signal. When a lead is passed to your team, who decides whether it's qualified?",
+          "zh": "这是个很强的信号。线索转到你们团队时，是谁来判断它是否合格？"
+        },
+        {
+          "speaker": "B",
+          "en": "In theory, marketing scores it. In practice, reps just call whoever is on the list.",
+          "zh": "理论上市场部会打分，实际上销售就是照着名单挨个打。"
+        },
+        {
+          "speaker": "A",
+          "en": "So the handover has no shared definition. How are both teams measured right now?",
+          "zh": "也就是说交接环节没有共同定义。那现在两个团队的考核标准是什么？"
+        },
+        {
+          "speaker": "B",
+          "en": "Marketing is measured on lead volume, we're measured on closed deals. That's probably part of it.",
+          "zh": "市场部考核线索数量，我们考核成交。这大概也是原因之一。"
+        },
+        {
+          "speaker": "A",
+          "en": "Let's not escalate it yet. I'll map the handover points and bring a shared definition to next week's review.",
+          "zh": "先不急着往上捅。我会把交接点梳理出来，下周复盘会上带一个共同定义过去。"
+        },
+        {
+          "speaker": "B",
+          "en": "Works for me. If we fix the definition, I think half the finger-pointing goes away.",
+          "zh": "可以。要是定义修好了，我觉得一半的互相指责就没了。"
+        }
+      ]
+    },
+    "grammar": {
+      "point": "虚拟语气中的倒装：Were I / Had we",
+      "rule": "省略 if 时把 were、had、should 提前构成倒装，用于正式书面与会议表达。",
+      "examples": [
+        "Were I in your position, I would raise the resourcing issue before the review.",
+        "Had we defined the handover criteria earlier, we wouldn't be losing leads now."
+      ]
+    },
+    "listening": {
+      "material": "BBC 6 Minute English 或 TED Business 中关于职场沟通与团队协作的对话类节目",
+      "task": "选一段 6 分钟音频：第一遍盲听记下 3 个关键词；第二遍对照字幕跟读，逐句模仿语调；第三遍不看字幕影子跟读 2 遍，重点模仿句尾降调和重音位置。",
+      "tip": "英语句子的信息重心常落在最后一个实词上，跟读时先找到那句的「重读词」，其余弱读，节奏自然就出来了。"
+    }
+  },
+  "tomorrow_preview": "明日：COE 视角的绩效方案设计边界；财富板块转向现金流质量识别。"
+}
