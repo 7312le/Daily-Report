@@ -37,6 +37,28 @@ jobs:
             --connect-timeout 10 --max-time 20 \
             https://qyapi.weixin.qq.com/cgi-bin/webhook/send || echo "curl failed: exit=$?"
 
+      # 诊断用：只输出 Webhook 的域名/路径（不含 key），用于定位连接超时。
+      - name: Inspect webhook host
+        continue-on-error: true
+        env:
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+        run: |
+          python - <<'EOF'
+          import os
+          from urllib.parse import urlparse, parse_qs
+          raw = os.environ.get("WECOM_WEBHOOK", "").strip().strip('"').strip("'")
+          if raw and "://" not in raw:
+              raw = "https://" + raw
+          p = urlparse(raw)
+          key = parse_qs(p.query).get("key", [""])[0]
+          print(f"scheme={p.scheme!r}")
+          print(f"host={p.hostname!r}")
+          print(f"port={p.port}")
+          print(f"path={p.path!r}")
+          print(f"key_len={len(key)}")
+          print(f"raw_len={len(raw)}")
+          EOF
+
       - name: Check project files exist
         run: |
           set -e
