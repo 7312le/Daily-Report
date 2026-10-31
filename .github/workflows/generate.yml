@@ -46,8 +46,11 @@ jobs:
       - name: Generate daily report
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # 可选：覆盖默认模型 claude-sonnet-5
-          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          # DeepSeek 提供 Anthropic 兼容端点，Anthropic SDK 可直接调用。
+          # 如需切回官方 API，把仓库变量 ANTHROPIC_BASE_URL 设为 https://api.anthropic.com
+          ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL || 'https://api.deepseek.com/anthropic' }}
+          # 默认走 DeepSeek Flash；可用仓库变量 ANTHROPIC_MODEL 覆盖
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'deepseek-flash' }}
         run: python scripts/generate.py
 
       # 未配置 WECOM_WEBHOOK 时整步跳过（notify.py 内部也会优雅跳过，双保险）。

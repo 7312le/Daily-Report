@@ -699,7 +699,14 @@ def main() -> int:
     user_prompt = build_user_prompt(date_str, weekday, recent_topics)
 
     try:
-        client = anthropic.Anthropic(api_key=api_key, timeout=120.0, max_retries=2)
+        # 支持 Anthropic 兼容端点（如 DeepSeek https://api.deepseek.com/anthropic）；
+        # 未设置 ANTHROPIC_BASE_URL 时走官方 api.anthropic.com
+        client = anthropic.Anthropic(
+            api_key=api_key,
+            base_url=os.environ.get("ANTHROPIC_BASE_URL", "").strip() or None,
+            timeout=120.0,
+            max_retries=2,
+        )
         data = call_claude(client, system_prompt, user_prompt)
     except anthropic.AuthenticationError as exc:
         # 输出 API 返回的原文（如 invalid x-api-key），便于区分密钥错误与其他鉴权问题
