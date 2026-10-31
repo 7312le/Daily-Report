@@ -1,124 +1,124 @@
 {
   "date": "2026-10-31",
-  "one_line": "把招聘需求翻译成能力差距，比急着发JD更能解决用人问题。",
+  "one_line": "周六不排会，用半天做一次组织权责与个人决策偏误的双重体检。",
   "skills": {
-    "topic": "COE 视角：招聘需求背后的任职资格校准",
-    "concept": "任职资格是岗位的「能力门槛清单」，由知识、技能、行为标准三层构成，用于招聘筛选、晋升评审与培养靶心。适用边界：岗位职责相对稳定、产出可观察；不适用场景：新业务探索期岗位边界模糊、或团队规模过小无法形成分级标准时，硬套资格等级会变成形式主义。",
-    "scenario": "一家 600 人规模的连锁餐饮企业，2026 年门店扩张至 45 家，区域经理岗位连续三个月招聘未果。业务负责人抱怨 HR「招不到人」，HR 抱怨业务「要求太虚」，用人标准在面试中反复变化，已面试 23 人、发出 2 个 offer 均被拒。",
-    "diagnosis": "这个岗位真正不可妥协的三项能力是什么；过去一年绩效最好的两位区域经理，具体做对了哪几件事；如果三个月内招不到，业务能否用内部代理或拆岗方式过渡。",
-    "action": "今晚用 30 分钟画一张三列表：左列写区域经理的 6 项关键职责，中列写每项职责对应的可观察行为，右列标注「必须」「可培养」「加分」三档，形成一页纸的岗位能力门槛草案。"
+    "topic": "组织学视角：权责边界模糊引发的协作损耗诊断",
+    "concept": "权责边界指决策权、资源支配权与结果责任在岗位和流程节点上的显性分配。适用边界：跨部门协作频繁、决策链超过三层的组织。不适用场景：初创期十人以下团队，过度明确边界反而拖慢速度。",
+    "scenario": "一家 800 人的连锁餐饮企业，门店改造项目由运营部发起、工程部执行、财务部付款。运营总监认为工程部拖延，工程经理说没收到书面需求，财务则卡在预算科目不清，项目平均延期 23 天。",
+    "diagnosis": "这个项目里谁有最终决策权，谁只有建议权；需求变更时以哪份书面记录为准；预算科目由谁在什么节点确认并冻结。",
+    "action": "今晚 30 分钟：选一个正在延期的小项目，画一张三列表格，列出每个环节的决策人、建议人、知情者，标出至少两处无人负责或双人负责的节点。"
   },
   "wealth": {
-    "topic": "现金流质量：利润与现金的背离识别",
-    "concept": "现金流质量指企业利润是否有真实现金支撑，核心观察经营现金流净额与净利润的长期比值、应收账款与存货增速是否显著快于收入增速。判断标准：连续多年经营现金流低于净利润、且差额被应收与存货吞噬，说明利润含金量存疑。前提是需结合行业账期特征，不能一刀切。",
-    "case": "美国安然公司 2000 年前后通过特殊目的实体隐藏负债、虚增利润，其经营现金流与报告净利润长期背离，最终在 2001 年申请破产。这一案例常被财务分析教材用于说明：利润表可以修饰，现金流量表的验证价值更高。",
-    "pitfall": "最常见的误区是只看净利润增速判断公司好坏，忽略应收账款与存货的异常膨胀。原因在于利润确认采用权责发生制，收入可在未收到现金时确认，而人性天然偏好漂亮的利润数字，导致对现金流信号视而不见。",
-    "source": "[二手] 经典财务分析教材中关于利润与现金流背离的讨论，以及安然事件的公开财务史料",
-    "action": "今晚找一份你关注的行业上市公司年报，用 20 分钟计算近三年经营现金流净额与净利润的比值，并记录应收账款增速与收入增速的差额，写三行观察结论。"
+    "topic": "能力圈：如何界定自己真正能判断的边界",
+    "concept": "能力圈指投资者能持续理解其商业模式、竞争格局与主要风险的范围。判断标准：能否用自己的话讲清一家企业五年后靠什么赚钱、最可能被什么颠覆。适用前提：承认圈外存在且愿意放弃。不适用：把熟悉行业等同于具备分析能力。",
+    "case": "巴菲特在 1990 年代长期回避科技股，曾在股东信中说明自己无法可靠判断科技企业的长期竞争优势，因此不参与。同期互联网泡沫中大量投资者以熟悉产品为由买入，泡沫破裂后损失惨重。这一案例常被用于说明承认边界本身是一种能力，而非保守。",
+    "pitfall": "最常见误区是把消费体验或行业从业经验当成能力圈。人容易高估自己熟悉领域的可预测性，因为日常接触提供了大量令人安心的信息，但这些信息并不构成对盈利结构和竞争壁垒的判断。",
+    "source": "[二手] 伯克希尔历年致股东信中关于能力圈与不参与科技股的公开表述",
+    "action": "今晚用 20 分钟写一份个人能力圈清单：列出三个你自认能讲清商业模式与风险的行业，每个行业写一句「我最可能判断错的地方」，再列两个明确圈外的行业。"
   },
   "cognition": {
-    "model": "确认偏误",
-    "explain": "确认偏误是指人一旦形成某个判断，就会下意识寻找支持它的证据，忽略甚至贬低相反的信息。职场例子：你认定某位下属「执行力不行」，之后他每次迟到你都记在心里，而他按时交付的三个项目你自动归因为「任务简单」。这不是你坏，而是大脑在节省认知成本，但代价是判断失真。",
+    "model": "机会成本",
+    "explain": "机会成本是你在做一件事时，放弃的次优选项的价值。职场里常见的情形是：你花两个小时开一个不产生决策的会，成本不只是两小时，还包括这两小时本可以完成的方案初稿或一次客户回访。人们通常只计算显性投入，忽略被放弃选项的价值，于是低价值事务会不断挤占高价值时间。",
     "steps": [
-      "先写下你当前的判断和依据",
-      "主动找三条反例或反方观点",
-      "给每条证据标注来源与可信度",
-      "设定一个能推翻判断的观察指标"
+      "列出今天投入时间最多的三件事",
+      "为每件事写下一个被放弃的次优选项",
+      "估算被放弃选项的当月价值",
+      "把最低价值事务移出下周日程"
     ],
-    "reflection": "最近一次你对同事或项目的负面判断，有多少证据是你主动找来的，又有多少是碰巧看到的？如果必须找出三条反例，你能找到吗？"
+    "reflection": "你最近一次说「没时间」，实际放弃的是哪件更重要的事？如果每天只保留三件事，你会删掉哪一件？"
   },
   "english": {
-    "vocab_task": "在金山词霸中依次查以下 5 个词，逐个点击发音跟读三遍，加入生词本，并用每个词各造一个与本周工作相关的句子，保存在词霸的例句笔记中。",
+    "vocab_task": "在金山词霸中依次查询以下五个词，逐个点击发音跟读两遍，收藏到「职场沟通」生词本，并用每个词各造一个与跨部门协作相关的句子存入例句笔记。",
     "vocab": [
-      {
-        "word": "alignment",
-        "phonetic": "/əˈlaɪnmənt/",
-        "meaning": "一致，对齐；协同",
-        "example": "We need better alignment between sales and product before the launch."
-      },
       {
         "word": "escalate",
         "phonetic": "/ˈeskəleɪt/",
-        "meaning": "升级，上报；加剧",
-        "example": "If the client doesn't respond by Friday, please escalate it to my manager."
-      },
-      {
-        "word": "bandwidth",
-        "phonetic": "/ˈbændwɪdθ/",
-        "meaning": "带宽；可投入的精力与时间",
-        "example": "I don't have the bandwidth to take on another project this quarter."
+        "meaning": "升级；将问题上报给更高层级",
+        "example": "If we can't agree by Friday, we'll need to escalate the issue to the steering committee."
       },
       {
         "word": "stakeholder",
         "phonetic": "/ˈsteɪkhəʊldə(r)/",
-        "meaning": "利益相关者，干系人",
-        "example": "We should loop in all key stakeholders before finalizing the timeline."
+        "meaning": "利益相关方",
+        "example": "Please make sure every stakeholder has seen the revised timeline before Monday."
       },
       {
-        "word": "trade-off",
-        "phonetic": "/ˈtreɪd ɒf/",
-        "meaning": "权衡，取舍",
-        "example": "There's always a trade-off between speed and quality in delivery."
+        "word": "bandwidth",
+        "phonetic": "/ˈbændwɪdθ/",
+        "meaning": "（口）精力、可投入的时间与资源",
+        "example": "The design team simply doesn't have the bandwidth to take on another project this quarter."
+      },
+      {
+        "word": "align",
+        "phonetic": "/əˈlaɪn/",
+        "meaning": "使一致；对齐目标或认知",
+        "example": "We need to align on the definition of 'done' before development starts."
+      },
+      {
+        "word": "bottleneck",
+        "phonetic": "/ˈbɒtlnek/",
+        "meaning": "瓶颈；流程中最易堵塞的环节",
+        "example": "Finance approval has become the biggest bottleneck in the vendor onboarding process."
       }
     ],
     "dialogue": {
-      "scenario": "AI Talk 情景：项目延期后，你与上级进行一对一沟通，说明原因并争取资源支持。",
+      "scenario": "AI Talk 情景：项目延期后，运营与工程两个部门负责人向总监说明各自立场。",
       "lines": [
         {
-          "speaker": "A",
-          "en": "Thanks for making time. I want to flag that the migration project is likely to slip by two weeks.",
-          "zh": "谢谢你抽时间。我想提一下，迁移项目可能会延后两周。"
+          "speaker": "Director",
+          "en": "The store renovation project is three weeks late. I want to understand where it actually broke down, not who to blame.",
+          "zh": "门店改造项目已经晚了三周。我想弄清楚到底哪个环节出了问题，不是要追究谁的責任。"
         },
         {
-          "speaker": "B",
-          "en": "That's not what I expected. What's driving the delay?",
-          "zh": "这和我预期的不一样。延期的原因是什么？"
+          "speaker": "Operations",
+          "en": "From our side, we submitted the request in July. We assumed Engineering had everything they needed.",
+          "zh": "从我们这边看，七月就提交了需求。我们以为工程部已经拿到了所有必需信息。"
         },
         {
-          "speaker": "A",
-          "en": "The vendor's API changed twice, and our testing team doesn't have the bandwidth to re-run everything this sprint.",
-          "zh": "供应商的接口改了两次，而测试团队这个迭代没有精力全部重跑。"
+          "speaker": "Engineering",
+          "en": "We received a one-page note, but no drawings and no budget code. We can't schedule work without a frozen scope.",
+          "zh": "我们收到的是一页说明，没有图纸，也没有预算科目。范围没冻结，我们没法排期。"
         },
         {
-          "speaker": "B",
-          "en": "Have you escalated this to the vendor's account manager?",
-          "zh": "你有没有把这个问题上报给供应商的客户经理？"
+          "speaker": "Director",
+          "en": "So the handoff point is the problem. Who is supposed to confirm the scope is complete before it reaches you?",
+          "zh": "所以问题出在交接环节。按流程，需求到你们手上之前，应该由谁确认范围完整？"
         },
         {
-          "speaker": "A",
-          "en": "Yes, I sent a summary on Monday and asked for a freeze on changes, but I haven't heard back.",
-          "zh": "有，我周一发了汇总并要求冻结变更，但还没收到回复。"
+          "speaker": "Operations",
+          "en": "Honestly, nobody owns that step. We thought Finance checked it, and Finance thought we did.",
+          "zh": "说实话，这一步没人负责。我们以为财务会核，财务以为我们会核。"
         },
         {
-          "speaker": "B",
-          "en": "Okay. What's the trade-off if we keep the original deadline?",
-          "zh": "好。如果保持原定截止日，代价是什么？"
+          "speaker": "Director",
+          "en": "That's a clear gap. Let's assign a single owner for scope sign-off and put it in writing by Wednesday.",
+          "zh": "这就是明确的缺口。我们为范围确认指定唯一负责人，周三前落到书面。"
         },
         {
-          "speaker": "A",
-          "en": "We'd have to skip the regression tests, which I wouldn't recommend for a payment module.",
-          "zh": "那就得跳过回归测试，对支付模块我不建议这么做。"
+          "speaker": "Engineering",
+          "en": "That works for me, as long as the sign-off includes the budget code. Otherwise we're still stuck at the same bottleneck.",
+          "zh": "我同意，前提是确认单里必须包含预算科目。否则我们还是会卡在同一个瓶颈上。"
         },
         {
-          "speaker": "B",
-          "en": "Agreed. Let's align with the vendor tomorrow and decide on a revised date by Wednesday.",
-          "zh": "同意。明天和供应商对齐，周三前定下新的日期。"
+          "speaker": "Director",
+          "en": "Agreed. I'll escalate the budget-code issue to Finance today so it doesn't reopen next month.",
+          "zh": "同意。我今天就把预算科目的问题升级给财务，避免下个月再翻出来。"
         }
       ]
     },
     "grammar": {
-      "point": "现在完成时与一般过去时的区分",
-      "rule": "强调过去动作对现在的影响或未指明时间用现在完成时；指明过去具体时间点用一般过去时。",
+      "point": "虚拟语气中的 should 省略结构（suggest / insist / require that + 动词原形）",
+      "rule": "表示建议、要求、坚持的动词后接 that 从句时，从句用动词原形，不受时态和人称影响。",
       "examples": [
-        "I have sent the report, so you can review it now.",
-        "I sent the report yesterday morning."
+        "The director insisted that the sign-off form include a budget code.",
+        "We suggest that each stakeholder confirm the scope in writing before scheduling."
       ]
     },
     "listening": {
-      "material": "BBC 六分钟英语（6 Minute English）关于职场沟通主题的往期节目",
-      "task": "选一期 6 分钟节目，第一遍盲听记关键词；第二遍逐句暂停跟读，模仿语调；第三遍不暂停影子跟读，全程录音回听对比。",
-      "tip": "跟读时注意句子重音落在实词上，虚词弱读，先抓节奏再纠单个音素。"
+      "material": "BBC 六分钟英语（6 Minute English）关于职场沟通与谈判主题的往期节目",
+      "task": "选一期 6 分钟节目，第一遍不看文本只抓两个说话人的立场差异；第二遍逐句跟读，每句暂停模仿语调；第三遍脱稿复述对话中的分歧点与结论，录音回听一遍。",
+      "tip": "跟读时先标记句子的重读词，英语的信息重心靠重音而非语序，抓住重音就能抓住对方真正在强调的内容。"
     }
   },
-  "tomorrow_preview": "明日预览：人力总监视角的编制规划逻辑；资产配置中的再平衡纪律；以及锚定效应如何影响你的谈判。"
+  "tomorrow_preview": "明日：人才盘点九宫格的分歧处理，再平衡的纪律意义，以及锚定效应如何干扰你的判断。"
 }
