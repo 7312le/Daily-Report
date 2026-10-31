@@ -39,7 +39,8 @@ BEIJING = timezone(timedelta(hours=8))
 WEEKDAYS = ("星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日")
 
 MODEL = os.environ.get("ANTHROPIC_MODEL", "").strip() or "claude-sonnet-5"
-MAX_TOKENS = 8000
+# Sonnet 5 使用新分词器，同样文本约多 30% token，故留足冗余
+MAX_TOKENS = 12000
 MAX_ATTEMPTS = 3
 RECENT_LOOKBACK = 7
 
@@ -244,10 +245,13 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: st
     for attempt in range(1, MAX_ATTEMPTS + 1):
         try:
             print(f"[info] 调用 Claude（第 {attempt}/{MAX_ATTEMPTS} 次，model={MODEL}）…", file=sys.stderr)
+            # claude-sonnet-5 不接受非默认 temperature/top_p/top_k，传了会 400；
+            # 且省略 thinking 时默认开启 adaptive thinking，会挤占 max_tokens。
+            # 日报是结构化内容生成，显式关闭 thinking 以获得稳定可预期的输出预算。
             message = client.messages.create(
                 model=MODEL,
                 max_tokens=MAX_TOKENS,
-                temperature=0.6,
+                thinking={"type": "disabled"},
                 system=system_prompt,
                 messages=[{"role": "user", "content": attempt_prompt}],
             )
