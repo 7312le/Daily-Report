@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把当日日报摘要推送到企业微信群机器人。
+"""把当日日报摘要推送到企业微信群机器人或 Server酱（微信）。
 
-- WECOM_WEBHOOK：群机器人 Webhook 地址（GitHub Secrets）
+- WECOM_WEBHOOK：企业微信群机器人 Webhook 地址（GitHub Secrets，可选）
+- SERVERCHAN_SENDKEY：Server酱 SendKey（GitHub Secrets，可选）
+  自动识别 Turbo（SCT/数字开头）与 Server酱³（sctp<uid>t...）两套地址
+- 两个渠道都配置时同时推送；都未配置时打印 [skip] 并正常退出
 - PAGES_BASE_URL：GitHub Pages 站点根地址（GitHub Variables，可选）
   未配置时根据 GITHUB_REPOSITORY 自动推导为 https://owner.github.io/repo
 - 默认取 reports/ 下最新一期 JSON，也可用 --date YYYY-MM-DD 指定
-- 企业微信 markdown 消息上限 4096 字节，脚本会自动截断正文并保留链接
+- 正文按 4000 字节截断并保留链接，兼容企业微信 4096 字节上限
 """
 
 from __future__ import annotations
@@ -32,6 +35,11 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_CONTENT_BYTES = 4000
 RETRY_TIMES = 3
 URL_RE = re.compile(r"https?://\S+")
+
+# Server酱两套接口：Turbo 用 sctapi，Server酱³ 用数字子域
+SERVERCHAN_TURBO_URL = "https://sctapi.ftqq.com/{key}.send"
+SERVERCHAN_SC3_URL = "https://{uid}.push.ft07.com/send/{key}.send"
+SERVERCHAN_SC3_RE = re.compile(r"^sctp(\d+)t")
 
 
 class NotifyError(RuntimeError):
@@ -219,6 +227,54 @@ def normalize_webhook(raw: str) -> str:
     return value
 
 
+def serverchan_endpoint(sendkey: str) -> str:
+    """根据 SendKey 前缀选择 Turbo 或 Server酱³ 的推送地址。"""
+    key = sendkey.strip()
+    if not key:
+        raise NotifyError("SERVERCHAN_SENDKEY 为空")
+    if key.startswith("sctp"):
+        match = SERVERCHAN_SC3_RE.match(key)
+        if not match:
+            raise NotifyError("Server酱³ SendKey 格式不正确（应为 sctp<uid>t...）")
+        return SERVERCHAN_SC3_URL.format(uid=match.group(1), key=key)
+    return SERVERCHAN_TURBO_URL.format(key=key)
+
+
+def send_serverchan(sendkey: str, title: str, content: str) -> None:
+    """POST 到 Server酱，正文支持 Markdown。"""
+    url = serverchan_endpoint(sendkey)
+    last_error = ""
+
+    for attempt in range(1, RETRY_TIMES + 1):
+        try:
+            response = requests.post(
+                url,
+                data={"title": title, "desp": content},
+                timeout=15,
+            )
+            response.raise_for_status()
+            result = response.json()
+            if not isinstance(result, dict):
+                raise NotifyError("Server酱返回了非预期的响应格式")
+            code = result.get("code")
+            if code != 0:
+                raise NotifyError(
+                    f"Server酱返回错误 code={code} message={result.get('message')}"
+                )
+            print("[ok] Server酱通知已发送", file=sys.stderr)
+            return
+        except (requests.RequestException, ValueError, NotifyError) as exc:
+            last_error = safe_error(exc)
+            print(
+                f"[warn] Server酱发送失败（{attempt}/{RETRY_TIMES}）：{last_error}",
+                file=sys.stderr,
+            )
+            if attempt < RETRY_TIMES:
+                time.sleep(2 * attempt)
+
+    raise NotifyError(f"Server酱通知发送失败：{last_error}")
+
+
 def send_wecom(webhook: str, content: str) -> None:
     """POST 到企业微信机器人；对网络错误与业务错误统一重试。"""
     payload = {"msgtype": "markdown", "markdown": {"content": content}}
@@ -251,7 +307,7 @@ def send_wecom(webhook: str, content: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="发送个人成长日报到企业微信")
+    parser = argparse.ArgumentParser(description="推送个人成长日报到企业微信 / Server酱（微信）")
     parser.add_argument("--date", help="指定日期 YYYY-MM-DD，默认取最新一期")
     parser.add_argument("--dry-run", action="store_true", help="只打印消息，不发送")
     args = parser.parse_args()
@@ -260,8 +316,9 @@ def main() -> int:
     # 未配置 Webhook 视为「未启用通知」：打印日志后正常退出，
     # 不返回非零码，避免在 GitHub Actions 里被误判为失败。
     webhook = normalize_webhook(os.environ.get("WECOM_WEBHOOK", ""))
-    if not webhook and not args.dry_run:
-        print("[skip] 未配置 WECOM_WEBHOOK，跳过企业微信推送")
+    sendkey = os.environ.get("SERVERCHAN_SENDKEY", "").strip()
+    if not webhook and not sendkey and not args.dry_run:
+        print("[skip] 未配置 WECOM_WEBHOOK / SERVERCHAN_SENDKEY，跳过推送")
         return 0
 
     try:
@@ -296,13 +353,24 @@ def main() -> int:
         )
         return 0
 
-    try:
-        send_wecom(webhook, content)
-    except NotifyError as exc:
-        print(f"[error] {exc}", file=sys.stderr)
-        return 1
+    failed = 0
 
-    return 0
+    if webhook:
+        try:
+            send_wecom(webhook, content)
+        except NotifyError as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            failed += 1
+
+    if sendkey:
+        title = f"个人成长日报 · {date_str}"
+        try:
+            send_serverchan(sendkey, title, content)
+        except NotifyError as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            failed += 1
+
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
