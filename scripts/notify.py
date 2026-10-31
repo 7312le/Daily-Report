@@ -209,6 +209,16 @@ def build_markdown(data: dict, report_url: str) -> str:
     return content
 
 
+def normalize_webhook(raw: str) -> str:
+    """补全 Webhook 协议头，兼容粘贴时漏掉 https:// 或带引号的情况。"""
+    value = raw.strip().strip('"').strip("'")
+    if not value:
+        return ""
+    if "://" not in value:
+        value = "https://" + value
+    return value
+
+
 def send_wecom(webhook: str, content: str) -> None:
     """POST 到企业微信机器人；对网络错误与业务错误统一重试。"""
     payload = {"msgtype": "markdown", "markdown": {"content": content}}
@@ -249,7 +259,7 @@ def main() -> int:
     # 环境变量检查放在流程开头。
     # 未配置 Webhook 视为「未启用通知」：打印日志后正常退出，
     # 不返回非零码，避免在 GitHub Actions 里被误判为失败。
-    webhook = os.environ.get("WECOM_WEBHOOK", "").strip()
+    webhook = normalize_webhook(os.environ.get("WECOM_WEBHOOK", ""))
     if not webhook and not args.dry_run:
         print("[skip] 未配置 WECOM_WEBHOOK，跳过企业微信推送")
         return 0
