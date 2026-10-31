@@ -26,6 +26,17 @@ jobs:
           echo "--- repository root ---"
           ls -a
 
+      # 诊断用：确认 GitHub 托管 runner 能否连通企业微信 API。
+      - name: Probe WeCom reachability
+        continue-on-error: true
+        run: |
+          echo "--- DNS ---"
+          getent hosts qyapi.weixin.qq.com || echo "DNS resolution failed"
+          echo "--- HTTPS ---"
+          curl -sS -o /dev/null -w "http_code=%{http_code} connect=%{time_connect}s total=%{time_total}s\n" \
+            --connect-timeout 10 --max-time 20 \
+            https://qyapi.weixin.qq.com/cgi-bin/webhook/send || echo "curl failed: exit=$?"
+
       - name: Check project files exist
         run: |
           set -e
