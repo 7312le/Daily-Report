@@ -1,0 +1,29 @@
+name: Radar Source Probe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/probe_sources.py'
+      - 'data/radar_probe.json'
+      - '.github/workflows/radar-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Probe official sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Probe sources
+        run: python scripts/probe_sources.py

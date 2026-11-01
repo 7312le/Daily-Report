@@ -353,3 +353,29 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 据此收敛方案：独立 `radar.yml`（UTC 06:00 = 北京 14:00）、官方源白名单 + 自动抽取、每日 3–5 条、独立推送标题、Pages 归档 `radar/`。最大风险为 GitHub 海外 runner 访问国内政务源，需先做源可用性探测。
 
 本轮无代码改动，不生成快照。
+
+---
+
+## 2026-11-01 · 机会雷达先例调研 + 源探测落地（v017）
+
+用户要求参考已有产品或 GitHub 开源项目，再决定机会雷达怎么做。
+
+**调研结论（有可借鉴，无现成同类）**
+- 结构最接近：`buguoshixc/ai-deals-aggregator` —— GitHub Actions 定时采集 → 校验门禁 → 静态 Pages 发布；原则为「只收录真实优惠、主链接回官方、零产出采集器下线、坏数据不发布、不抓登录态、不卖排序」。可直接复用的工程纪律。
+- 推送/去重可借鉴：`lx1169732264/zdm`（Actions 定时 + SQLite 去重 + WxPusher/邮件）、`abinnz/xiaofendui`（关键词黑白名单 + 分类过滤，但用 itchat 个人微信机器人，不采用）。
+- 政策抓取可借鉴：`outermans/tax-policy-crawler`（Scrapy + 重试 + 去重）、`zou-you/goverment_spider`（每日 1 点关键词抓取 + 汇总）。
+- 通用监控基础设施：changedetection.io、RSSHub（`/smzdm/keyword/:keyword` 等路由）、wewe-rss（公众号转 RSS）、Apprise（多渠道通知）。
+- 发票抽奖只有本地小工具/计算器，没有聚合器；上海 + 江苏补贴/消费券也没有可信开源聚合项目 —— 这是真实空白，但空白也意味着没有现成解析规则可抄。
+
+**对方案的修正**
+1. 不追求「全覆盖爬虫」：核心源（税务、商务、人社、文旅、外办）用「列表页变更检测 + 关键词过滤」，只有 2–3 个高价值源写结构化解析。
+2. 存储用 JSONL/JSON 增量库（url 哈希 + first_seen/last_seen），只推新增，避免重复打扰。
+3. 不采用个人微信机器人、Cookie/Selenium 抓取、代理池，避免封号与高维护。
+4. APEC 卡按「长期资格」静态条目维护，带最后核验日期，不进入每日抓取。
+5. 通知继续用 Server酱；后续可接 Apprise 作多通道备份。
+
+**本轮落地**
+- 新增 `scripts/probe_sources.py`、`data/radar_probe.json`（16 个官方源）、`.github/workflows/radar-probe.yml`。
+- 快照 `snapshots/v017/`。
+- 待验证：Actions 日志中海外 IP 对各政务源的成功率；若不可达，调度迁回国内定时器。
+
