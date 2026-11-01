@@ -1,0 +1,19 @@
+[
+  {"name": "上海税务", "region": "上海", "url": "https://shanghai.chinatax.gov.cn/"},
+  {"name": "江苏税务", "region": "江苏", "url": "https://jiangsu.chinatax.gov.cn/"},
+  {"name": "上海商务委", "region": "上海", "url": "https://sww.sh.gov.cn/"},
+  {"name": "江苏商务厅", "region": "江苏", "url": "https://swt.jiangsu.gov.cn/"},
+  {"name": "江苏商务厅-备用", "region": "江苏", "url": "https://jsswt.jiangsu.gov.cn/"},
+  {"name": "上海人社局", "region": "上海", "url": "https://rsj.sh.gov.cn/"},
+  {"name": "江苏人社厅", "region": "江苏", "url": "http://jshrss.jiangsu.gov.cn/"},
+  {"name": "上海文旅局", "region": "上海", "url": "https://whlyj.sh.gov.cn/"},
+  {"name": "江苏文旅厅", "region": "江苏", "url": "https://wlt.jiangsu.gov.cn/"},
+  {"name": "上海一网通办", "region": "上海", "url": "https://zwdt.sh.gov.cn/"},
+  {"name": "江苏政务服务网", "region": "江苏", "url": "https://www.jszwfw.gov.cn/"},
+  {"name": "上海外办", "region": "上海", "url": "https://wsb.sh.gov.cn/"},
+  {"name": "江苏外办", "region": "江苏", "url": "http://wb.jiangsu.gov.cn/"},
+  {"name": "上海市政府", "region": "上海", "url": "https://www.shanghai.gov.cn/"},
+  {"name": "江苏省政府", "region": "江苏", "url": "https://www.jiangsu.gov.cn/"},
+  {"name": "国家政务服务平台", "region": "全国", "url": "http://gjzwfw.www.gov.cn/"},
+  {"name": "对照-百度", "region": "对照", "url": "https://www.baidu.com/"}
+]

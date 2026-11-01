@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import re
+import socket
 import ssl
 import sys
 import time
@@ -41,6 +42,26 @@ def decode_title(raw: bytes, content_type: str) -> str:
     return " ".join(title.group(1).split()) if title else ""
 
 
+def _ipv4_only(*args, **kwargs):
+    results = _ORIG_GETADDRINFO(*args, **kwargs)
+    ipv4 = [item for item in results if item[0] == socket.AF_INET]
+    return ipv4 or results
+
+
+_ORIG_GETADDRINFO = socket.getaddrinfo
+
+
+def _open(request: urllib.request.Request, context: ssl.SSLContext, ipv4_only: bool):
+    if not ipv4_only:
+        return urllib.request.urlopen(request, timeout=25, context=context)
+    original = socket.getaddrinfo
+    socket.getaddrinfo = _ipv4_only
+    try:
+        return urllib.request.urlopen(request, timeout=25, context=context)
+    finally:
+        socket.getaddrinfo = original
+
+
 def fetch(url: str) -> tuple[int, float, int, str, str, str]:
     request = urllib.request.Request(
         url,
@@ -50,18 +71,32 @@ def fetch(url: str) -> tuple[int, float, int, str, str, str]:
             "Accept-Language": "zh-CN,zh;q=0.9",
         },
     )
-    context = ssl.create_default_context()
+    verified = ssl.create_default_context()
+    unverified = ssl._create_unverified_context()  # noqa: SLF001 - 仅用于探测证书异常
 
     started = time.time()
-    try:
-        response = urllib.request.urlopen(request, timeout=25, context=context)
-    except urllib.error.URLError as exc:
-        reason = getattr(exc, "reason", exc)
-        if isinstance(reason, ssl.SSLError):
-            context = ssl._create_unverified_context()  # noqa: SLF001 - 仅用于探测证书异常
-            response = urllib.request.urlopen(request, timeout=25, context=context)
-        else:
+    response = None
+    last_error: Exception | None = None
+    # 依次尝试：证书校验 → 强制 IPv4 → 跳过证书校验 → 跳过校验 + IPv4。
+    # 海外 runner 常因没有 IPv6 路由报 Errno 101，强制 IPv4 即可恢复。
+    for context, ipv4_only in (
+        (verified, False),
+        (verified, True),
+        (unverified, False),
+        (unverified, True),
+    ):
+        try:
+            response = _open(request, context, ipv4_only)
+            break
+        except urllib.error.HTTPError:
             raise
+        except urllib.error.URLError as exc:
+            last_error = exc
+            reason = getattr(exc, "reason", exc)
+            if not isinstance(reason, OSError):
+                raise
+    if response is None:
+        raise last_error or urllib.error.URLError("unknown error")
 
     with response:
         raw = response.read(300_000)
