@@ -4,6 +4,8 @@
   {"name": "上海商务委", "region": "上海", "url": "https://sww.sh.gov.cn/"},
   {"name": "江苏商务厅", "region": "江苏", "url": "https://swt.jiangsu.gov.cn/"},
   {"name": "江苏商务厅-备用", "region": "江苏", "url": "https://jsswt.jiangsu.gov.cn/"},
+  {"name": "江苏商务-政策公告", "region": "江苏", "url": "https://doc.jiangsu.gov.cn/col/col93272/index.html"},
+  {"name": "江苏商务-公告通知", "region": "江苏", "url": "https://doc.jiangsu.gov.cn/col/col78712/index.html"},
   {"name": "上海人社局", "region": "上海", "url": "https://rsj.sh.gov.cn/"},
   {"name": "江苏人社厅", "region": "江苏", "url": "http://jshrss.jiangsu.gov.cn/"},
   {"name": "上海文旅局", "region": "上海", "url": "https://whlyj.sh.gov.cn/"},

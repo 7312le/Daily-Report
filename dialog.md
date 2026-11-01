@@ -391,3 +391,11 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 上海一网通办为前端渲染，列表页不适合直接解析。
 
 加固：`probe_sources.py` 增加 IPv4 回退与证书降级重试；探测清单改 https 并增加江苏商务备用域名。快照 `snapshots/v018/`，推送后自动复测。
+
+---
+
+## 2026-11-01 · 江苏源定位（v019）
+
+- DNS 查询确认：`swt.jiangsu.gov.cn`、`jsswt.jiangsu.gov.cn` 仅有 AAAA 记录（如 `240e:6a0:20::ffff`），IPv6-only；GitHub runner 无 IPv6 路由，IPv4 强制回退也无效。
+- 找到江苏商务厅真实发布源 `doc.jiangsu.gov.cn`：政策公告 `col/col93272`（含消费品以旧换新）、公告通知 `col/col78712`，IPv4 可用（加速乐 CDN）。
+- 探测清单新增这两个栏目；快照 `snapshots/v019/`，复测其海外可达性。
