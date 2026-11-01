@@ -18,8 +18,12 @@ import html
 import json
 import os
 import re
+import socket
+import ssl
 import sys
 import time
+import urllib.error
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -53,10 +57,10 @@ BEIJING = timezone(timedelta(hours=8))
 WEEKDAYS = ("星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+# 使用标准浏览器 UA：部分政务站 WAF 会拦截带自定义机器人标识的请求
 UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 "
-    "ShaunRadar/1.0"
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 )
 SECTION_HINTS = (
     "通知公告", "公告通知", "通知通告", "公示公告",
@@ -159,18 +163,15 @@ def normalize_url(url: str) -> str:
 # 抓取
 # ---------------------------------------------------------------
 def fetch_page(url: str) -> tuple[str, str]:
+    headers = {
+        "User-Agent": UA,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+    }
     last_error: Exception | None = None
     for attempt in range(1, RETRY_TIMES + 1):
         try:
-            response = requests.get(
-                url,
-                headers={
-                    "User-Agent": UA,
-                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                    "Accept-Language": "zh-CN,zh;q=0.9",
-                },
-                timeout=REQUEST_TIMEOUT,
-            )
+            response = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
             response.raise_for_status()
             if not response.encoding or response.encoding.lower() in (
                 "iso-8859-1",
@@ -182,7 +183,71 @@ def fetch_page(url: str) -> tuple[str, str]:
             last_error = exc
             if attempt < RETRY_TIMES:
                 time.sleep(2 * attempt)
+
+    # requests 的 TLS 指纹偶发被部分政务站 WAF 拒绝，退回 urllib 再试一次
+    try:
+        return fetch_with_urllib(url)
+    except Exception as exc:  # noqa: BLE001
+        last_error = exc
     raise RadarError(f"抓取失败：{type(last_error).__name__}")
+
+
+def fetch_with_urllib(url: str) -> tuple[str, str]:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": UA,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        },
+    )
+    verified = ssl.create_default_context()
+    unverified = ssl._create_unverified_context()  # noqa: SLF001 - 兼容证书异常站点
+
+    last_error: Exception | None = None
+    for context, ipv4_only in (
+        (verified, False),
+        (verified, True),
+        (unverified, False),
+        (unverified, True),
+    ):
+        try:
+            response = _urlopen(request, context, ipv4_only)
+        except urllib.error.URLError as exc:
+            last_error = exc
+            reason = getattr(exc, "reason", exc)
+            if not isinstance(reason, OSError):
+                raise
+            continue
+        with response:
+            raw = response.read(600_000)
+            charset = response.headers.get_content_charset() or "utf-8"
+            try:
+                text = raw.decode(charset, errors="ignore")
+            except LookupError:
+                text = raw.decode("utf-8", errors="ignore")
+            return text, response.geturl()
+    raise RadarError(f"urllib 抓取失败：{type(last_error).__name__}")
+
+
+_ORIG_GETADDRINFO = socket.getaddrinfo
+
+
+def _ipv4_only(*args, **kwargs):
+    results = _ORIG_GETADDRINFO(*args, **kwargs)
+    ipv4 = [item for item in results if item[0] == socket.AF_INET]
+    return ipv4 or results
+
+
+def _urlopen(request: urllib.request.Request, context: ssl.SSLContext, ipv4_only: bool):
+    if not ipv4_only:
+        return urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT, context=context)
+    original = socket.getaddrinfo
+    socket.getaddrinfo = _ipv4_only
+    try:
+        return urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT, context=context)
+    finally:
+        socket.getaddrinfo = original
 
 
 def discover_sections(home_url: str, links: list[tuple[str, str]]) -> list[str]:
@@ -240,10 +305,13 @@ class SourceCollector:
         self.pages_failed = 0
         self.candidates: dict[str, dict] = {}
 
-    def _add_links(self, links: list[tuple[str, str]]) -> None:
+    def _add_links(self, links: list[tuple[str, str]], page_host: str) -> None:
         for url, raw_title in links:
             url = normalize_url(url)
             if not is_gov_link(url):
+                continue
+            # 只收当前页面同域链接：避免把政府门户里的跨站服务菜单当成机会
+            if page_host and (urlparse(url).hostname or "").lower() != page_host:
                 continue
             title = clean_title(raw_title)
             if not (8 <= len(title) <= 120):
@@ -286,7 +354,8 @@ class SourceCollector:
         else:
             self.pages_ok += 1
             primary_links = parse_links(page_html, final_url)
-            self._add_links(primary_links)
+            primary_host = (urlparse(final_url).hostname or "").lower()
+            self._add_links(primary_links, primary_host)
             if explicit_sections:
                 section_links = explicit_sections
             else:
@@ -304,7 +373,8 @@ class SourceCollector:
                 self.pages_failed += 1
                 continue
             self.pages_ok += 1
-            self._add_links(parse_links(section_html, section_final))
+            section_host = (urlparse(section_final).hostname or "").lower()
+            self._add_links(parse_links(section_html, section_final), section_host)
 
         print(
             f"[scan] {self.name}: {len(self.candidates)} 条命中 "

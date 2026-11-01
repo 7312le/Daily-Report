@@ -411,3 +411,12 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 新增 `templates/radar.html`、`.github/workflows/radar.yml`（北京 14:00 + `dry_run` 手动输入）；`pages.yml` 发布 `radar/`；首页增加入口卡片。
 - 首次运行仅建基线、不推历史；之后只推新增，无新增不推送；每日最多展示 12 条、推送 6 条。
 - 快照 `snapshots/v020/`。下一步：Actions 手动 `dry_run` 试跑，按实际命中调整栏目与关键词，再正式跑基线。
+
+---
+
+## 2026-11-01 · 机会雷达首轮试跑修正（v021）
+
+- dry_run（run 41311921997）：上海 5 源全部 ConnectionError，江苏 6 源正常；判断为 WAF 拦截自定义 UA。
+- 噪声：政府采购公告（「促消费活动项目开展政府采购」）、社保服务菜单、APEC 会议新闻。
+- 修正：UA 改标准浏览器；requests 失败后回退 urllib（含证书降级 / IPv4）；只收同域链接；删除「焕新」，APEC 需带卡/申办/办理，新增「苏新消费」，排除政府采购、社保补贴、个人参保。
+- 快照 `snapshots/v021/`；待二次 dry-run 验证。
