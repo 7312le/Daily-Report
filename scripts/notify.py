@@ -139,7 +139,7 @@ def build_markdown(data: dict, report_url: str) -> str:
     weekday = weekday_cn(date_str)
     heading_date = f"{date_str} {weekday}".strip()
 
-    lines: list[str] = [f"# 📘 AI 原生 HR 高管日报 · {heading_date}", ""]
+    lines: list[str] = [f"# 📘 Shaun Daily Report · {heading_date}", ""]
 
     stage = _block(data, "stage")
     stage_pairs = (("HR", "hr"), ("Agent", "agent"), ("经营", "mgmt"))
@@ -322,7 +322,7 @@ def send_wecom(webhook: str, content: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="推送 AI 原生 HR 高管日报到企业微信 / Server酱（微信）")
+    parser = argparse.ArgumentParser(description="推送 Shaun Daily Report 到企业微信 / Server酱（微信）")
     parser.add_argument("--date", help="指定日期 YYYY-MM-DD，默认取最新一期")
     parser.add_argument("--dry-run", action="store_true", help="只打印消息，不发送")
     args = parser.parse_args()
@@ -378,7 +378,7 @@ def main() -> int:
             failed += 1
 
     if sendkey:
-        title = f"AI 原生 HR 高管日报 · {date_str}"
+        title = f"Shaun Daily Report · {date_str}"
         try:
             send_serverchan(sendkey, title, content)
         except NotifyError as exc:

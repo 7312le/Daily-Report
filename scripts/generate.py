@@ -628,7 +628,7 @@ def render_report(data: dict, template: str, date_str: str, weekday: str, now: d
     )
 
     replacements = {
-        "PAGE_TITLE": esc(f"AI 原生 HR 高管日报 · {date_str}"),
+        "PAGE_TITLE": esc(f"Shaun Daily Report · {date_str}"),
         "DATE": esc(date_str),
         "WEEKDAY": esc(weekday),
         "STAGES": esc(stage_text),

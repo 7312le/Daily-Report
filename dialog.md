@@ -310,3 +310,11 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 英语视频给出 B 站搜索页链接（真实可打开），模板渲染为平台图标链接卡，`target="_blank" rel="noopener noreferrer"`。
 - `[ok] Server酱通知已发送`；提交 `e8c4790`；Pages 部署成功（run 41295464425）。
 - 线上下载核验：日报页含四个 `card-*` 与 `video-card`，首页标题/标签已更新，无残留占位符。
+
+---
+
+## 2026-11-01 · 标题改为 Shaun Daily Report（v015）
+
+- 用户要求日报标题统一为 **Shaun Daily Report**。
+- 改动：`scripts/generate.py`（页面 title / Hero）、`templates/report.html`（页脚）、`scripts/notify.py`（推送标题与正文一级标题）、`docs/index.html`（首页 title / H1 / 页脚）。
+- 快照 `snapshots/v015/`；随后重跑 `generate.yml` 以新标题覆盖当日日报并推送。
