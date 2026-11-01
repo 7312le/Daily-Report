@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaun Daily Report · 2026-11-02</title>
+  <meta name="description" content="HRBP &amp; COE：HRBP 视角：人才盘点会前的校准访谈 ｜ Agent：A3 进阶：给 HR Agent 加记忆——让招聘助手记住岗位画像 ｜ 经营：M4 决策实战：用人工成本占比判断组织是否过重 ｜ 英语：circle back：稍后再议、回头再讨论。…">
+  <meta name="report-summary" content="HRBP &amp; COE：HRBP 视角：人才盘点会前的校准访谈 ｜ Agent：A3 进阶：给 HR Agent 加记忆——让招聘助手记住岗位画像 ｜ 经营：M4 决策实战：用人工成本占比判断组织是否过重 ｜ 英语：circle back：稍后再议、回头再讨论。…">
+  <meta name="report-date" content="2026-11-02">
+  <meta property="og:title" content="Shaun Daily Report · 2026-11-02">
+  <meta property="og:description" content="HRBP &amp; COE：HRBP 视角：人才盘点会前的校准访谈 ｜ Agent：A3 进阶：给 HR Agent 加记忆——让招聘助手记住岗位画像 ｜ 经营：M4 决策实战：用人工成本占比判断组织是否过重 ｜ 英语：circle back：稍后再议、回头再讨论。…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --hr: #2563eb;
+      --hr-soft: #eff6ff;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --mgmt: #059669;
+      --mgmt-soft: #ecfdf5;
+      --english: #d97706;
+      --english-soft: #fffbeb;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .stages {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 680px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-hr { grid-column: span 2; border-top-color: var(--hr); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-mgmt { border-top-color: var(--mgmt); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-hr .card-icon { background: var(--hr-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-mgmt .card-icon { background: var(--mgmt-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--hr-soft);
+      color: var(--hr);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    .question-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+      counter-reset: q;
+    }
+
+    .question-list li {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+      counter-increment: q;
+    }
+
+    .question-list li::before {
+      content: counter(q);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 14px;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Output / milestone / influence ---------- */
+    .output-box,
+    .milestone-box,
+    .influence-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px dashed transparent;
+    }
+
+    .output-box {
+      background: var(--hr-soft);
+      border-color: #bfdbfe;
+    }
+
+    .milestone-box {
+      background: var(--agent-soft);
+      border-color: #ddd6fe;
+    }
+
+    .influence-box {
+      background: var(--mgmt-soft);
+      border-color: #a7f3d0;
+    }
+
+    .task-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .output-box .task-label { color: var(--hr); }
+    .milestone-box .task-label { color: var(--agent); }
+    .influence-box .task-label { color: var(--mgmt); }
+
+    .output-box p,
+    .milestone-box p,
+    .influence-box p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-hr, .card-english { grid-column: span 1; }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">AI-Native HR · Daily Growth</p>
+      <h1>Shaun Daily Report · 2026-11-02</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-02</span>
+        <span class="meta-weekday">星期一</span>
+      </div>
+      <p class="stages">HR · L4 ｜ Agent · A3 ｜ 经营 · M4</p>
+      <p class="focus">HRBP 视角：人才盘点会前的校准访谈 ｜ A3 进阶：给 HR Agent 加记忆——让招聘助手记住岗位画像 ｜ M4 决策实战：用人工成本占比判断组织是否过重</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · HRBP &amp; COE · L4</p><h2 class="card-title">HRBP 视角：人才盘点会前的校准访谈<span class="card-badge">HRBP</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">校准访谈是盘点会前的关键动作：HRBP 与业务负责人逐个对齐关键人才的绩效与潜力判定依据，防止会上凭印象打分。适用边界：管理者人数在 5 人以上、评级分歧风险高时最有效；团队小于 5 人或已有连续两个周期稳定评级时不必做。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">一家 800 人的 SaaS 公司，销售团队 120 人，区域总监 4 名。去年盘点会上，两位总监对同一批客户经理的潜力评级相反，会开了 4 小时没结论，最终按职级排序草草收场，两名高潜次年离职。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>你给这位下属打高潜，依据的是哪两件具体的事？</li><li>如果他明年升一级，你认为他最先会卡在哪项能力上？</li><li>你和另一位总监对同一个人的判断差在哪，能否当场对齐？</li></ul></div><div class="action-box"><span class="action-label">今晚动作</span><p>挑 3 名争议最大的关键人才，各写 3 行校准笔记：事实证据、潜力判断、分歧点，明天会前发给业务负责人确认。</p></div></article>
+<article class="card card-agent"><header class="card-head"><span class="card-icon" aria-hidden="true">🤖</span><div><p class="card-kicker">02 · Agent 体系化 · A3</p><h2 class="card-title">A3 进阶：给 HR Agent 加记忆——让招聘助手记住岗位画像</h2></div></header><div class="field"><p class="field-label">核心概念</p><p class="field-text">记忆系统让 Agent 跨会话保留稳定信息，区别于把全部历史塞进上下文。做法是把岗位画像、面试标准等长期信息存为结构化条目，每次调用时按需检索注入。普通大模型每次对话从零开始，记忆层解决的是重复交代与口径漂移。</p></div><div class="field"><p class="field-label">动手实验</p><p class="field-text">在 Coze 或 Dify 中建一个招聘助手，创建一张岗位画像表（字段：岗位名、必须项、加分项、否决项），上传 3 个在招岗位。设计提示词：回答前先检索对应岗位画像。测试同一问题在两轮独立对话中是否给出一致标准，预期产出一份一致性对比记录。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>跑完 3 个岗位的一致性测试，记录不一致的条目并修正画像字段，产出一页测试记录。</p></div></article>
+<article class="card card-mgmt"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 公司经营管理 · M4</p><h2 class="card-title">M4 决策实战：用人工成本占比判断组织是否过重</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">人工成本占比 = 人工成本总额 ÷ 营业收入。它反映组织效率，判断标准要看行业与阶段：软件与专业服务通常低于 50%，人力密集服务可达 60% 以上。单看绝对值意义有限，要与自身近 4 个季度趋势和同行区间对比；占比持续上升而收入增速放缓，通常意味着组织在变重。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">海底捞 2021 年财报显示，人工成本占收入比重明显上升，公司随后启动啄木鸟计划关停部分门店，2022 年恢复盈利。这说明人工成本占比是组织效率的先行指标，需与门店效率数据合看。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>用你公司最近 4 个季度的营业收入与人工成本总额，算出占比趋势，写 3 句话结论：是效率提升、持平还是变重，并列出可能原因。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">04 · 英语精进</p><h2 class="card-title">英语精进 · 每天 20 分钟</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">在金山词霸查 stakeholder、bandwidth、align、escalate、pushback 五个词，逐个加入生词本并跟读两遍；用 escalate 和 pushback 各造一个会议场景句子，保存到词霸笔记。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">circle back：稍后再议、回头再讨论。例句：Let&#x27;s circle back on the headcount question after we see the Q4 numbers.（等看到第四季度数据后，我们再回头讨论编制问题。）</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：跨部门会议上，业务负责人要求本周内定下加编，你手上没有预算数据。让 AI 扮演业务负责人，进行 6 到 8 轮对话。刻意练习：用 circle back 推迟决策、用 I need to check the numbers before committing 表达保留，避免直接说 no。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1xaER6yELU/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B1</span><span class="video-title">英语口语练习｜在办公室自信地说英语</span><span class="video-task">任务：跟读「向老板争取项目时间」片段，录一段 60 秒的英文陈述并回听。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：COE 视角看绩效强制分布的适用边界；Agent 讲成本控制；管理讲北极星指标。</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-02 07:24（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>
