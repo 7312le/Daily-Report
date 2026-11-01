@@ -1,0 +1,61 @@
+{
+  "updated_at": "2026-11-01",
+  "note": "机会雷达源白名单。只采集公开列表页；不登录、不绕过验证、不抓取个人数据；链接限定 .gov.cn。",
+  "rules": [
+    {
+      "category": "发票抽奖",
+      "any": ["发票"],
+      "context": ["抽奖", "有奖", "摇奖", "中奖", "兑奖", "奖金"]
+    },
+    {
+      "category": "消费券",
+      "any": ["消费券", "优惠券", "满减", "立减", "购物券", "数字人民币红包"]
+    },
+    {
+      "category": "补贴",
+      "any": ["补贴", "以旧换新", "惠民", "促消费", "消费促进"]
+    },
+    {
+      "category": "资格",
+      "any": ["商务旅行卡", "通行卡"]
+    },
+    {
+      "category": "资格",
+      "any": ["APEC"],
+      "context": ["卡", "申办", "办理"]
+    },
+    {
+      "category": "活动",
+      "any": ["购物节", "消费季", "消费月", "夜生活节", "首发经济", "苏新消费"]
+    }
+  ],
+  "exclude_keywords": [
+    "招聘", "招标", "中标", "成交公告", "采购公告", "政府采购", "竞争性磋商", "比选", "遴选",
+    "人事任免", "任前公示", "行政处罚", "行政复议", "信访", "举报",
+    "培训", "考试", "报名", "成绩", "社保补贴", "个人参保",
+    "公示", "名单", "审核", "技能补贴", "职业技能", "世赛",
+    "发票领用", "发票开具", "发票代开", "发票申领", "发票查询", "发票查验",
+    "票种", "税控", "勾选", "红冲", "丢失", "挂失",
+    "反诈", "诈骗", "风险提示"
+  ],
+  "sources": [
+    { "name": "上海税务", "region": "上海", "url": "https://shanghai.chinatax.gov.cn/" },
+    { "name": "上海商务委", "region": "上海", "url": "https://sww.sh.gov.cn/" },
+    { "name": "上海人社局", "region": "上海", "url": "https://rsj.sh.gov.cn/" },
+    { "name": "上海文旅局", "region": "上海", "url": "https://whlyj.sh.gov.cn/" },
+    { "name": "上海外办", "region": "上海", "url": "https://wsb.sh.gov.cn/" },
+    { "name": "上海市政府", "region": "上海", "url": "https://www.shanghai.gov.cn/" },
+    { "name": "江苏税务", "region": "江苏", "url": "https://jiangsu.chinatax.gov.cn/" },
+    { "name": "江苏人社厅", "region": "江苏", "url": "http://jshrss.jiangsu.gov.cn/" },
+    {
+      "name": "江苏商务厅",
+      "region": "江苏",
+      "url": "https://doc.jiangsu.gov.cn/col/col93272/index.html",
+      "sections": [
+        "https://doc.jiangsu.gov.cn/col/col78712/index.html"
+      ]
+    },
+    { "name": "江苏外办", "region": "江苏", "url": "http://wb.jiangsu.gov.cn/" },
+    { "name": "江苏省政府", "region": "江苏", "url": "https://www.jiangsu.gov.cn/" }
+  ]
+}
