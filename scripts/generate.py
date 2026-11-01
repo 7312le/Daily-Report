@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""生成个人成长日报。
+"""生成「AI 原生 HR 高管」成长日报。
 
 流程：
 1. 读取 .github/prompt/system.md 作为 system prompt；
-2. 调用 Claude API 生成严格 JSON（自动清洗代码块包裹）；
+2. 调用 Claude / Anthropic 兼容 API（如 DeepSeek）生成严格 JSON；
 3. 用 templates/report.html 渲染为 HTML，写入 reports/YYYY-MM-DD.html；
-4. 同时写入 reports/YYYY-MM-DD.json，供 notify.py 生成企业微信摘要；
+4. 同时写入 reports/YYYY-MM-DD.json，供 notify.py 生成推送摘要；
 5. 重建 docs/index.html 中的历史日报列表（保留页面其余部分）。
 
+日报四条主线：HRBP & COE、Agent 体系化、公司经营管理、英语精进。
 只依赖标准库 + anthropic，保持轻量。
 """
 
@@ -52,18 +53,28 @@ INDEX_MARKER_RE = re.compile(
 
 REQUIRED_TOP_KEYS = (
     "date",
-    "one_line",
-    "skills",
-    "wealth",
-    "cognition",
+    "stage",
+    "hrbp_coe",
+    "agent",
+    "management",
     "english",
-    "tomorrow_preview",
+    "preview",
 )
 
-DIMENSION_KEYS = {
-    "skills": ("topic", "concept", "scenario", "diagnosis", "action"),
-    "wealth": ("topic", "concept", "case", "pitfall", "source", "action"),
-    "cognition": ("model", "explain", "steps", "reflection"),
+# 三条主线的阶段标识：L1–L5 / A1–A5 / M1–M5
+STAGE_PATTERNS = {
+    "hr": re.compile(r"L[1-5]"),
+    "agent": re.compile(r"A[1-5]"),
+    "mgmt": re.compile(r"M[1-5]"),
+}
+
+# 模型常用这些词表示「本期没有」，统一视作空值
+EMPTY_PLACEHOLDERS = {"", "无", "暂无", "没有", "不适用", "none", "n/a", "-", "—"}
+
+VIDEO_PLATFORM_ICONS = {
+    "B站": "📺",
+    "小红书": "📕",
+    "微信视频号": "🎬",
 }
 
 
@@ -76,8 +87,22 @@ def esc(value: object) -> str:
 
 
 def one_line(value: object) -> str:
-    """把任意值压成单行文本，避免 JSON 中的换行破坏排版。"""
+    """把任意值压成单行文本，避免换行破坏排版。"""
     return " ".join(str(value if value is not None else "").split())
+
+
+def optional_text(value: object) -> str:
+    """可空缺字段：把「无 / N/A」之类的占位词统一清空。"""
+    text = one_line(value)
+    return "" if text.strip().lower() in EMPTY_PLACEHOLDERS else text
+
+
+def clip(value: object, limit: int = 80) -> str:
+    """压成单行并截断。"""
+    text = one_line(value)
+    if len(text) <= limit:
+        return text
+    return text[: max(0, limit - 1)].rstrip() + "…"
 
 
 def read_env_int(name: str, default: int) -> int:
@@ -111,7 +136,10 @@ def read_text_file(path: Path, label: str) -> str:
 
 
 def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
-    """读取最近几期 JSON，提取主题，供 Prompt 用于去重。"""
+    """读取最近几期 JSON，提取主题，供 Prompt 用于去重。
+
+    兼容旧版四维度结构（skills / wealth / cognition）。
+    """
     entries: list[str] = []
     json_files = sorted(REPORTS_DIR.glob("*.json"), reverse=True)[:limit]
 
@@ -122,6 +150,9 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
             print(f"[warn] 跳过无法读取的历史日报 {path.name}：{exc}", file=sys.stderr)
             continue
 
+        hrbp = data.get("hrbp_coe") or {}
+        agent = data.get("agent") or {}
+        management = data.get("management") or {}
         skills = data.get("skills") or {}
         wealth = data.get("wealth") or {}
         cognition = data.get("cognition") or {}
@@ -130,9 +161,9 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
             str(item).strip()
             for item in (
                 data.get("date"),
-                skills.get("topic"),
-                wealth.get("topic"),
-                cognition.get("model"),
+                hrbp.get("topic") or skills.get("topic"),
+                agent.get("topic") or cognition.get("model"),
+                management.get("topic") or wealth.get("topic"),
             )
             if item
         ]
@@ -142,13 +173,36 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
     return entries
 
 
-def build_user_prompt(date_str: str, weekday: str, recent_topics: list[str]) -> str:
+def build_user_prompt(
+    date_str: str,
+    weekday: str,
+    recent_topics: list[str],
+    is_saturday: bool,
+    is_first_of_month: bool,
+    is_quarter_first_week: bool,
+) -> str:
     recent_block = (
         "\n".join(f"- {topic}" for topic in recent_topics)
         if recent_topics
         else "- 暂无（首次生成）"
     )
-    return f"""请生成 {date_str}（{weekday}）的个人成长日报。
+
+    if is_saturday:
+        output_rule = "今天是周六：hrbp_coe.output_task 必须填写具体的输出任务（写总结、画图、沉淀 SOP 片段等）。"
+    else:
+        output_rule = "今天不是周六：若无合适的输出任务，hrbp_coe.output_task 填空字符串。"
+
+    if is_first_of_month:
+        milestone_rule = "今天是每月 1 日：agent.milestone 必须填写本月小型 Agent 原型的可验收标准。"
+    else:
+        milestone_rule = "今天不是每月 1 日：若无安排，agent.milestone 填空字符串。"
+
+    if is_quarter_first_week:
+        influence_rule = "今天是季度首月第一周：management.influence_goal 必须填写一个基于数据的经营分析会建议。"
+    else:
+        influence_rule = "今天不在季度首周：若无安排，management.influence_goal 填空字符串。"
+
+    return f"""请生成 {date_str}（{weekday}）的 AI 原生 HR 高管成长日报。
 
 近期 7 天已出现的主题（必须全部避开，选取不同子主题）：
 {recent_block}
@@ -156,11 +210,14 @@ def build_user_prompt(date_str: str, weekday: str, recent_topics: list[str]) -> 
 硬性要求：
 1. 严格按 system prompt 中的 JSON 结构输出，字段齐全，不要增删字段。
 2. 只输出一个 JSON 对象，不要 Markdown 代码块，不要解释文字。
-3. 除英语学习素材外，全部使用简体中文。
-4. 内容具体、可执行，每个「今晚动作」控制在 30 分钟内。
-5. 财富板块只讲方法论，不得出现任何具体标的或买卖建议。
-6. 英语部分固定包含金山词霸词汇任务、AI Talk 情景对话、语法点、听力跟读。
-7. date 字段必须为 "{date_str}"。
+3. 除英语学习素材外，全部使用简体中文；总字数不超过 1500 字。
+4. 每个知识点必须带「今晚动作」，具体、可在 30 分钟内完成。
+5. HRBP & COE 的 type 只能填 HRBP 或 COE，并尽量与前一天交替。
+6. {output_rule}
+7. {milestone_rule}
+8. {influence_rule}
+9. 英语视频：platform 只能是 B站 / 小红书 / 微信视频号；url 必须真实可打开，无法确认具体视频时给同平台搜索结果页链接并在 title 注明「搜索：关键词」；找不到合适视频则 video 各字段填空字符串。
+10. date 字段必须为 "{date_str}"；stage 三个字段填写当前阶段（L1–L5 / A1–A5 / M1–M5）。
 """
 
 
@@ -191,54 +248,103 @@ def extract_json(text: str) -> dict:
     return data
 
 
+def _require_block(data: dict, key: str) -> dict:
+    block = data.get(key)
+    if not isinstance(block, dict):
+        raise ValueError(f"字段 {key} 必须是对象")
+    return block
+
+
+def _require_text(block: dict, key: str, prefix: str) -> str:
+    value = one_line(block.get(key))
+    if not value:
+        raise ValueError(f"{prefix}.{key} 不能为空")
+    return value
+
+
 def validate_report(data: dict) -> None:
-    """校验核心字段，避免把残缺内容渲染成页面。"""
+    """校验并规范化核心字段，避免把残缺内容渲染成页面。"""
     missing = [key for key in REQUIRED_TOP_KEYS if key not in data]
     if missing:
         raise ValueError(f"缺少顶层字段：{', '.join(missing)}")
-
-    for key in ("date", "one_line", "tomorrow_preview"):
-        if not one_line(data.get(key)):
-            raise ValueError(f"字段 {key} 不能为空")
 
     date_str = one_line(data.get("date"))
     if not DATE_RE.match(date_str):
         raise ValueError(f"date 格式错误：{date_str}（应为 YYYY-MM-DD）")
 
-    for key, fields in DIMENSION_KEYS.items():
-        block = data.get(key)
-        if not isinstance(block, dict):
-            raise ValueError(f"字段 {key} 必须是对象")
-        for field in fields:
-            if field == "steps":
-                steps = block.get(field)
-                if not isinstance(steps, list) or not any(one_line(s) for s in steps):
-                    raise ValueError(f"{key}.steps 必须是非空数组")
-            elif not one_line(block.get(field)):
-                raise ValueError(f"{key}.{field} 不能为空")
+    if not one_line(data.get("preview")):
+        raise ValueError("字段 preview 不能为空")
 
+    # --- stage ---
+    stage = _require_block(data, "stage")
+    for key, pattern in STAGE_PATTERNS.items():
+        value = one_line(stage.get(key)).upper()
+        match = pattern.search(value)
+        if not match:
+            raise ValueError(f"stage.{key} 格式错误：{value!r}（应为 L1–L5 / A1–A5 / M1–M5）")
+        stage[key] = match.group(0)
+
+    # --- HRBP & COE ---
+    hrbp = _require_block(data, "hrbp_coe")
+    for field in ("topic", "type", "concept", "scenario", "action"):
+        hrbp[field] = _require_text(hrbp, field, "hrbp_coe")
+    hrbp["output_task"] = optional_text(hrbp.get("output_task"))
+
+    questions = hrbp.get("questions")
+    if isinstance(questions, str):
+        questions = [questions]
+    if not isinstance(questions, list):
+        raise ValueError("hrbp_coe.questions 必须是非空字符串数组")
+
+    normalized: list[str] = []
+    for question in questions:
+        if isinstance(question, dict):
+            question = next((value for value in question.values() if one_line(value)), "")
+        text = one_line(question)
+        if text:
+            normalized.append(text)
+    if not normalized:
+        raise ValueError("hrbp_coe.questions 必须是非空字符串数组")
+    hrbp["questions"] = normalized
+
+    # --- Agent ---
+    agent = _require_block(data, "agent")
+    for field in ("topic", "concept", "experiment", "action"):
+        agent[field] = _require_text(agent, field, "agent")
+    agent["milestone"] = optional_text(agent.get("milestone"))
+
+    # --- 经营管理 ---
+    management = _require_block(data, "management")
+    for field in ("topic", "concept", "case", "action"):
+        management[field] = _require_text(management, field, "management")
+    management["influence_goal"] = optional_text(management.get("influence_goal"))
+
+    # --- 英语 ---
     english = data.get("english")
     if not isinstance(english, dict):
         raise ValueError("english 必须是对象")
+    for field in ("words", "phrase", "ai_talk"):
+        english[field] = _require_text(english, field, "english")
 
-    vocab = english.get("vocab")
-    if not isinstance(vocab, list) or not any(isinstance(item, dict) for item in vocab):
-        raise ValueError("english.vocab 必须是非空对象数组")
-
-    dialogue = english.get("dialogue")
-    if not isinstance(dialogue, dict) or not isinstance(dialogue.get("lines"), list):
-        raise ValueError("english.dialogue.lines 必须是数组")
-    if not any(isinstance(line, dict) for line in dialogue["lines"]):
-        raise ValueError("english.dialogue.lines 不能为空")
-
-    if not isinstance(english.get("grammar"), dict):
-        raise ValueError("english.grammar 必须是对象")
-    if not isinstance(english.get("listening"), dict):
-        raise ValueError("english.listening 必须是对象")
+    video = english.get("video")
+    if video is None:
+        video = {}
+    if not isinstance(video, dict):
+        raise ValueError("english.video 必须是对象")
+    for field in ("platform", "title", "url", "duration", "level", "task"):
+        video[field] = optional_text(video.get(field))
+    if video["url"]:
+        if not video["url"].lower().startswith(("http://", "https://")):
+            raise ValueError("english.video.url 必须以 http:// 或 https:// 开头")
+        if not video["platform"]:
+            raise ValueError("english.video.platform 不能为空")
+        if not video["title"]:
+            raise ValueError("english.video.title 不能为空")
+    english["video"] = video
 
 
 def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: str) -> dict:
-    """调用 Claude，解析失败时携带错误信息重试。"""
+    """调用模型，解析失败时携带错误信息重试。"""
     attempt_prompt = user_prompt
     last_error: Exception | None = None
 
@@ -281,7 +387,7 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: st
                 + "\n\n上一次输出存在问题："
                 + str(exc)[:500]
                 + "\n请重新生成。务必只输出合法 JSON，不要代码块或多余文字，"
-                + "并确保所有必填字段齐全。"
+                + "并确保所有必填字段齐全、字段值为单行字符串。"
             )
             time.sleep(min(2 ** attempt, 10))
 
@@ -291,13 +397,14 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: st
 # ---------------------------------------------------------------
 # HTML 渲染
 # ---------------------------------------------------------------
-def card_head(icon: str, kicker: str, title: str) -> str:
+def card_head(icon: str, kicker: str, title: str, badge: str = "") -> str:
+    badge_html = f'<span class="card-badge">{esc(badge)}</span>' if badge else ""
     return (
         '<header class="card-head">'
         f'<span class="card-icon" aria-hidden="true">{icon}</span>'
         "<div>"
         f'<p class="card-kicker">{esc(kicker)}</p>'
-        f'<h2 class="card-title">{esc(title)}</h2>'
+        f'<h2 class="card-title">{esc(title)}{badge_html}</h2>'
         "</div>"
         "</header>"
     )
@@ -327,213 +434,151 @@ def render_action(value: object) -> str:
     )
 
 
-def render_skills(skills: dict) -> str:
-    title = one_line(skills.get("topic")) or "技能栈"
-    body = "".join(
-        [
-            render_field("概念 / 工具", skills.get("concept")),
-            render_field("业务场景", skills.get("scenario")),
-            render_field("诊断问题", skills.get("diagnosis")),
-        ]
-    )
+def render_questions(questions: list[str]) -> str:
+    items = "".join(f"<li>{esc(one_line(q))}</li>" for q in questions if one_line(q))
+    if not items:
+        return ""
     return (
-        '<article class="card card-skills">'
-        + card_head("🧭", "01 · 技能栈", title)
-        + body
-        + render_action(skills.get("action"))
-        + "</article>"
-    )
-
-
-def render_wealth(wealth: dict) -> str:
-    title = one_line(wealth.get("topic")) or "财富自由"
-    source = one_line(wealth.get("source"))
-    body = "".join(
-        [
-            render_field("核心概念", wealth.get("concept")),
-            render_field("案例剖析", wealth.get("case")),
-            render_field("常见误区", wealth.get("pitfall")),
-        ]
-    )
-    source_html = f'<p class="source-tag">{esc(source)}</p>' if source else ""
-    return (
-        '<article class="card card-wealth">'
-        + card_head("💰", "02 · 财富自由", title)
-        + body
-        + source_html
-        + render_action(wealth.get("action"))
-        + "</article>"
-    )
-
-
-def render_cognition(cognition: dict) -> str:
-    title = one_line(cognition.get("model")) or "认知"
-    explain = render_field("通俗解释", cognition.get("explain"))
-
-    steps = cognition.get("steps") or []
-    if isinstance(steps, str):
-        steps = [steps]
-    steps_html = "".join(
-        f"<li>{esc(one_line(step))}</li>" for step in steps if one_line(step)
-    )
-    steps_block = (
         '<div class="field">'
-        '<p class="field-label">应用步骤</p>'
-        f'<ol class="steps">{steps_html}</ol>'
+        '<p class="field-label">诊断问题</p>'
+        f'<ul class="question-list">{items}</ul>'
         "</div>"
-        if steps_html
-        else ""
     )
 
-    reflection = one_line(cognition.get("reflection"))
-    reflection_html = (
-        '<div class="reflection">'
-        '<span class="field-label">反思问题</span>'
-        f"<p>{esc(reflection)}</p>"
+
+def render_task_box(label: str, value: object, css_class: str) -> str:
+    content = one_line(value)
+    if not content:
+        return ""
+    return (
+        f'<div class="{css_class}">'
+        f'<span class="task-label">{esc(label)}</span>'
+        f"<p>{esc(content)}</p>"
         "</div>"
-        if reflection
-        else ""
     )
+
+
+def render_hrbp_coe(hrbp: dict, stage: str) -> str:
+    title = one_line(hrbp.get("topic")) or "HRBP & COE"
+    body = "".join(
+        [
+            render_field("概念 / 工具", hrbp.get("concept")),
+            render_field("业务场景", hrbp.get("scenario")),
+            render_questions(hrbp.get("questions") or []),
+        ]
+    )
+    return (
+        '<article class="card card-hr">'
+        + card_head("🧭", f"01 · HRBP & COE · {stage}", title, badge=one_line(hrbp.get("type")))
+        + body
+        + render_action(hrbp.get("action"))
+        + render_task_box("本周输出任务", hrbp.get("output_task"), "output-box")
+        + "</article>"
+    )
+
+
+def render_agent(agent: dict, stage: str) -> str:
+    title = one_line(agent.get("topic")) or "Agent 体系化"
+    body = "".join(
+        [
+            render_field("核心概念", agent.get("concept")),
+            render_field("动手实验", agent.get("experiment")),
+        ]
+    )
+    return (
+        '<article class="card card-agent">'
+        + card_head("🤖", f"02 · Agent 体系化 · {stage}", title)
+        + body
+        + render_action(agent.get("action"))
+        + render_task_box("月度里程碑", agent.get("milestone"), "milestone-box")
+        + "</article>"
+    )
+
+
+def render_management(management: dict, stage: str) -> str:
+    title = one_line(management.get("topic")) or "公司经营管理"
+    body = "".join(
+        [
+            render_field("概念 / 指标", management.get("concept")),
+            render_field("真实案例", management.get("case")),
+        ]
+    )
+    return (
+        '<article class="card card-mgmt">'
+        + card_head("📊", f"03 · 公司经营管理 · {stage}", title)
+        + body
+        + render_action(management.get("action"))
+        + render_task_box("季度影响力目标", management.get("influence_goal"), "influence-box")
+        + "</article>"
+    )
+
+
+def render_video(video: dict) -> str:
+    url = one_line(video.get("url"))
+    if not url:
+        return ""
+    platform = one_line(video.get("platform"))
+    icon = VIDEO_PLATFORM_ICONS.get(platform, "🎬")
+    meta_parts = [part for part in (platform, one_line(video.get("duration")), one_line(video.get("level"))) if part]
+    meta = " · ".join(meta_parts)
+    task = one_line(video.get("task"))
+    task_html = f'<span class="video-task">任务：{esc(task)}</span>' if task else ""
 
     return (
-        '<article class="card card-cognition">'
-        + card_head("🧠", "03 · 认知", title)
-        + explain
-        + steps_block
-        + reflection_html
-        + "</article>"
+        f'<a class="video-card" href="{esc(url)}" target="_blank" rel="noopener noreferrer">'
+        f'<span class="video-icon" aria-hidden="true">{icon}</span>'
+        '<span class="video-main">'
+        f'<span class="video-platform">{esc(meta)}</span>'
+        f'<span class="video-title">{esc(one_line(video.get("title")))}</span>'
+        f"{task_html}"
+        "</span>"
+        '<span class="video-arrow" aria-hidden="true">↗</span>'
+        "</a>"
     )
 
 
 def render_english(english: dict) -> str:
-    # --- 词汇 ---
-    vocab_items = []
-    for item in english.get("vocab") or []:
-        if not isinstance(item, dict):
-            continue
-        word = one_line(item.get("word"))
-        if not word:
-            continue
-        phonetic = one_line(item.get("phonetic"))
-        meaning = one_line(item.get("meaning"))
-        example = one_line(item.get("example"))
+    blocks = [
+        '<section class="english-block">'
+        "<h3>金山词霸 · 词汇任务</h3>"
+        f'<p class="field-text">{esc(one_line(english.get("words")))}</p>'
+        "</section>",
+        '<section class="english-block">'
+        "<h3>高频短语 / 句型</h3>"
+        f'<p class="field-text">{esc(one_line(english.get("phrase")))}</p>'
+        "</section>",
+        '<section class="english-block">'
+        "<h3>AI Talk · 情景对话</h3>"
+        f'<p class="field-text">{esc(one_line(english.get("ai_talk")))}</p>'
+        "</section>",
+    ]
 
-        vocab_items.append(
-            '<li class="vocab-item">'
-            f'<div class="vocab-word"><strong>{esc(word)}</strong>'
-            + (f'<span class="phonetic">{esc(phonetic)}</span>' if phonetic else "")
-            + "</div>"
-            + (f'<p class="vocab-meaning">{esc(meaning)}</p>' if meaning else "")
-            + (f'<p class="vocab-example">{esc(example)}</p>' if example else "")
-            + "</li>"
+    video_html = render_video(english.get("video") or {})
+    if video_html:
+        blocks.append(
+            '<section class="english-block english-video">'
+            "<h3>今日英语短视频</h3>"
+            f"{video_html}"
+            "</section>"
         )
-    vocab_html = "".join(vocab_items) or '<li class="vocab-item muted">暂无词汇</li>'
-
-    vocab_task = one_line(english.get("vocab_task"))
-    vocab_task_html = f'<p class="task-line">{esc(vocab_task)}</p>' if vocab_task else ""
-
-    # --- 对话 ---
-    dialogue = english.get("dialogue") or {}
-    scenario = ""
-    raw_lines: list = []
-    if isinstance(dialogue, dict):
-        scenario = one_line(dialogue.get("scenario"))
-        raw_lines = dialogue.get("lines") or []
-    elif isinstance(dialogue, list):
-        raw_lines = dialogue
-
-    bubbles = []
-    for index, line in enumerate(raw_lines):
-        if not isinstance(line, dict):
-            continue
-        speaker = one_line(line.get("speaker")) or ("B" if index % 2 else "A")
-        en = one_line(line.get("en"))
-        zh = one_line(line.get("zh"))
-        if not (en or zh):
-            continue
-        side = " bubble-right" if index % 2 else " bubble-left"
-        bubbles.append(
-            f'<div class="bubble{side}">'
-            f'<span class="bubble-speaker">{esc(speaker)}</span>'
-            + (f'<p class="bubble-en">{esc(en)}</p>' if en else "")
-            + (f'<p class="bubble-zh">{esc(zh)}</p>' if zh else "")
-            + "</div>"
-        )
-    dialogue_html = "".join(bubbles) or '<p class="muted">暂无对话</p>'
-    scenario_html = f'<p class="scenario-line">{esc(scenario)}</p>' if scenario else ""
-
-    # --- 语法 ---
-    grammar = english.get("grammar") or {}
-    point = one_line(grammar.get("point"))
-    rule = one_line(grammar.get("rule"))
-    examples = grammar.get("examples") or []
-    if isinstance(examples, str):
-        examples = [examples]
-    example_items = "".join(
-        f"<li>{esc(one_line(example))}</li>" for example in examples if one_line(example)
-    )
-
-    grammar_point_html = f'<p class="grammar-point">{esc(point)}</p>' if point else ""
-    grammar_rule_html = f'<p class="field-text">{esc(rule)}</p>' if rule else ""
-    grammar_examples_html = (
-        f'<ul class="example-list">{example_items}</ul>' if example_items else ""
-    )
-
-    # --- 听力 ---
-    listening = english.get("listening") or {}
-    material = one_line(listening.get("material"))
-    listen_task = one_line(listening.get("task"))
-    tip = one_line(listening.get("tip"))
-
-    material_html = (
-        f'<p class="field-text"><strong>材料：</strong>{esc(material)}</p>'
-        if material
-        else ""
-    )
-    listen_task_html = (
-        f'<p class="field-text"><strong>任务：</strong>{esc(listen_task)}</p>'
-        if listen_task
-        else ""
-    )
-    tip_html = f'<p class="tip-line"><strong>技巧：</strong>{esc(tip)}</p>' if tip else ""
 
     return (
         '<article class="card card-english">'
-        + card_head("🌍", "04 · 多国语言", "英语精进 · 每天 20 分钟")
+        + card_head("🌍", "04 · 英语精进", "英语精进 · 每天 20 分钟")
         + '<div class="english-grid">'
-        + '<section class="english-block">'
-        + "<h3>金山词霸 · 词汇任务</h3>"
-        + vocab_task_html
-        + f'<ul class="vocab-list">{vocab_html}</ul>'
-        + "</section>"
-        + '<section class="english-block">'
-        + "<h3>AI Talk · 情景对话</h3>"
-        + scenario_html
-        + f'<div class="dialogue">{dialogue_html}</div>'
-        + "</section>"
-        + '<section class="english-block">'
-        + "<h3>语法点</h3>"
-        + grammar_point_html
-        + grammar_rule_html
-        + grammar_examples_html
-        + "</section>"
-        + '<section class="english-block">'
-        + "<h3>听力跟读</h3>"
-        + material_html
-        + listen_task_html
-        + tip_html
-        + "</section>"
+        + "".join(blocks)
         + "</div>"
         + "</article>"
     )
 
 
 def render_cards(data: dict) -> str:
+    stage = data.get("stage") or {}
     return "\n".join(
         [
-            render_skills(data.get("skills") or {}),
-            render_wealth(data.get("wealth") or {}),
-            render_cognition(data.get("cognition") or {}),
+            render_hrbp_coe(data.get("hrbp_coe") or {}, one_line(stage.get("hr"))),
+            render_agent(data.get("agent") or {}, one_line(stage.get("agent"))),
+            render_management(data.get("management") or {}, one_line(stage.get("mgmt"))),
             render_english(data.get("english") or {}),
         ]
     )
@@ -542,39 +587,55 @@ def render_cards(data: dict) -> str:
 def build_summary(data: dict) -> str:
     """用于 meta / 首页列表的一句话摘要。"""
     parts: list[str] = []
-    if one_line(data.get("one_line")):
-        parts.append(one_line(data.get("one_line")))
-
-    skills = data.get("skills") or {}
-    wealth = data.get("wealth") or {}
-    cognition = data.get("cognition") or {}
+    hrbp = data.get("hrbp_coe") or {}
+    agent = data.get("agent") or {}
+    management = data.get("management") or {}
     english = data.get("english") or {}
-    grammar = english.get("grammar") or {}
 
-    if one_line(skills.get("topic")):
-        parts.append(f"技能：{one_line(skills.get('topic'))}")
-    if one_line(wealth.get("topic")):
-        parts.append(f"财富：{one_line(wealth.get('topic'))}")
-    if one_line(cognition.get("model")):
-        parts.append(f"认知：{one_line(cognition.get('model'))}")
-    if one_line(grammar.get("point")):
-        parts.append(f"英语：{one_line(grammar.get('point'))}")
+    if one_line(hrbp.get("topic")):
+        parts.append(f"HRBP & COE：{one_line(hrbp.get('topic'))}")
+    if one_line(agent.get("topic")):
+        parts.append(f"Agent：{one_line(agent.get('topic'))}")
+    if one_line(management.get("topic")):
+        parts.append(f"经营：{one_line(management.get('topic'))}")
+    if one_line(english.get("phrase")):
+        parts.append(f"英语：{clip(english.get('phrase'), 24)}")
 
     return " ｜ ".join(parts)
 
 
 def render_report(data: dict, template: str, date_str: str, weekday: str, now: datetime) -> str:
-    one_line_text = one_line(data.get("one_line"))
-    summary = build_summary(data)
+    stage = data.get("stage") or {}
+    hrbp = data.get("hrbp_coe") or {}
+    agent = data.get("agent") or {}
+    management = data.get("management") or {}
+
+    stage_text = " ｜ ".join(
+        [
+            f"HR · {one_line(stage.get('hr'))}",
+            f"Agent · {one_line(stage.get('agent'))}",
+            f"经营 · {one_line(stage.get('mgmt'))}",
+        ]
+    )
+    focus = " ｜ ".join(
+        part
+        for part in (
+            one_line(hrbp.get("topic")),
+            one_line(agent.get("topic")),
+            one_line(management.get("topic")),
+        )
+        if part
+    )
 
     replacements = {
-        "PAGE_TITLE": esc(f"个人成长日报 · {date_str}"),
+        "PAGE_TITLE": esc(f"AI 原生 HR 高管日报 · {date_str}"),
         "DATE": esc(date_str),
         "WEEKDAY": esc(weekday),
-        "ONE_LINE": esc(one_line_text),
-        "SUMMARY_ATTR": esc(summary),
+        "STAGES": esc(stage_text),
+        "FOCUS": esc(focus),
+        "SUMMARY_ATTR": esc(build_summary(data)),
         "DATA": render_cards(data),
-        "TOMORROW": esc(one_line(data.get("tomorrow_preview"))),
+        "PREVIEW": esc(one_line(data.get("preview"))),
         "GENERATED_AT": esc(now.strftime("%Y-%m-%d %H:%M") + "（北京时间）"),
     }
 
@@ -692,11 +753,22 @@ def main() -> int:
     date_str = now.strftime("%Y-%m-%d")
     weekday = WEEKDAYS[now.weekday()]
 
+    is_saturday = now.weekday() == 5
+    is_first_of_month = now.day == 1
+    is_quarter_first_week = now.month in (1, 4, 7, 10) and now.day <= 7
+
     recent_topics = load_recent_topics()
     if recent_topics:
         print(f"[info] 已加载 {len(recent_topics)} 条近期主题用于去重", file=sys.stderr)
 
-    user_prompt = build_user_prompt(date_str, weekday, recent_topics)
+    user_prompt = build_user_prompt(
+        date_str,
+        weekday,
+        recent_topics,
+        is_saturday,
+        is_first_of_month,
+        is_quarter_first_week,
+    )
 
     try:
         # 支持 Anthropic 兼容端点（如 DeepSeek https://api.deepseek.com/anthropic）；

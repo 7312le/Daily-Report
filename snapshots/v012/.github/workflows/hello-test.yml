@@ -1,0 +1,70 @@
+name: Hello Test
+
+# 仅用于验证 Actions 是否可用：手动点一下 Run workflow 即可。
+# 验证通过后可随时删除本文件，不影响正式工作流。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hello:
+    name: Smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print runner context
+        run: |
+          echo "runner OS : $RUNNER_OS"
+          echo "repository: $GITHUB_REPOSITORY"
+          echo "ref       : $GITHUB_REF"
+          echo "sha       : $GITHUB_SHA"
+          echo "--- repository root ---"
+          ls -a
+
+      # 诊断用：确认 GitHub 托管 runner 能否连通企业微信 API。
+      - name: Probe WeCom reachability
+        continue-on-error: true
+        run: |
+          echo "--- DNS ---"
+          getent hosts qyapi.weixin.qq.com || echo "DNS resolution failed"
+          echo "--- HTTPS ---"
+          curl -sS -o /dev/null -w "http_code=%{http_code} connect=%{time_connect}s total=%{time_total}s\n" \
+            --connect-timeout 10 --max-time 20 \
+            https://qyapi.weixin.qq.com/cgi-bin/webhook/send || echo "curl failed: exit=$?"
+
+      # 诊断用：只输出 Webhook 的域名/路径（不含 key），用于定位连接超时。
+      - name: Inspect webhook host
+        continue-on-error: true
+        env:
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+        run: |
+          python - <<'EOF'
+          import os
+          from urllib.parse import urlparse, parse_qs
+          raw = os.environ.get("WECOM_WEBHOOK", "").strip().strip('"').strip("'")
+          if raw and "://" not in raw:
+              raw = "https://" + raw
+          p = urlparse(raw)
+          key = parse_qs(p.query).get("key", [""])[0]
+          print(f"scheme={p.scheme!r}")
+          print(f"host={p.hostname!r}")
+          print(f"port={p.port}")
+          print(f"path={p.path!r}")
+          print(f"key_len={len(key)}")
+          print(f"raw_len={len(raw)}")
+          EOF
+
+      - name: Check project files exist
+        run: |
+          set -e
+          test -f .github/workflows/generate.yml && echo "OK  generate.yml"
+          test -f .github/workflows/pages.yml    && echo "OK  pages.yml"
+          test -f scripts/generate.py            && echo "OK  scripts/generate.py"
+          test -f scripts/notify.py              && echo "OK  scripts/notify.py"
+          test -f docs/index.html                && echo "OK  docs/index.html"
+          echo "All expected files are present."

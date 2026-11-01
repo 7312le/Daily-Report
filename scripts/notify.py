@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把当日日报摘要推送到企业微信群机器人或 Server酱（微信）。
+"""把当日「AI 原生 HR 高管」日报摘要推送到企业微信群机器人或 Server酱（微信）。
 
 - WECOM_WEBHOOK：企业微信群机器人 Webhook 地址（GitHub Secrets，可选）
 - SERVERCHAN_SENDKEY：Server酱 SendKey（GitHub Secrets，可选）
@@ -128,81 +128,96 @@ def load_report(path: Path) -> dict:
     return data
 
 
+def _block(data: dict, key: str) -> dict:
+    block = data.get(key)
+    return block if isinstance(block, dict) else {}
+
+
 def build_markdown(data: dict, report_url: str) -> str:
-    """构造企业微信机器人支持的 markdown 内容。"""
+    """构造企业微信 / Server酱 支持的 markdown 内容。"""
     date_str = str(data.get("date", "")).strip()
     weekday = weekday_cn(date_str)
     heading_date = f"{date_str} {weekday}".strip()
 
-    lines: list[str] = [f"# 📘 个人成长日报 · {heading_date}", ""]
+    lines: list[str] = [f"# 📘 AI 原生 HR 高管日报 · {heading_date}", ""]
 
-    one_line = clip(data.get("one_line"), 90)
-    if one_line:
-        lines.extend([f"> {one_line}", ""])
+    stage = _block(data, "stage")
+    stage_pairs = (("HR", "hr"), ("Agent", "agent"), ("经营", "mgmt"))
+    stage_parts = []
+    for label, key in stage_pairs:
+        value = clip(stage.get(key), 6)
+        if value:
+            stage_parts.append(f"{label} {value}")
+    if stage_parts:
+        lines.extend([f"> 阶段：{' ｜ '.join(stage_parts)}", ""])
 
-    # --- 技能栈 ---
-    skills = data.get("skills") or {}
-    if isinstance(skills, dict) and skills:
-        topic = clip(skills.get("topic"), 34)
-        lines.append(f"**🧭 技能栈｜{topic}**")
-        if skills.get("concept"):
-            lines.append(f"概念：{clip(skills.get('concept'), 70)}")
-        if skills.get("action"):
-            lines.append(f"今晚：{clip(skills.get('action'), 60)}")
+    # --- HRBP & COE ---
+    hrbp = _block(data, "hrbp_coe")
+    if hrbp:
+        topic = clip(hrbp.get("topic"), 36)
+        kind = clip(hrbp.get("type"), 6)
+        label = f"{kind}｜{topic}" if kind else topic
+        lines.append(f"**🧭 HRBP & COE｜{label}**")
+        if hrbp.get("concept"):
+            lines.append(f"概念：{clip(hrbp.get('concept'), 70)}")
+        if hrbp.get("scenario"):
+            lines.append(f"场景：{clip(hrbp.get('scenario'), 60)}")
+        questions = hrbp.get("questions")
+        if isinstance(questions, list) and questions:
+            lines.append(f"诊断：{clip(questions[0], 60)}")
+        if hrbp.get("action"):
+            lines.append(f"今晚：{clip(hrbp.get('action'), 60)}")
+        if hrbp.get("output_task"):
+            lines.append(f"本周输出：{clip(hrbp.get('output_task'), 60)}")
         lines.append("")
 
-    # --- 财富自由 ---
-    wealth = data.get("wealth") or {}
-    if isinstance(wealth, dict) and wealth:
-        topic = clip(wealth.get("topic"), 34)
-        lines.append(f"**💰 财富自由｜{topic}**")
-        if wealth.get("concept"):
-            lines.append(f"核心：{clip(wealth.get('concept'), 70)}")
-        if wealth.get("pitfall"):
-            lines.append(f"误区：{clip(wealth.get('pitfall'), 60)}")
-        if wealth.get("source"):
-            lines.append(f"信源：{clip(wealth.get('source'), 50)}")
+    # --- Agent 体系化 ---
+    agent = _block(data, "agent")
+    if agent:
+        lines.append(f"**🤖 Agent 体系化｜{clip(agent.get('topic'), 36)}**")
+        if agent.get("concept"):
+            lines.append(f"概念：{clip(agent.get('concept'), 70)}")
+        if agent.get("experiment"):
+            lines.append(f"实验：{clip(agent.get('experiment'), 60)}")
+        if agent.get("action"):
+            lines.append(f"今晚：{clip(agent.get('action'), 60)}")
+        if agent.get("milestone"):
+            lines.append(f"里程碑：{clip(agent.get('milestone'), 60)}")
         lines.append("")
 
-    # --- 认知 ---
-    cognition = data.get("cognition") or {}
-    if isinstance(cognition, dict) and cognition:
-        model = clip(cognition.get("model"), 30)
-        lines.append(f"**🧠 认知｜{model}**")
-        if cognition.get("explain"):
-            lines.append(f"解释：{clip(cognition.get('explain'), 70)}")
-        if cognition.get("reflection"):
-            lines.append(f"反思：{clip(cognition.get('reflection'), 60)}")
+    # --- 公司经营管理 ---
+    management = _block(data, "management")
+    if management:
+        lines.append(f"**📊 公司经营管理｜{clip(management.get('topic'), 36)}**")
+        if management.get("concept"):
+            lines.append(f"概念：{clip(management.get('concept'), 70)}")
+        if management.get("case"):
+            lines.append(f"案例：{clip(management.get('case'), 60)}")
+        if management.get("action"):
+            lines.append(f"今晚：{clip(management.get('action'), 60)}")
+        if management.get("influence_goal"):
+            lines.append(f"影响力：{clip(management.get('influence_goal'), 60)}")
         lines.append("")
 
     # --- 英语 ---
-    english = data.get("english") or {}
-    if isinstance(english, dict) and english:
-        grammar = english.get("grammar") or {}
-        point = clip(grammar.get("point"), 30) if isinstance(grammar, dict) else ""
-        title = f"**🌍 英语｜{point}**" if point else "**🌍 英语**"
-        lines.append(title)
+    english = _block(data, "english")
+    if english:
+        phrase = clip(english.get("phrase"), 30)
+        lines.append(f"**🌍 英语｜{phrase}**" if phrase else "**🌍 英语**")
+        if english.get("words"):
+            lines.append(f"词汇：{clip(english.get('words'), 70)}")
+        if english.get("ai_talk"):
+            lines.append(f"AI Talk：{clip(english.get('ai_talk'), 60)}")
 
-        words = [
-            clip(item.get("word"), 24)
-            for item in (english.get("vocab") or [])
-            if isinstance(item, dict) and item.get("word")
-        ]
-        if words:
-            lines.append("词汇：" + " / ".join(words[:5]))
-
-        dialogue = english.get("dialogue") or {}
-        if isinstance(dialogue, dict) and dialogue.get("scenario"):
-            lines.append(f"对话：{clip(dialogue.get('scenario'), 60)}")
-
-        listening = english.get("listening") or {}
-        if isinstance(listening, dict) and listening.get("task"):
-            lines.append(f"跟读：{clip(listening.get('task'), 60)}")
+        video = english.get("video") or {}
+        if isinstance(video, dict) and video.get("url"):
+            v_title = clip(video.get("title"), 40)
+            lines.append(f"视频：[{v_title}]({clip(video.get('url'), 200)})")
         lines.append("")
 
-    tomorrow = clip(data.get("tomorrow_preview"), 70)
-    if tomorrow:
-        lines.extend([f"🔭 明日预览：{tomorrow}", ""])
+    preview = clip(data.get("preview"), 70)
+    if preview:
+        lines.extend([f"🔭 明日预览：{preview}", ""])
 
     # 链接单独预留位置，避免被截断导致无法点击
     link_block = f"\n[👉 阅读完整日报]({report_url})\n"
@@ -307,7 +322,7 @@ def send_wecom(webhook: str, content: str) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="推送个人成长日报到企业微信 / Server酱（微信）")
+    parser = argparse.ArgumentParser(description="推送 AI 原生 HR 高管日报到企业微信 / Server酱（微信）")
     parser.add_argument("--date", help="指定日期 YYYY-MM-DD，默认取最新一期")
     parser.add_argument("--dry-run", action="store_true", help="只打印消息，不发送")
     args = parser.parse_args()
@@ -363,7 +378,7 @@ def main() -> int:
             failed += 1
 
     if sendkey:
-        title = f"个人成长日报 · {date_str}"
+        title = f"AI 原生 HR 高管日报 · {date_str}"
         try:
             send_serverchan(sendkey, title, content)
         except NotifyError as exc:

@@ -1,0 +1,37 @@
+name: Hello Test
+
+# 仅用于验证 Actions 是否可用：手动点一下 Run workflow 即可。
+# 验证通过后可随时删除本文件，不影响正式工作流。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hello:
+    name: Smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print runner context
+        run: |
+          echo "runner OS : $RUNNER_OS"
+          echo "repository: $GITHUB_REPOSITORY"
+          echo "ref       : $GITHUB_REF"
+          echo "sha       : $GITHUB_SHA"
+          echo "--- repository root ---"
+          ls -a
+
+      - name: Check project files exist
+        run: |
+          set -e
+          test -f .github/workflows/generate.yml && echo "OK  generate.yml"
+          test -f .github/workflows/pages.yml    && echo "OK  pages.yml"
+          test -f scripts/generate.py            && echo "OK  scripts/generate.py"
+          test -f scripts/notify.py              && echo "OK  scripts/notify.py"
+          test -f docs/index.html                && echo "OK  docs/index.html"
+          echo "All expected files are present."

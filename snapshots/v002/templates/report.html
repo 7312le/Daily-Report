@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}}</title>
+  <meta name="description" content="{{ONE_LINE}}">
+  <meta name="report-summary" content="{{SUMMARY_ATTR}}">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --radius: 22px;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.7;
+      background:
+        radial-gradient(900px 420px at 12% -8%, rgba(79, 124, 255, 0.14), transparent 65%),
+        radial-gradient(760px 380px at 92% 2%, rgba(18, 163, 122, 0.10), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 64px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4f7cff;
+    }
+
+    .back-link {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .page-head { margin-bottom: 22px; }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4f7cff;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .meta .chip {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: #e8eeff;
+      color: #3b5bdb;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 32px 36px;
+      border-radius: var(--radius);
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -90px;
+      top: -150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero p {
+      position: relative;
+      margin: 0;
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 26px 26px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    .card-skills {
+      --accent: #4f7cff;
+      --soft: #eef3ff;
+    }
+
+    .card-wealth {
+      --accent: #12a37a;
+      --soft: #e9f9f3;
+    }
+
+    .card-cognition {
+      --accent: #8b5cf6;
+      --soft: #f3efff;
+    }
+
+    .card-english {
+      --accent: #f59e0b;
+      --soft: #fff7e6;
+      grid-column: 1 / -1;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--soft);
+      font-size: 20px;
+    }
+
+    .card-kicker {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .card-title {
+      margin: 2px 0 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .field { margin-top: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      color: #1e293b;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .action-box {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      background: var(--soft);
+    }
+
+    .action-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1e293b;
+    }
+
+    .source-tag {
+      display: inline-block;
+      margin: 14px 0 0;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #0f766e;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .steps {
+      margin: 6px 0 0;
+      padding-left: 20px;
+      color: #1e293b;
+      font-size: 15px;
+    }
+
+    .steps li { margin: 6px 0; }
+
+    .reflection {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .reflection p {
+      margin: 0;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- 英语 ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #eef2f7;
+      border-radius: 16px;
+      background: #fbfcfe;
+    }
+
+    .english-block h3 {
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .task-line,
+    .scenario-line {
+      margin: 0 0 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--soft);
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .vocab-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .vocab-item {
+      padding: 10px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .vocab-item:last-child { border-bottom: 0; padding-bottom: 0; }
+    .vocab-item:first-child { padding-top: 0; }
+
+    .vocab-word {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .vocab-word strong {
+      font-size: 15px;
+      color: #0f172a;
+    }
+
+    .phonetic {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .vocab-meaning {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .vocab-example {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    .dialogue {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 94%;
+      padding: 10px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .bubble-right {
+      align-self: flex-end;
+      background: var(--soft);
+      border-color: transparent;
+    }
+
+    .bubble-speaker {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .bubble-en {
+      margin: 2px 0 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #0f172a;
+    }
+
+    .bubble-zh {
+      margin: 2px 0 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .grammar-point {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .example-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #334155;
+      font-size: 13.5px;
+    }
+
+    .example-list li { margin: 5px 0; }
+
+    .tip-line {
+      margin: 10px 0 0;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    /* ---------- 明日预览 ---------- */
+    .tomorrow {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-top: 24px;
+      padding: 22px 26px;
+      border: 1px dashed #c7d2fe;
+      border-radius: var(--radius);
+      background: #eef2ff;
+    }
+
+    .tomorrow-icon {
+      flex: 0 0 auto;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .tomorrow h2 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4338ca;
+    }
+
+    .tomorrow p {
+      margin: 0;
+      color: #312e81;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    footer {
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .muted { color: var(--muted); }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-english { grid-column: auto; }
+      .english-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: calc(100% - 28px);
+        padding: 26px 0 48px;
+      }
+      .hero { padding: 26px 24px; }
+      .card { padding: 22px 20px; }
+      .tomorrow { padding: 18px 20px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .card, .hero { box-shadow: none; }
+      .back-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="brand">Daily Growth Report</span>
+      <a class="back-link" href="../index.html">← 返回归档</a>
+    </div>
+
+    <header class="page-head">
+      <p class="eyebrow">{{WEEKDAY}} · 每日精进</p>
+      <h1>{{DATE}}</h1>
+      <p class="meta">
+        <span class="chip">HR 纵深</span>
+        <span class="chip">投资方法</span>
+        <span class="chip">认知模型</span>
+        <span class="chip">英语精进</span>
+      </p>
+    </header>
+
+    <section class="hero" aria-label="今日一句话">
+      <span class="hero-label">今日一句话</span>
+      <p>{{ONE_LINE}}</p>
+    </section>
+
+    <main class="grid">
+      {{DATA}}
+    </main>
+
+    <section class="tomorrow" aria-label="明日预览">
+      <span class="tomorrow-icon" aria-hidden="true">🔭</span>
+      <div>
+        <h2>明日预览</h2>
+        <p>{{TOMORROW}}</p>
+      </div>
+    </section>
+
+    <footer>
+      <span>生成于 {{GENERATED_AT}}</span>
+      <span>仅供个人学习记录，不构成投资建议。</span>
+    </footer>
+  </div>
+</body>
+</html>

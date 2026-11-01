@@ -1,0 +1,73 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # 站点结构：
+      #   /index.html          <- docs/index.html
+      #   /reports/YYYY-MM-DD.html
+      # 因此把 docs 与 reports 汇总到 _site 再发布
+      - name: Assemble site
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+
+          if [ -f docs/index.html ]; then
+            cp docs/index.html _site/index.html
+          else
+            echo "docs/index.html not found" >&2
+            exit 1
+          fi
+
+          if [ -d reports ]; then
+            cp -r reports _site/reports
+          else
+            mkdir -p _site/reports
+          fi
+
+          if [ -f docs/CNAME ]; then
+            cp docs/CNAME _site/CNAME
+          fi
+
+          echo "Site files:"
+          find _site -maxdepth 2 -type f | sort
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
