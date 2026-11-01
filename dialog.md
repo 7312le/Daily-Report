@@ -399,3 +399,5 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - DNS 查询确认：`swt.jiangsu.gov.cn`、`jsswt.jiangsu.gov.cn` 仅有 AAAA 记录（如 `240e:6a0:20::ffff`），IPv6-only；GitHub runner 无 IPv6 路由，IPv4 强制回退也无效。
 - 找到江苏商务厅真实发布源 `doc.jiangsu.gov.cn`：政策公告 `col/col93272`（含消费品以旧换新）、公告通知 `col/col78712`，IPv4 可用（加速乐 CDN）。
 - 探测清单新增这两个栏目；快照 `snapshots/v019/`，复测其海外可达性。
+
+复测结果（run 41304011158）：**16/19 成功**。`doc.jiangsu.gov.cn` 两个栏目均 200，江苏商务的数据源可用；`swt`/`jsswt` 确认 IPv6-only 不可用；江苏文旅厅仍为 CDN 521；上海一网通办 200 但空响应，弃用。可用官方源 15 个，覆盖上海全部目标与江苏税务 / 人社 / 商务 / 外办 / 省政府 / 政务服务。
