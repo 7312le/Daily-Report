@@ -1,0 +1,104 @@
+{
+  "updated_at": "2026-11-01",
+  "note": "每日英语短视频池。只收录可直接打开的视频页（非搜索页），由 generate.py 按日期轮换注入。新增条目请先人工打开确认可播放。",
+  "videos": [
+    {
+      "platform": "B站",
+      "title": "英语影子跟读｜职场高频口语 坚持磨耳朵",
+      "url": "https://www.bilibili.com/video/BV1dqNdeXE4h/",
+      "level": "B1",
+      "task": "选 10 句职场高频句跟读，录音一遍后与原声对比，标出 2 处连读不清的地方。"
+    },
+    {
+      "platform": "B站",
+      "title": "会议开场英语怎么说？10 句职场高频表达｜盲听+拆解+跟读",
+      "url": "https://www.bilibili.com/video/BV1saY36dE4g/",
+      "level": "B2",
+      "task": "先盲听一遍，再跟读 10 个开场句；挑 3 句写进你下一次会议的英文开场稿。"
+    },
+    {
+      "platform": "B站",
+      "title": "慢速英语｜求职面试英语练习 慢速→常速跟读",
+      "url": "https://www.bilibili.com/video/BV1ZbnBzzEHX/",
+      "level": "B1",
+      "task": "用「慢速带字幕 → 慢速无字幕 → 常速」三遍法跟读，最后用自己的话复述一遍自我介绍。"
+    },
+    {
+      "platform": "B站",
+      "title": "Love English Lab｜高级职场英语：会议、汇报和反馈中的真实表达",
+      "url": "https://www.bilibili.com/video/BV1EfGy6REcn/",
+      "level": "B2",
+      "task": "记下 5 个用于「礼貌表达不同意见」的句型，各造一句你真实工作场景里的句子。"
+    },
+    {
+      "platform": "B站",
+      "title": "睡前商务英语单词 EP01｜初入职场：入职、会议、加班、报销",
+      "url": "https://www.bilibili.com/video/BV1Wg14B8Ea3/",
+      "level": "B1",
+      "task": "跟读全部词汇，挑 5 个词在金山词霸里收藏并各造一句会议场景句。"
+    },
+    {
+      "platform": "B站",
+      "title": "Love English Lab｜职场英语：会议与邮件中的地道表达",
+      "url": "https://www.bilibili.com/video/BV1r1L46nEVj/",
+      "level": "B1",
+      "task": "选会议和邮件各 3 个表达，改写你最近一封英文邮件中的对应句子。"
+    },
+    {
+      "platform": "B站",
+      "title": "睡前商务英语单词 EP04｜会议场景：发言、提议、表决、总结",
+      "url": "https://www.bilibili.com/video/BV1jUkXBUEFy/",
+      "level": "B2",
+      "task": "跟读后写下 6 个会议动作词（发言/提议/表决/总结等）的英文，并用其中 3 个复述今天的一场会。"
+    },
+    {
+      "platform": "B站",
+      "title": "C2 高阶英语听力｜像母语者一样掌握闲聊艺术",
+      "url": "https://www.bilibili.com/video/BV1gjG16VE7f/",
+      "level": "C1",
+      "task": "做一遍影子跟读，记录 3 个母语者的自然衔接表达，第二天在英文寒暄中刻意使用一次。"
+    },
+    {
+      "platform": "B站",
+      "title": "英语口语练习｜在办公室自信地说英语",
+      "url": "https://www.bilibili.com/video/BV1xaER6yELU/",
+      "level": "B1",
+      "task": "跟读「向老板争取项目时间」片段，录一段 60 秒的英文陈述并回听。"
+    },
+    {
+      "platform": "B站",
+      "title": "Love English Lab｜在会议中展现真正的领导力",
+      "url": "https://www.bilibili.com/video/BV12dAbzEELc/",
+      "level": "B2",
+      "task": "记下开场、拉回跑题、收尾各 2 句，组合成一段 45 秒的会议主持开场白并录音。"
+    },
+    {
+      "platform": "B站",
+      "title": "职场英文实战｜主持会议，对齐颗粒度",
+      "url": "https://www.bilibili.com/video/BV1gYHSz8EtH/",
+      "level": "B2",
+      "task": "收集 5 个会议实战表达（如 async update、hard date），用英文写一份 3 行会议同步消息。"
+    },
+    {
+      "platform": "B站",
+      "title": "职场英文实战｜和我一起开会吧",
+      "url": "https://www.bilibili.com/video/BV1Wn8uzREer/",
+      "level": "B2",
+      "task": "挑一个与你工作最接近的会议场景，模仿其结构，用英文写出 5 句你会实际说的话。"
+    },
+    {
+      "platform": "B站",
+      "title": "C2 高阶英语听力｜母语级对话",
+      "url": "https://www.bilibili.com/video/BV1Mf9EBPEGx/",
+      "level": "C1",
+      "task": "暂停跟读关键语句，摘录 3 个高阶表达并各造一句工作场景句，注意语调与停顿。"
+    },
+    {
+      "platform": "B站",
+      "title": "25 句职场版美式口语练习",
+      "url": "https://www.bilibili.com/video/BV1XndbY7EiA/",
+      "level": "B2",
+      "task": "跟读 25 句中的 10 句，选 5 句写进你的日常口语清单，明早通勤时复述一遍。"
+    }
+  ]
+}

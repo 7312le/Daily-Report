@@ -318,3 +318,12 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 用户要求日报标题统一为 **Shaun Daily Report**。
 - 改动：`scripts/generate.py`（页面 title / Hero）、`templates/report.html`（页脚）、`scripts/notify.py`（推送标题与正文一级标题）、`docs/index.html`（首页 title / H1 / 页脚）。
 - 快照 `snapshots/v015/`；随后重跑 `generate.yml` 以新标题覆盖当日日报并推送。
+
+---
+
+## 2026-11-01 · 英语短视频改为直链（v016）
+
+- 用户反馈视频链接点进去仍是 B 站搜索页，要求直接给具体视频。
+- 方案：新增 `data/videos.json` 视频池（14 条 B 站英语学习视频，直接播放页），`generate.py` 按日期轮换注入 `english.video`；模型不再输出任何视频链接。
+- `system.md` 同步：video 字段留空，禁止搜索页/编造链接。
+- 快照 `snapshots/v016/`；重跑验证 URL 不含 `search.bilibili.com`。

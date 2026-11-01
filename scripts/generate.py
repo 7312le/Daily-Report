@@ -34,6 +34,7 @@ SYSTEM_PROMPT_PATH = ROOT / ".github" / "prompt" / "system.md"
 TEMPLATE_PATH = ROOT / "templates" / "report.html"
 REPORTS_DIR = ROOT / "reports"
 INDEX_PATH = ROOT / "docs" / "index.html"
+VIDEOS_PATH = ROOT / "data" / "videos.json"
 
 # 北京时间固定为 UTC+8，使用固定偏移避免依赖 tzdata
 BEIJING = timezone(timedelta(hours=8))
@@ -76,6 +77,8 @@ VIDEO_PLATFORM_ICONS = {
     "小红书": "📕",
     "微信视频号": "🎬",
 }
+
+DEFAULT_VIDEO_TASK = "跟读视频中的 5 个表达，录音一遍后回听，标出 2 处连读不清的地方。"
 
 
 # ---------------------------------------------------------------
@@ -173,6 +176,59 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
     return entries
 
 
+def load_video_pool() -> list[dict]:
+    """读取人工核验过的视频池；只保留带 http(s) 链接与标题的条目。"""
+    if not VIDEOS_PATH.exists():
+        print(f"[warn] 视频池不存在：{VIDEOS_PATH}，今日不注入短视频", file=sys.stderr)
+        return []
+
+    try:
+        payload = json.loads(VIDEOS_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"[warn] 视频池读取失败：{exc}", file=sys.stderr)
+        return []
+
+    items = payload.get("videos") if isinstance(payload, dict) else payload
+    if not isinstance(items, list):
+        print("[warn] 视频池格式错误：videos 必须是数组", file=sys.stderr)
+        return []
+
+    pool: list[dict] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        url = one_line(item.get("url"))
+        title = one_line(item.get("title"))
+        if not url.lower().startswith(("http://", "https://")) or not title:
+            continue
+        pool.append(item)
+    return pool
+
+
+def pick_daily_video(date_str: str) -> dict:
+    """按日期在视频池中轮换，保证每天拿到一条可直接打开的视频链接。"""
+    pool = load_video_pool()
+    if not pool:
+        return {}
+
+    try:
+        ordinal = datetime.strptime(date_str, "%Y-%m-%d").toordinal()
+    except ValueError:
+        ordinal = 0
+
+    entry = pool[ordinal % len(pool)]
+    video = {
+        "platform": one_line(entry.get("platform")),
+        "title": one_line(entry.get("title")),
+        "url": one_line(entry.get("url")),
+        "duration": one_line(entry.get("duration")),
+        "level": one_line(entry.get("level")),
+        "task": one_line(entry.get("task")) or DEFAULT_VIDEO_TASK,
+    }
+    print(f"[info] 今日英语视频：{video['title']}（{video['url']}）", file=sys.stderr)
+    return video
+
+
 def build_user_prompt(
     date_str: str,
     weekday: str,
@@ -216,7 +272,7 @@ def build_user_prompt(
 6. {output_rule}
 7. {milestone_rule}
 8. {influence_rule}
-9. 英语视频：platform 只能是 B站 / 小红书 / 微信视频号；url 必须真实可打开，无法确认具体视频时给同平台搜索结果页链接并在 title 注明「搜索：关键词」；找不到合适视频则 video 各字段填空字符串。
+9. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
 10. date 字段必须为 "{date_str}"；stage 三个字段填写当前阶段（L1–L5 / A1–A5 / M1–M5）。
 """
 
@@ -795,6 +851,11 @@ def main() -> int:
             file=sys.stderr,
         )
         data["date"] = date_str
+
+    # 短视频不走模型生成：从人工核验的视频池按日期轮换，确保是可直接打开的播放页
+    daily_video = pick_daily_video(date_str)
+    if daily_video:
+        data["english"]["video"] = daily_video
 
     try:
         page = render_report(data, template, date_str, weekday, now)
