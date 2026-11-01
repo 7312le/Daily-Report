@@ -401,3 +401,13 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 探测清单新增这两个栏目；快照 `snapshots/v019/`，复测其海外可达性。
 
 复测结果（run 41304011158）：**16/19 成功**。`doc.jiangsu.gov.cn` 两个栏目均 200，江苏商务的数据源可用；`swt`/`jsswt` 确认 IPv6-only 不可用；江苏文旅厅仍为 CDN 521；上海一网通办 200 但空响应，弃用。可用官方源 15 个，覆盖上海全部目标与江苏税务 / 人社 / 商务 / 外办 / 省政府 / 政务服务。
+
+---
+
+## 2026-11-01 · 机会雷达 MVP 落地（v020）
+
+- 新增 `scripts/radar.py`：11 个官方源 → 栏目发现 → 关键词分类 → URL 哈希去重 → 生成 `radar/` 页面与 JSON → Server酱 / 企业微信推送。
+- 新增 `data/radar_sources.json`：五类规则（发票抽奖、消费券、补贴、资格、活动）+ 排除词 + 源白名单；只收 `.gov.cn` 链接。
+- 新增 `templates/radar.html`、`.github/workflows/radar.yml`（北京 14:00 + `dry_run` 手动输入）；`pages.yml` 发布 `radar/`；首页增加入口卡片。
+- 首次运行仅建基线、不推历史；之后只推新增，无新增不推送；每日最多展示 12 条、推送 6 条。
+- 快照 `snapshots/v020/`。下一步：Actions 手动 `dry_run` 试跑，按实际命中调整栏目与关键词，再正式跑基线。

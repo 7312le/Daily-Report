@@ -48,6 +48,12 @@ jobs:
             mkdir -p _site/reports
           fi
 
+          if [ -d radar ]; then
+            cp -r radar _site/radar
+          else
+            mkdir -p _site/radar
+          fi
+
           if [ -f docs/CNAME ]; then
             cp docs/CNAME _site/CNAME
           fi

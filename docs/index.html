@@ -105,6 +105,50 @@
       font-weight: 600;
     }
 
+    .radar-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+      padding: 16px 20px;
+      border: 1px solid #cdece6;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffffff, #f1faf7);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(15, 118, 110, 0.06);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .radar-card:hover {
+      transform: translateY(-2px);
+      border-color: #99d8ca;
+      box-shadow: 0 16px 34px rgba(15, 118, 110, 0.12);
+    }
+
+    .radar-icon {
+      flex: 0 0 auto;
+      font-size: 22px;
+    }
+
+    .radar-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .radar-body strong {
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .radar-body span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     .section-head {
       display: flex;
       align-items: baseline;
@@ -255,6 +299,15 @@
         <span>🌍 英语精进</span>
       </div>
     </header>
+
+    <a class="radar-card" href="radar/index.html">
+      <span class="radar-icon" aria-hidden="true">🧭</span>
+      <span class="radar-body">
+        <strong>机会雷达</strong>
+        <span>上海 / 江苏消费券、补贴、发票抽奖与长期资格，每日 14:00 扫描，只推新增</span>
+      </span>
+      <span class="item-arrow" aria-hidden="true">→</span>
+    </a>
 
     <div class="section-head">
       <h2>往期归档</h2>
