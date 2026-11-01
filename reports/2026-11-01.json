@@ -1,124 +1,49 @@
 {
   "date": "2026-11-01",
-  "one_line": "周日不排会，用一张纸收回本周的失控感。",
-  "skills": {
-    "topic": "COE 视角：绩效目标对齐的「三层翻译」设计",
-    "concept": "三层翻译指公司级目标逐层转译为部门产出、团队动作、个人交付，每层只回答一个问题的机制。适用边界是目标可量化且跨部门依赖清晰的场景；当业务处于探索期或外部环境剧烈波动时，过度拆解会制造僵化的KPI，此时应改用阶段性里程碑。",
-    "scenario": "一家 600 人规模的 SaaS 公司，销售部承诺季度新签增长 30%，交付部却按现有排期只能支持 15%，两个部门在季度初的启动会上各说各话。",
-    "diagnosis": "你们部门承接公司目标时，具体被要求改变哪一个可观察的产出；这个产出在你们的排期里占据多少实际人力；如果只完成 80%，你们希望先砍哪一项。",
-    "action": "今晚用 30 分钟画一张三层翻译表：左列写公司目标，中列写本部门要交付的 3 个产出，右列写对应的 2 个关键动作和负责人，并标出至少一处需要跨部门协商的资源缺口。"
+  "stage": {
+    "hr": "L4",
+    "agent": "A3",
+    "mgmt": "M3"
   },
-  "wealth": {
-    "topic": "再平衡：用规则对抗择时冲动",
-    "concept": "再平衡是按预设的资产比例阈值，在偏离超过界限时卖高买低回到目标权重，而不是预测行情。判断标准是先定目标权重、再定阈值（如偏离 5 个百分点触发）和频率（时间或阈值驱动）。适用前提是资产类别之间相关性不过高；单一资产或高相关性组合再平衡意义有限。",
-    "case": "学术研究长期讨论过一种现象：定期再平衡的组合，其长期波动往往低于不再平衡的组合，但牛市中会牺牲部分收益。这不是收益保证，而是风险预算的再分配；2008 年与 2020 年市场剧烈波动期间，纪律性再平衡者的实际体验与「跟着感觉走」的投资者差别明显。",
-    "pitfall": "最常见的误区是把再平衡当成择时工具，看到某类资产上涨就提前「再平衡」，下跌时又不敢执行，结果变成追涨杀跌。根源在于把再平衡当作收益来源，而它本质上是风险控制机制。",
-    "source": "[二手] 经典资产配置教材中对再平衡规则与阈值的讨论，以及公开指数长期波动率的比较数据。",
-    "action": "今晚用 25 分钟列出你当前的资产类别清单（不写具体产品名称，只写类别与大致比例），设定一个目标权重与 5 个百分点的触发阈值，写成一张下次触发时该怎么做的操作卡。"
-  },
-  "cognition": {
-    "model": "锚定效应",
-    "explain": "人做判断时会抓住最先出现的数字或信息当作参照，之后的调整往往不足。比如谈薪时 HR 先报出一个数字，你后面的所有争取都会围绕它打转；再比如你第一次听到某项目的预算是 50 万，后面看到 80 万的方案就觉得贵，却没重新核算实际工作量。锚点未必正确，但它会悄悄框住你的思考范围。",
-    "steps": [
-      "记录最先进入你判断的那个数字",
-      "主动找两个独立参照点做对比",
-      "先独立估算再听对方报价",
-      "重要决策前隔一天再复核"
+  "hrbp_coe": {
+    "topic": "HRBP 视角：人才盘点会前的校准访谈",
+    "type": "HRBP",
+    "concept": "校准访谈（Calibration Interview）：盘点会前由 HRBP 与业务负责人一对一预对齐，针对九宫格分歧点（绩效×潜力）提前收敛口径。适用边界：直接上级对下属有充分观察、评价周期完整；不适用：新组建团队（观察不足 6 个月）、跨级汇报关系复杂的矩阵组织。",
+    "scenario": "一家年营收 12 亿的消费电子企业，研发中心 320 人，年度人才盘点会上，研发总监把 3 名核心技术骨干全部放入「高潜」，但项目交付数据显示其中 1 人连续两个季度延期。HRBP 若在会上直接挑战，容易演变为部门对抗。",
+    "questions": [
+      "这位骨干连续两季延期的具体原因是能力、资源还是任务优先级？",
+      "如果把他放在「高绩效非高潜」，你担心失去什么？",
+      "未来 12 个月你打算给他安排什么新挑战来验证潜力？"
     ],
-    "reflection": "这周有没有一个决定，其实是被对方先说的数字框住了？如果重新从零估算，结论会不同吗？"
+    "action": "今晚选 1 名存在评价分歧的员工，用上述三问写出 200 字预对齐访谈提纲，标注你希望业务负责人自己说出的结论。",
+    "output_task": ""
+  },
+  "agent": {
+    "topic": "A3 进阶：用评测集给 HR Agent 做回归测试",
+    "concept": "评测集是固定输入+期望输出的样本集合，用于在提示词或模型变更后判断 Agent 是否变差。与单次试用的区别：试用只能证明「这次能用」，评测集能量化「改坏了多少」。核心指标为通过率与失败类型分布。",
+    "experiment": "取你正在做的 HR Agent（如简历初筛），从真实数据中挑 15 条覆盖三类场景的输入，标注期望输出要点；用表格记录当前通过数与失败原因；改一版提示词后再跑一次，对比通过率变化。预期产出：一张 15 行、含两列通过率的对比表。",
+    "action": "今晚完成 15 条评测样本的录入与首轮跑测，记录通过率数字。",
+    "milestone": "11 月 30 日前交付一个可演示的 HR 场景 Agent 原型，验收标准：1）固定评测集不少于 30 条，通过率不低于 80%；2）连续 5 轮对话上下文不丢失关键约束；3）单次调用成本可测算并给出月度估算；4）提交一页说明，写明输入输出、失败案例与改进计划。"
+  },
+  "management": {
+    "topic": "M3 战略与组织：用波特五力判断组织该往哪加压",
+    "concept": "波特五力（供应商议价力、购买者议价力、新进入者威胁、替代品威胁、同业竞争）用于判断行业利润池位置。判断标准：某一力量越强，企业越需要在对应环节建立壁垒，组织资源与关键岗位应随之倾斜；若组织重心与最强的那股力量错配，即为结构性风险。",
+    "case": "2018 年起新能源车企密集进入，燃油车企面临的同业竞争与新进入者威胁同时上升。比亚迪选择向上游电池与半导体延伸，降低供应商议价力，同时保持垂直整合的组织结构支撑成本控制；而多数合资品牌仍维持原有职能型组织，未对采购与技术岗位做结构性加强。",
+    "action": "今晚用五力对所在公司逐项打分（1–5 分），标出最强的一力，并写下当前组织里哪一个部门最应该加强却资源不足。",
+    "influence_goal": ""
   },
   "english": {
-    "vocab_task": "在金山词霸中依次查这 5 个词，加入生词本，每个词点「跟读」模仿发音两遍，再用其中一个词口头造一句与自己工作相关的句子。",
-    "vocab": [
-      {
-        "word": "stakeholder",
-        "phonetic": "/ˈsteɪkhoʊldər/",
-        "meaning": "利益相关方",
-        "example": "We need to align all key stakeholders before the launch."
-      },
-      {
-        "word": "escalate",
-        "phonetic": "/ˈeskəleɪt/",
-        "meaning": "升级上报；加剧",
-        "example": "If the issue isn't resolved by Friday, please escalate it to the director."
-      },
-      {
-        "word": "bandwidth",
-        "phonetic": "/ˈbændwɪdθ/",
-        "meaning": "（时间精力上的）余力",
-        "example": "I don't have the bandwidth to take on another project this month."
-      },
-      {
-        "word": "alignment",
-        "phonetic": "/əˈlaɪnmənt/",
-        "meaning": "对齐；一致",
-        "example": "The meeting was mainly about alignment on the delivery timeline."
-      },
-      {
-        "word": "trade-off",
-        "phonetic": "/ˈtreɪd ɔːf/",
-        "meaning": "取舍；权衡",
-        "example": "There's always a trade-off between speed and quality."
-      }
-    ],
-    "dialogue": {
-      "scenario": "AI Talk 情景：周会上与上级讨论项目延期与资源缺口",
-      "lines": [
-        {
-          "speaker": "A",
-          "en": "Do you have a minute? I want to flag a risk on the delivery timeline.",
-          "zh": "你有空吗？我想提示一下交付时间线的风险。"
-        },
-        {
-          "speaker": "B",
-          "en": "Sure, go ahead. What's the situation?",
-          "zh": "可以，说吧。什么情况？"
-        },
-        {
-          "speaker": "A",
-          "en": "We're two weeks behind because the design review came back with major changes.",
-          "zh": "我们落后了两周，因为设计评审返回了重大修改。"
-        },
-        {
-          "speaker": "B",
-          "en": "Can we recover without adding headcount?",
-          "zh": "我们能在不增加人手的情况下追回来吗？"
-        },
-        {
-          "speaker": "A",
-          "en": "Possibly, but it's a trade-off. We'd have to cut the testing phase short.",
-          "zh": "有可能，但需要取舍，我们得压缩测试阶段。"
-        },
-        {
-          "speaker": "B",
-          "en": "Let's not compromise on quality. What would it take to keep the original scope?",
-          "zh": "不要在质量上妥协。要保住原范围需要什么？"
-        },
-        {
-          "speaker": "A",
-          "en": "One extra engineer for three weeks should be enough.",
-          "zh": "多一名工程师三周应该就够了。"
-        },
-        {
-          "speaker": "B",
-          "en": "Okay, send me a short summary and I'll escalate it to the resource committee.",
-          "zh": "好，给我一份简短摘要，我上报给资源委员会。"
-        }
-      ]
-    },
-    "grammar": {
-      "point": "虚拟语气：should 省略后的倒装",
-      "rule": "在正式书面或商务表达中，if 从句可省略 if，将 should 提前构成倒装，用于表示可能性较低的条件。",
-      "examples": [
-        "Should you need any further information, please do not hesitate to contact me.",
-        "Should the deadline be extended, we would need to revise the entire plan."
-      ]
-    },
-    "listening": {
-      "material": "BBC 6 Minute English 职场沟通主题的单集，或 TED Talks 中关于沟通与反馈的演讲音频。",
-      "task": "先不看字幕完整听一遍，抓两个关键词；第二遍逐句暂停跟读，模仿语调；第三遍影子跟读不暂停，重点跟上连读和重音，全程约 15 分钟。",
-      "tip": "跟读时先注意说话人把重音落在哪个词上，英语的信息焦点靠重音而非语序传达。"
+    "words": "金山词霸查 5 词并收藏进「职场」生词本：calibration（校准）、stakeholder（利益相关方）、escalate（上报/升级）、trade-off（权衡）、align on（就……达成一致）；每词听一遍原声跟读，再用 escalate 和 trade-off 各造一句会议场景句。",
+    "phrase": "Let's align on the criteria before we discuss individual cases.（我们先就标准达成一致，再讨论具体个案。）用于会议中将讨论从人拉回到规则层面。",
+    "ai_talk": "情景：你与业务负责人在人才盘点前就一名员工的评级存在分歧。让 AI 扮演研发总监，坚持把该员工列入高潜；你需完成 6–8 轮对话。刻意练习：用 Let's align on… 句式先定标准，用 I'd like to understand what's behind… 追问依据，避免直接否定对方判断。",
+    "video": {
+      "platform": "B站",
+      "title": "搜索：职场英语 会议 表达 跟读",
+      "url": "https://search.bilibili.com/all?keyword=%E8%81%8C%E5%9C%BA%E8%8B%B1%E8%AF%AD%20%E4%BC%9A%E8%AE%AE%20%E8%A1%A8%E8%BE%BE%20%E8%B7%9F%E8%AF%BB",
+      "duration": "05:00",
+      "level": "B2",
+      "task": "选一个 3–8 分钟的视频，跟读其中 6 个会议表达句，录音一遍并回听，标记出连读不清的 2 处。"
     }
   },
-  "tomorrow_preview": "周一：HRBP 视角的入职 30 天跟进设计；财富板块聊现金流质量；认知讲二阶思维；英语练面试中的追问与回应。"
+  "preview": "明日：薪酬带宽与内部公平性诊断；Agent 成本控制；单位经济模型。"
 }
