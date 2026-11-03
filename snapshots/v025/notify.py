@@ -1,0 +1,438 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""把当日「AI 原生 HR 一号位」日报摘要推送到企业微信群机器人或 Server酱（微信）。
+
+- WECOM_WEBHOOK：企业微信群机器人 Webhook 地址（GitHub Secrets，可选）
+- SERVERCHAN_SENDKEY：Server酱 SendKey（GitHub Secrets，可选）
+  自动识别 Turbo（SCT/数字开头）与 Server酱³（sctp<uid>t...）两套地址
+- 两个渠道都配置时同时推送；都未配置时打印 [skip] 并正常退出
+- PAGES_BASE_URL：GitHub Pages 站点根地址（GitHub Variables，可选）
+  未配置时根据 GITHUB_REPOSITORY 自动推导为 https://owner.github.io/repo
+- 默认取 reports/ 下最新一期 JSON，也可用 --date YYYY-MM-DD 指定
+- 正文按 4000 字节截断并保留链接，兼容企业微信 4096 字节上限
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+import requests
+
+ROOT = Path(__file__).resolve().parent.parent
+REPORTS_DIR = ROOT / "reports"
+
+WEEKDAYS = ("星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+# 企业微信 markdown 消息内容上限为 4096 字节，预留少量余量
+MAX_CONTENT_BYTES = 4000
+RETRY_TIMES = 3
+URL_RE = re.compile(r"https?://\S+")
+
+# Server酱两套接口：Turbo 用 sctapi，Server酱³ 用数字子域
+SERVERCHAN_TURBO_URL = "https://sctapi.ftqq.com/{key}.send"
+SERVERCHAN_SC3_URL = "https://{uid}.push.ft07.com/send/{key}.send"
+SERVERCHAN_SC3_RE = re.compile(r"^sctp(\d+)t")
+
+
+class NotifyError(RuntimeError):
+    """通知流程中的可预期错误。"""
+
+
+def safe_error(exc: Exception) -> str:
+    """去掉错误信息中的 URL，避免 Webhook 密钥泄漏到日志。"""
+    return URL_RE.sub("<url>", f"{type(exc).__name__}: {exc}")
+
+
+def clip(value: object, limit: int = 80) -> str:
+    """压成单行并截断，适配企业微信 markdown。"""
+    text = " ".join(str(value if value is not None else "").split())
+    if len(text) <= limit:
+        return text
+    return text[: max(0, limit - 1)].rstrip() + "…"
+
+
+def truncate_utf8(text: str, max_bytes: int) -> str:
+    """按 UTF-8 字节安全截断，避免中文被截成半个字符。"""
+    raw = text.encode("utf-8")
+    if len(raw) <= max_bytes:
+        return text
+
+    suffix = "\n\n…（内容过长已截断，点击链接查看完整日报）"
+    keep = max(0, max_bytes - len(suffix.encode("utf-8")))
+    truncated = raw[:keep].decode("utf-8", errors="ignore").rstrip()
+    return truncated + suffix
+
+
+def weekday_cn(date_str: str) -> str:
+    try:
+        return WEEKDAYS[datetime.strptime(date_str, "%Y-%m-%d").weekday()]
+    except ValueError:
+        return ""
+
+
+def resolve_pages_base() -> str:
+    """优先使用 PAGES_BASE_URL，其次从 GITHUB_REPOSITORY 推导。"""
+    base = os.environ.get("PAGES_BASE_URL", "").strip()
+    if base:
+        return base.rstrip("/")
+
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if "/" in repo:
+        owner, name = repo.split("/", 1)
+        owner, name = owner.strip(), name.strip()
+        if owner and name:
+            # 用户主页仓库（owner.github.io）没有子路径
+            if name.lower() == f"{owner.lower()}.github.io":
+                return f"https://{owner}.github.io"
+            return f"https://{owner}.github.io/{name}".rstrip("/")
+
+    raise NotifyError(
+        "缺少 PAGES_BASE_URL，且无法从 GITHUB_REPOSITORY 推导 Pages 地址"
+    )
+
+
+def discover_report_path(date_arg: str | None) -> Path:
+    """定位要发送的日报 JSON。"""
+    if date_arg:
+        if not DATE_RE.match(date_arg):
+            raise NotifyError(f"--date 格式错误：{date_arg}（应为 YYYY-MM-DD）")
+        path = REPORTS_DIR / f"{date_arg}.json"
+        if not path.exists():
+            raise NotifyError(f"未找到指定日期的日报：{path}")
+        return path
+
+    candidates = sorted(REPORTS_DIR.glob("*.json"))
+    if not candidates:
+        raise NotifyError(f"{REPORTS_DIR} 下没有可用的日报 JSON")
+    return candidates[-1]
+
+
+def load_report(path: Path) -> dict:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise NotifyError(f"读取日报失败：{path.name}（{safe_error(exc)}）") from exc
+
+    if not isinstance(data, dict):
+        raise NotifyError(f"日报格式错误：{path.name} 根节点不是对象")
+    if not DATE_RE.match(str(data.get("date", "")).strip()):
+        raise NotifyError(f"日报缺少合法的 date 字段：{path.name}")
+    return data
+
+
+def _block(data: dict, key: str) -> dict:
+    block = data.get(key)
+    return block if isinstance(block, dict) else {}
+
+
+def build_markdown(data: dict, report_url: str) -> str:
+    """构造企业微信 / Server酱 支持的 markdown 内容。"""
+    date_str = str(data.get("date", "")).strip()
+    weekday = weekday_cn(date_str)
+    heading_date = f"{date_str} {weekday}".strip()
+
+    lines: list[str] = [f"# 📘 Shaun Daily Report · {heading_date}", ""]
+
+    stage = _block(data, "stage")
+    stage_pairs = (("HR", "hr"), ("Agent", "agent"), ("经营", "mgmt"))
+    stage_parts = []
+    for label, key in stage_pairs:
+        value = clip(stage.get(key), 6)
+        if value:
+            stage_parts.append(f"{label} {value}")
+    if stage_parts:
+        lines.extend([f"> 阶段：{' ｜ '.join(stage_parts)}", ""])
+
+    # --- 组织与人才 ---
+    hrbp = _block(data, "hrbp_coe")
+    if hrbp:
+        topic = clip(hrbp.get("topic"), 36)
+        kind = clip(hrbp.get("type"), 6)
+        label = f"{kind}｜{topic}" if kind else topic
+        lines.append(f"**🧭 组织与人才｜{label}**")
+        if hrbp.get("concept"):
+            lines.append(f"概念：{clip(hrbp.get('concept'), 70)}")
+        if hrbp.get("scenario"):
+            lines.append(f"场景：{clip(hrbp.get('scenario'), 60)}")
+        if hrbp.get("partner_action"):
+            lines.append(f"伙伴动作：{clip(hrbp.get('partner_action'), 70)}")
+        questions = hrbp.get("questions")
+        if isinstance(questions, list) and questions:
+            lines.append(f"诊断：{clip(questions[0], 60)}")
+        if hrbp.get("action"):
+            lines.append(f"今晚：{clip(hrbp.get('action'), 60)}")
+        if hrbp.get("output_task"):
+            lines.append(f"本周输出：{clip(hrbp.get('output_task'), 60)}")
+        lines.append("")
+
+    # --- Agent 体系化 ---
+    agent = _block(data, "agent")
+    if agent:
+        lines.append(f"**🤖 Agent 体系化｜{clip(agent.get('topic'), 36)}**")
+        if agent.get("concept"):
+            lines.append(f"概念：{clip(agent.get('concept'), 70)}")
+        if agent.get("experiment"):
+            lines.append(f"实验：{clip(agent.get('experiment'), 60)}")
+        if agent.get("action"):
+            lines.append(f"今晚：{clip(agent.get('action'), 60)}")
+        if agent.get("milestone"):
+            lines.append(f"里程碑：{clip(agent.get('milestone'), 60)}")
+        lines.append("")
+
+    # --- 经营与影响 ---
+    management = _block(data, "management")
+    if management:
+        lines.append(f"**📊 经营与影响｜{clip(management.get('topic'), 36)}**")
+        if management.get("concept"):
+            lines.append(f"概念：{clip(management.get('concept'), 70)}")
+        if management.get("case"):
+            lines.append(f"案例：{clip(management.get('case'), 60)}")
+        if management.get("action"):
+            lines.append(f"今晚：{clip(management.get('action'), 60)}")
+        if management.get("influence_goal"):
+            lines.append(f"影响力：{clip(management.get('influence_goal'), 60)}")
+        lines.append("")
+
+    # --- HRD 实战 ---
+    hrd = _block(data, "hrd")
+    if hrd:
+        track = clip(hrd.get("track"), 8)
+        mode = clip(hrd.get("mode"), 6)
+        mode_label = "深度作业" if mode == "deep" else "轻卡"
+        label = f"{track}｜{mode_label}" if track else mode_label
+        lines.append(f"**🎯 HRD 实战｜{label}｜{clip(hrd.get('topic'), 32)}**")
+        if hrd.get("concept"):
+            lines.append(f"框架：{clip(hrd.get('concept'), 60)}")
+        if hrd.get("action"):
+            lines.append(f"今晚：{clip(hrd.get('action'), 60)}")
+        if hrd.get("deliverable"):
+            lines.append(f"交付物：{clip(hrd.get('deliverable'), 60)}")
+        lines.append("")
+
+    # --- 认知拓展 ---
+    cognition = _block(data, "cognition")
+    if cognition:
+        is_review = cognition.get("mode") == "decision_review"
+        kind = "决策复盘" if is_review else "业务解剖"
+        bu = clip(cognition.get("bu"), 12)
+        label = f"{bu}｜{kind}" if bu else kind
+        icon = "🪞" if is_review else "🔭"
+        lines.append(f"**{icon} 认知拓展｜{label}｜{clip(cognition.get('topic'), 32)}**")
+        if cognition.get("framework"):
+            lines.append(f"框架：{clip(cognition.get('framework'), 60)}")
+        facts = cognition.get("facts")
+        if isinstance(facts, list) and facts:
+            lines.append(f"事实：{clip('；'.join(str(f) for f in facts), 70)}")
+        if cognition.get("insight"):
+            lines.append(f"判断：{clip(cognition.get('insight'), 60)}")
+        if cognition.get("implication"):
+            lines.append(f"含义：{clip(cognition.get('implication'), 60)}")
+        if cognition.get("blind_spot"):
+            lines.append(f"盲点：{clip(cognition.get('blind_spot'), 50)}")
+        if cognition.get("action"):
+            lines.append(f"今晚：{clip(cognition.get('action'), 60)}")
+        if cognition.get("deliverable"):
+            lines.append(f"交付物：{clip(cognition.get('deliverable'), 60)}")
+        lines.append("")
+
+    # --- 英语 ---
+    english = _block(data, "english")
+    if english:
+        mode = clip(english.get("mode"), 8)
+        phrase = clip(english.get("phrase"), 30)
+        head = f"🌍 英语｜{mode}" if mode else "🌍 英语"
+        lines.append(f"**{head}｜{phrase}**" if phrase else f"**{head}**")
+        if english.get("words"):
+            lines.append(f"词汇：{clip(english.get('words'), 70)}")
+        if english.get("ai_talk"):
+            lines.append(f"AI Talk：{clip(english.get('ai_talk'), 60)}")
+
+        video = english.get("video") or {}
+        if isinstance(video, dict) and video.get("url"):
+            v_title = clip(video.get("title"), 40)
+            lines.append(f"视频：[{v_title}]({clip(video.get('url'), 200)})")
+        lines.append("")
+
+    preview = clip(data.get("preview"), 70)
+    if preview:
+        lines.extend([f"🔭 明日预览：{preview}", ""])
+
+    # 链接单独预留位置，避免被截断导致无法点击
+    link_block = f"\n[👉 阅读完整日报]({report_url})\n"
+    body = "\n".join(lines).rstrip()
+    budget = max(0, MAX_CONTENT_BYTES - len(link_block.encode("utf-8")))
+    content = truncate_utf8(body, budget) + link_block
+
+    # 额外安全网：极端情况下仍超限，则直接截断（此时链接可能丢失）
+    if len(content.encode("utf-8")) > MAX_CONTENT_BYTES:
+        content = truncate_utf8(content, MAX_CONTENT_BYTES)
+
+    return content
+
+
+def normalize_webhook(raw: str) -> str:
+    """补全 Webhook 协议头，兼容粘贴时漏掉 https:// 或带引号的情况。"""
+    value = raw.strip().strip('"').strip("'")
+    if not value:
+        return ""
+    if "://" not in value:
+        value = "https://" + value
+    return value
+
+
+def serverchan_endpoint(sendkey: str) -> str:
+    """根据 SendKey 前缀选择 Turbo 或 Server酱³ 的推送地址。"""
+    key = sendkey.strip()
+    if not key:
+        raise NotifyError("SERVERCHAN_SENDKEY 为空")
+    if key.startswith("sctp"):
+        match = SERVERCHAN_SC3_RE.match(key)
+        if not match:
+            raise NotifyError("Server酱³ SendKey 格式不正确（应为 sctp<uid>t...）")
+        return SERVERCHAN_SC3_URL.format(uid=match.group(1), key=key)
+    return SERVERCHAN_TURBO_URL.format(key=key)
+
+
+def send_serverchan(sendkey: str, title: str, content: str) -> None:
+    """POST 到 Server酱，正文支持 Markdown。"""
+    url = serverchan_endpoint(sendkey)
+    last_error = ""
+
+    for attempt in range(1, RETRY_TIMES + 1):
+        try:
+            response = requests.post(
+                url,
+                data={"title": title, "desp": content},
+                timeout=15,
+            )
+            response.raise_for_status()
+            result = response.json()
+            if not isinstance(result, dict):
+                raise NotifyError("Server酱返回了非预期的响应格式")
+            code = result.get("code")
+            if code != 0:
+                raise NotifyError(
+                    f"Server酱返回错误 code={code} message={result.get('message')}"
+                )
+            print("[ok] Server酱通知已发送", file=sys.stderr)
+            return
+        except (requests.RequestException, ValueError, NotifyError) as exc:
+            last_error = safe_error(exc)
+            print(
+                f"[warn] Server酱发送失败（{attempt}/{RETRY_TIMES}）：{last_error}",
+                file=sys.stderr,
+            )
+            if attempt < RETRY_TIMES:
+                time.sleep(2 * attempt)
+
+    raise NotifyError(f"Server酱通知发送失败：{last_error}")
+
+
+def send_wecom(webhook: str, content: str) -> None:
+    """POST 到企业微信机器人；对网络错误与业务错误统一重试。"""
+    payload = {"msgtype": "markdown", "markdown": {"content": content}}
+    last_error = ""
+
+    for attempt in range(1, RETRY_TIMES + 1):
+        try:
+            response = requests.post(webhook, json=payload, timeout=15)
+            response.raise_for_status()
+            result = response.json()
+            if not isinstance(result, dict):
+                raise NotifyError("企业微信返回了非预期的响应格式")
+            errcode = result.get("errcode")
+            if errcode != 0:
+                raise NotifyError(
+                    f"企业微信返回错误 errcode={errcode} errmsg={result.get('errmsg')}"
+                )
+            print("[ok] 企业微信通知已发送", file=sys.stderr)
+            return
+        except (requests.RequestException, ValueError, NotifyError) as exc:
+            last_error = safe_error(exc)
+            print(
+                f"[warn] 企业微信发送失败（{attempt}/{RETRY_TIMES}）：{last_error}",
+                file=sys.stderr,
+            )
+            if attempt < RETRY_TIMES:
+                time.sleep(2 * attempt)
+
+    raise NotifyError(f"企业微信通知发送失败：{last_error}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="推送 Shaun Daily Report 到企业微信 / Server酱（微信）")
+    parser.add_argument("--date", help="指定日期 YYYY-MM-DD，默认取最新一期")
+    parser.add_argument("--dry-run", action="store_true", help="只打印消息，不发送")
+    args = parser.parse_args()
+
+    # 环境变量检查放在流程开头。
+    # 未配置 Webhook 视为「未启用通知」：打印日志后正常退出，
+    # 不返回非零码，避免在 GitHub Actions 里被误判为失败。
+    webhook = normalize_webhook(os.environ.get("WECOM_WEBHOOK", ""))
+    sendkey = os.environ.get("SERVERCHAN_SENDKEY", "").strip()
+    if not webhook and not sendkey and not args.dry_run:
+        print("[skip] 未配置 WECOM_WEBHOOK / SERVERCHAN_SENDKEY，跳过推送")
+        return 0
+
+    try:
+        base_url = resolve_pages_base()
+    except NotifyError as exc:
+        if args.dry_run:
+            base_url = "https://example.github.io/example"
+            print(f"[warn] {exc}（dry-run 使用占位链接）", file=sys.stderr)
+        else:
+            print(f"[error] {exc}", file=sys.stderr)
+            return 1
+
+    try:
+        report_path = discover_report_path(args.date)
+        data = load_report(report_path)
+        date_str = str(data["date"]).strip()
+        report_url = f"{base_url}/reports/{date_str}.html"
+        content = build_markdown(data, report_url)
+    except NotifyError as exc:
+        print(f"[error] {exc}", file=sys.stderr)
+        return 1
+    except Exception as exc:  # noqa: BLE001 - 顶层兜底
+        print(f"[error] 构造通知失败：{safe_error(exc)}", file=sys.stderr)
+        return 1
+
+    if args.dry_run:
+        print(content)
+        print(
+            f"\n[dry-run] 内容长度 {len(content.encode('utf-8'))} 字节，"
+            f"来源 {report_path.name}",
+            file=sys.stderr,
+        )
+        return 0
+
+    failed = 0
+
+    if webhook:
+        try:
+            send_wecom(webhook, content)
+        except NotifyError as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            failed += 1
+
+    if sendkey:
+        title = f"Shaun Daily Report · {date_str}"
+        try:
+            send_serverchan(sendkey, title, content)
+        except NotifyError as exc:
+            print(f"[error] {exc}", file=sys.stderr)
+            failed += 1
+
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

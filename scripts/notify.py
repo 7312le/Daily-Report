@@ -217,6 +217,32 @@ def build_markdown(data: dict, report_url: str) -> str:
             lines.append(f"交付物：{clip(hrd.get('deliverable'), 60)}")
         lines.append("")
 
+    # --- 认知拓展 ---
+    cognition = _block(data, "cognition")
+    if cognition:
+        is_review = cognition.get("mode") == "decision_review"
+        kind = "决策复盘" if is_review else "业务解剖"
+        bu = clip(cognition.get("bu"), 12)
+        label = f"{bu}｜{kind}" if bu else kind
+        icon = "🪞" if is_review else "🔭"
+        lines.append(f"**{icon} 认知拓展｜{label}｜{clip(cognition.get('topic'), 32)}**")
+        if cognition.get("framework"):
+            lines.append(f"框架：{clip(cognition.get('framework'), 60)}")
+        facts = cognition.get("facts")
+        if isinstance(facts, list) and facts:
+            lines.append(f"事实：{clip('；'.join(str(f) for f in facts), 70)}")
+        if cognition.get("insight"):
+            lines.append(f"判断：{clip(cognition.get('insight'), 60)}")
+        if cognition.get("implication"):
+            lines.append(f"含义：{clip(cognition.get('implication'), 60)}")
+        if cognition.get("blind_spot"):
+            lines.append(f"盲点：{clip(cognition.get('blind_spot'), 50)}")
+        if cognition.get("action"):
+            lines.append(f"今晚：{clip(cognition.get('action'), 60)}")
+        if cognition.get("deliverable"):
+            lines.append(f"交付物：{clip(cognition.get('deliverable'), 60)}")
+        lines.append("")
+
     # --- 英语 ---
     english = _block(data, "english")
     if english:

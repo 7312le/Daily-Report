@@ -540,3 +540,32 @@ Error code: 401 - {'type': 'error', 'error': {'type': 'authentication_error', 'm
 - 校验链路实际生效：字段缺失 / 空话会被打回重生成。
 
 **结论**：v024 已在实际运行中生效。
+
+## 2026-11-03 · 方案落地：06 认知拓展（v025）
+
+**用户决定**：业务解剖与决策复盘两个维度都做。
+
+**排期**
+- 周二：业务解剖（`business_anatomy`），蓝沃 AI / 智能装备事业线按 ISO 周奇偶轮换。
+- 周六：决策复盘（`decision_review`），复盘用户本周一个真实判断。
+- 其余日期：`cognition: null`，不增加日常负担。
+
+**落地内容**
+- `.github/prompt/system.md`：新增模块 6「认知拓展」，定义两种模式的字段与写作边界；JSON schema 新增 `cognition`；字数上限在有认知卡时 2000。
+- `scripts/generate.py`：新增 `cognition_plan()`；`build_user_prompt` 注入当日模式、BU、写法要求与 null 规则；校验 mode / bu / facts / questions / deliverable，并拒绝非认知日出现 cognition；新增 `render_cognition`（业务解剖 🔭 / 决策复盘 🪞，全宽卡片、事实列表）；摘要与 focus 同步。
+- `scripts/notify.py`：推送摘要新增「认知拓展」块。
+- `templates/report.html`：新增青色系 `--cognition` 变量、卡片 / 图标 / badge、`fact-list` 样式。
+- `README.md`、`docs/index.html`：模块表、chips、meta 与 lede 同步。
+
+**字段要求**
+- 业务解剖：framework、3 条 facts、insight、implication（对人才/编制的含义）、blind_spot、questions、action；deliverable 空。
+- 决策复盘：framework、2–3 条 facts（示例须标注「示例」，真实内容「待你补充」）、insight、implication（下次调整）、blind_spot、questions、action；deliverable 必填。
+
+**验证**
+- `py_compile` 通过。
+- 轮转：2026-11-03 周二 → 业务解剖 / 智能装备事业线；11-07 周六 → 决策复盘；11-02 周一 → null。
+- 缺失 cognition 被拒绝；业务解剖完整样例通过；决策复盘缺交付物被拒绝；非认知日出现 cognition 被拒绝。
+- 渲染：5 卡、`card-cognition`、`fact-list`、无占位符；摘要与推送均含认知拓展。
+- prompt 校验：认知日指定 mode/BU 与 2000 字上限，非认知日强制 null。
+
+**快照**：`snapshots/v025/`。

@@ -83,6 +83,11 @@ WEEKDAY_HRD_TRACKS = ("影响力", "人才发展", "变革沟通", "用工风险
 AGENT_WEEKDAYS = {0, 2, 4}  # 周一、周三、周五
 EXEC_ENGLISH_WEEKDAY = 2  # 隔周周三为高管英语
 
+# 认知拓展：周二业务解剖（两个事业部按 ISO 周奇偶轮换），周六决策复盘
+ALLOWED_COGNITION_MODES = {"business_anatomy", "decision_review"}
+COGNITION_WEEKDAYS = {"business_anatomy": 1, "decision_review": 5}
+COGNITION_BUS_ROTATION = ("蓝沃 AI", "智能装备事业线")
+
 # 年度 HR 日历：月份 -> (节点, 说明)
 HR_CALENDAR = {
     1: ("年度人力规划落地", "年度考核、调薪方案、组织与编制冻结"),
@@ -146,6 +151,17 @@ def hrd_plan(now: datetime) -> dict:
         track = ALLOWED_HRD_TRACKS[now.isocalendar().week % len(ALLOWED_HRD_TRACKS)]
         return {"mode": "deep", "track": track}
     return {"mode": "light", "track": WEEKDAY_HRD_TRACKS[weekday]}
+
+
+def cognition_plan(now: datetime) -> dict | None:
+    """周二业务解剖、周六决策复盘；其余日期不生成认知拓展卡。"""
+    weekday = now.weekday()
+    if weekday == COGNITION_WEEKDAYS["business_anatomy"]:
+        bu = COGNITION_BUS_ROTATION[now.isocalendar().week % 2]
+        return {"mode": "business_anatomy", "bu": bu}
+    if weekday == COGNITION_WEEKDAYS["decision_review"]:
+        return {"mode": "decision_review", "bu": "双事业部"}
+    return None
 
 
 def include_agent(now: datetime) -> bool:
@@ -306,6 +322,7 @@ def build_user_prompt(
     weekday: str,
     recent_topics: list[str],
     hrd: dict,
+    cognition: dict | None,
     agent_today: bool,
     english_today: str,
     calendar: dict,
@@ -356,9 +373,30 @@ def build_user_prompt(
             "action 必须具体；deliverable 填空字符串。"
         )
 
+    if cognition and cognition["mode"] == "business_anatomy":
+        cognition_rule = (
+            "今天需要生成 cognition 模块：mode 必须为 business_anatomy，"
+            f"bu 必须为「{cognition['bu']}」。按「分析框架 → 业务事实 → 判断 → "
+            "对人才/编制的含义 → HR 容易忽略 → 诊断问题 → 动作」组织，"
+            "不要写成行业科普，必须落到该事业部该多配谁、少配谁、哪个岗位可以合并；"
+            "deliverable 填空字符串。"
+        )
+    elif cognition and cognition["mode"] == "decision_review":
+        cognition_rule = (
+            "今天需要生成 cognition 模块：mode 必须为 decision_review，bu 填「双事业部」。"
+            "用一个双事业部的典型判断做示例并明确标注「示例」，不要假装知道用户本周的真实决定；"
+            "真实判断、依据与结果用「待你补充」留白。deliverable 必须非空，"
+            "写「本周决策复盘卡」及可直接填写的字段。"
+        )
+    else:
+        cognition_rule = (
+            "今天不生成 cognition 模块，顶层 cognition 字段必须为 null，不要输出该对象。"
+        )
+
     calendar_month = calendar["month"]
     calendar_focus = calendar["node"]
     calendar_detail = calendar["detail"]
+    word_limit = 2000 if cognition else 1800
 
     return f"""请生成 {date_str}（{weekday}）的 AI 原生 HR 一号位成长日报。
 
@@ -372,7 +410,7 @@ def build_user_prompt(
 硬性要求：
 1. 严格按 system prompt 中的 JSON 结构输出，字段齐全，不要增删字段。
 2. 只输出一个 JSON 对象，不要 Markdown 代码块，不要解释文字。
-3. 除英语学习素材外，全部使用简体中文；总字数不超过 1800 字。
+3. 除英语学习素材外，全部使用简体中文；总字数不超过 {word_limit} 字。
 4. 每个知识点必须带「今晚动作」，具体、可在 30 分钟内完成。
 5. hrbp_coe.type 只能在 HRBP / COE / OD / TD 中选择；type 是当天的专业镜头，scenario 必须是同一个业务问题，不要为了换视角而换场景。
 6. hrbp_coe.partner_action 每天必填，且必须写清：对哪个业务负责人（岗位角色，不写姓名）、在什么场合、用哪句业务语言、提出什么具体请求或判断、盯哪个指标。禁止「加强沟通」「提升意识」这类空话。
@@ -386,6 +424,7 @@ def build_user_prompt(
 14. english.mode 必须为「{english_today}」；高管英语时围绕 board update、bad news、pushback、executive summary、resource ask。
 15. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
 16. date 字段必须为 "{date_str}"；stage.hr 填 L1–L5，stage.agent 填 A1–A5，stage.mgmt 填 M1–M4 或 M5a/M5b。
+17. {cognition_rule}
 """
 
 
@@ -428,6 +467,19 @@ def _require_text(block: dict, key: str, prefix: str) -> str:
     if not value:
         raise ValueError(f"{prefix}.{key} 不能为空")
     return value
+
+
+def _bu_matches(expected: str, actual: str) -> bool:
+    """容忍「事业部 / 事业线 / 无空格」等写法差异。"""
+    if not expected:
+        return True
+    if expected in actual or actual in expected:
+        return True
+    if expected.startswith("蓝沃"):
+        return "蓝沃" in actual
+    if expected.startswith("智能装备"):
+        return "智能装备" in actual
+    return False
 
 
 def validate_report(data: dict, expected: dict | None = None) -> None:
@@ -535,6 +587,63 @@ def validate_report(data: dict, expected: dict | None = None) -> None:
             raise ValueError(f"hrd.mode 应为 {expected['hrd_mode']}，实际为 {hrd['mode']}")
         if expected.get("hrd_track") and hrd["track"] != expected["hrd_track"]:
             raise ValueError(f"hrd.track 应为 {expected['hrd_track']}，实际为 {hrd['track']}")
+
+    # --- 认知拓展（可选，周二业务解剖 / 周六决策复盘） ---
+    cognition_value = data.get("cognition")
+    expected_cognition = (expected or {}).get("cognition")
+    if expected_cognition and cognition_value is None:
+        raise ValueError("今天需要生成 cognition 模块，但返回了 null")
+    if not expected_cognition and cognition_value is not None:
+        raise ValueError("今天不应生成 cognition 模块，cognition 必须为 null")
+
+    if cognition_value is None:
+        data["cognition"] = None
+    else:
+        cognition = _require_block(data, "cognition")
+        cognition["mode"] = one_line(cognition.get("mode")).lower()
+        if cognition["mode"] not in ALLOWED_COGNITION_MODES:
+            raise ValueError(
+                f"cognition.mode 非法：{cognition['mode']!r}"
+                "（应为 business_anatomy / decision_review）"
+            )
+        for field in ("bu", "topic", "framework", "insight", "implication", "blind_spot", "action"):
+            cognition[field] = _require_text(cognition, field, "cognition")
+
+        facts = cognition.get("facts")
+        if isinstance(facts, str):
+            facts = [facts]
+        if not isinstance(facts, list):
+            raise ValueError("cognition.facts 必须是字符串数组")
+        cognition["facts"] = [one_line(item) for item in facts if one_line(item)]
+        if len(cognition["facts"]) < 2:
+            raise ValueError("cognition.facts 至少需要 2 条")
+
+        questions = cognition.get("questions")
+        if isinstance(questions, str):
+            questions = [questions]
+        if not isinstance(questions, list):
+            raise ValueError("cognition.questions 必须是字符串数组")
+        cognition["questions"] = [one_line(item) for item in questions if one_line(item)]
+        if not cognition["questions"]:
+            raise ValueError("cognition.questions 不能为空")
+
+        cognition["deliverable"] = optional_text(cognition.get("deliverable"))
+        if cognition["mode"] == "decision_review" and not cognition["deliverable"]:
+            raise ValueError("cognition.mode=decision_review 时 deliverable 不能为空")
+
+        if expected_cognition:
+            if expected_cognition.get("mode") and cognition["mode"] != expected_cognition["mode"]:
+                raise ValueError(
+                    f"cognition.mode 应为 {expected_cognition['mode']}，实际为 {cognition['mode']}"
+                )
+            if (
+                expected_cognition.get("mode") == "business_anatomy"
+                and expected_cognition.get("bu")
+                and not _bu_matches(expected_cognition["bu"], cognition["bu"])
+            ):
+                raise ValueError(
+                    f"cognition.bu 应为 {expected_cognition['bu']}，实际为 {cognition['bu']}"
+                )
 
     # --- 英语 ---
     english = data.get("english")
@@ -770,6 +879,57 @@ def render_hrd(hrd: dict) -> str:
     )
 
 
+def render_facts(facts: list[str], label: str) -> str:
+    items = "".join(f"<li>{esc(one_line(f))}</li>" for f in facts if one_line(f))
+    if not items:
+        return ""
+    return (
+        '<div class="field">'
+        f'<p class="field-label">{esc(label)}</p>'
+        f'<ul class="fact-list">{items}</ul>'
+        "</div>"
+    )
+
+
+def render_cognition(cognition: dict) -> str:
+    mode = one_line(cognition.get("mode"))
+    is_review = mode == "decision_review"
+    bu = one_line(cognition.get("bu"))
+    kind = "决策复盘" if is_review else "业务解剖"
+    badge = f"{bu} · {kind}" if bu else kind
+    title = one_line(cognition.get("topic")) or kind
+
+    body = "".join(
+        [
+            render_field("复盘工具" if is_review else "分析框架", cognition.get("framework")),
+            render_facts(
+                cognition.get("facts") or [],
+                "当时依据与实际" if is_review else "业务事实",
+            ),
+            render_field("判断", cognition.get("insight")),
+            render_field(
+                "下次怎么调整" if is_review else "对人才 / 编制的含义",
+                cognition.get("implication"),
+            ),
+            render_field("可能的偏差" if is_review else "HR 容易忽略", cognition.get("blind_spot")),
+            render_questions(cognition.get("questions") or []),
+        ]
+    )
+    deliverable = (
+        render_task_box("本周决策复盘卡", cognition.get("deliverable"), "deliverable-box")
+        if is_review
+        else ""
+    )
+    return (
+        '<article class="card card-cognition card-wide">'
+        + card_head("🪞" if is_review else "🔭", "06 · 认知拓展", title, badge=badge)
+        + body
+        + render_action(cognition.get("action"))
+        + deliverable
+        + "</article>"
+    )
+
+
 def render_video(video: dict) -> str:
     url = one_line(video.get("url"))
     if not url:
@@ -848,6 +1008,9 @@ def render_cards(data: dict) -> str:
     )
     cards.append(render_hrd(data.get("hrd") or {}))
     cards.append(render_english(data.get("english") or {}))
+    cognition = data.get("cognition")
+    if isinstance(cognition, dict) and cognition:
+        cards.append(render_cognition(cognition))
     return "\n".join(cards)
 
 
@@ -858,6 +1021,7 @@ def build_summary(data: dict) -> str:
     agent = data.get("agent") or {}
     management = data.get("management") or {}
     hrd = data.get("hrd") or {}
+    cognition = data.get("cognition") or {}
     english = data.get("english") or {}
 
     if one_line(hrbp.get("topic")):
@@ -873,6 +1037,9 @@ def build_summary(data: dict) -> str:
         parts.append(f"HRD：{clip(hrd.get('topic'), 24)}")
     if one_line(english.get("phrase")):
         parts.append(f"英语：{clip(english.get('phrase'), 24)}")
+    if one_line(cognition.get("topic")):
+        kind = "决策复盘" if cognition.get("mode") == "decision_review" else "业务解剖"
+        parts.append(f"认知（{kind}）：{clip(cognition.get('topic'), 24)}")
 
     return " ｜ ".join(parts)
 
@@ -890,6 +1057,7 @@ def render_report(
     agent = data.get("agent") or {}
     management = data.get("management") or {}
     hrd = data.get("hrd") or {}
+    cognition = data.get("cognition") or {}
 
     stage_text = " ｜ ".join(
         [
@@ -906,6 +1074,7 @@ def render_report(
             one_line(agent.get("topic")),
             one_line(management.get("topic")),
             one_line(hrd.get("topic")),
+            one_line(cognition.get("topic")),
         )
         if part
     )
@@ -1047,16 +1216,20 @@ def main() -> int:
     weekday = WEEKDAYS[now.weekday()]
 
     plan = hrd_plan(now)
+    cognition = cognition_plan(now)
     agent_today = include_agent(now)
     english_today = english_mode(now)
     calendar = calendar_node(now)
     is_first_of_month = now.day == 1
     is_quarter_first_week = now.month in (1, 4, 7, 10) and now.day <= 7
 
+    cognition_label = (
+        f"{cognition['mode']}/{cognition['bu']}" if cognition else "跳过"
+    )
     print(
         f"[info] 今日安排：HRD {plan['mode']}/{plan['track']}，"
-        f"Agent {'生成' if agent_today else '跳过'}，英语 {english_today}，"
-        f"节奏 {calendar['month']}·{calendar['node']}",
+        f"Agent {'生成' if agent_today else '跳过'}，认知 {cognition_label}，"
+        f"英语 {english_today}，节奏 {calendar['month']}·{calendar['node']}",
         file=sys.stderr,
     )
 
@@ -1069,6 +1242,7 @@ def main() -> int:
         weekday,
         recent_topics,
         plan,
+        cognition,
         agent_today,
         english_today,
         calendar,
@@ -1088,6 +1262,7 @@ def main() -> int:
         expected = {
             "hrd_mode": plan["mode"],
             "hrd_track": plan["track"],
+            "cognition": cognition,
             "agent": agent_today,
             "english_mode": english_today,
         }
