@@ -374,17 +374,18 @@ def build_user_prompt(
 2. 只输出一个 JSON 对象，不要 Markdown 代码块，不要解释文字。
 3. 除英语学习素材外，全部使用简体中文；总字数不超过 1800 字。
 4. 每个知识点必须带「今晚动作」，具体、可在 30 分钟内完成。
-5. hrbp_coe.type 只能在 HRBP / COE / OD / TD 中选择，并尽量与前一天不同。
-6. 场景、案例、人才判断优先落到蓝沃 AI 与智能装备事业线；行业信息只围绕工业 AI 与非标自动化。
-7. 每天至少给出一个判断型结论（谁该上、谁该等、岗位要不要设、现在做还是等），不要只罗列概念。
-8. {output_rule}
-9. {milestone_rule}
-10. {influence_rule}
-11. {agent_rule}
-12. {hrd_rule}
-13. english.mode 必须为「{english_today}」；高管英语时围绕 board update、bad news、pushback、executive summary、resource ask。
-14. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
-15. date 字段必须为 "{date_str}"；stage.hr 填 L1–L5，stage.agent 填 A1–A5，stage.mgmt 填 M1–M4 或 M5a/M5b。
+5. hrbp_coe.type 只能在 HRBP / COE / OD / TD 中选择；type 是当天的专业镜头，scenario 必须是同一个业务问题，不要为了换视角而换场景。
+6. hrbp_coe.partner_action 每天必填，且必须写清：对哪个业务负责人（岗位角色，不写姓名）、在什么场合、用哪句业务语言、提出什么具体请求或判断、盯哪个指标。禁止「加强沟通」「提升意识」这类空话。
+7. 场景、案例、人才判断优先落到蓝沃 AI 与智能装备事业线；行业信息只围绕工业 AI 与非标自动化。
+8. 每天至少给出一个判断型结论（谁该上、谁该等、岗位要不要设、现在做还是等），不要只罗列概念。
+9. {output_rule}
+10. {milestone_rule}
+11. {influence_rule}
+12. {agent_rule}
+13. {hrd_rule}
+14. english.mode 必须为「{english_today}」；高管英语时围绕 board update、bad news、pushback、executive summary、resource ask。
+15. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
+16. date 字段必须为 "{date_str}"；stage.hr 填 L1–L5，stage.agent 填 A1–A5，stage.mgmt 填 M1–M4 或 M5a/M5b。
 """
 
 
@@ -463,11 +464,16 @@ def validate_report(data: dict, expected: dict | None = None) -> None:
 
     # --- 组织与人才 ---
     hrbp = _require_block(data, "hrbp_coe")
-    for field in ("topic", "type", "concept", "scenario", "action"):
+    for field in ("topic", "type", "concept", "scenario", "partner_action", "action"):
         hrbp[field] = _require_text(hrbp, field, "hrbp_coe")
     hrbp["type"] = hrbp["type"].upper()
     if hrbp["type"] not in ALLOWED_HRBP_TYPES:
         raise ValueError(f"hrbp_coe.type 非法：{hrbp['type']}（应为 HRBP / COE / OD / TD）")
+    if len(hrbp["partner_action"]) < 20:
+        raise ValueError(
+            "hrbp_coe.partner_action 过于笼统：需写清业务负责人、场合、"
+            "业务语言、具体请求与跟踪指标"
+        )
     hrbp["output_task"] = optional_text(hrbp.get("output_task"))
 
     questions = hrbp.get("questions")
@@ -694,6 +700,7 @@ def render_hrbp_coe(hrbp: dict, stage: str) -> str:
         '<article class="card card-hr">'
         + card_head("🧭", f"01 · 组织与人才 · {stage}", title, badge=one_line(hrbp.get("type")))
         + body
+        + render_task_box("业务伙伴动作", hrbp.get("partner_action"), "partner-box")
         + render_action(hrbp.get("action"))
         + render_task_box("本周输出任务", hrbp.get("output_task"), "output-box")
         + "</article>"
@@ -854,7 +861,10 @@ def build_summary(data: dict) -> str:
     english = data.get("english") or {}
 
     if one_line(hrbp.get("topic")):
-        parts.append(f"组织与人才：{one_line(hrbp.get('topic'))}")
+        topic = one_line(hrbp.get("topic"))
+        partner = clip(hrbp.get("partner_action"), 26)
+        suffix = f"｜伙伴动作：{partner}" if partner else ""
+        parts.append(f"组织与人才：{topic}{suffix}")
     if one_line(agent.get("topic")):
         parts.append(f"Agent：{one_line(agent.get('topic'))}")
     if one_line(management.get("topic")):

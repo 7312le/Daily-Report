@@ -162,6 +162,8 @@ def build_markdown(data: dict, report_url: str) -> str:
             lines.append(f"概念：{clip(hrbp.get('concept'), 70)}")
         if hrbp.get("scenario"):
             lines.append(f"场景：{clip(hrbp.get('scenario'), 60)}")
+        if hrbp.get("partner_action"):
+            lines.append(f"伙伴动作：{clip(hrbp.get('partner_action'), 70)}")
         questions = hrbp.get("questions")
         if isinstance(questions, list) and questions:
             lines.append(f"诊断：{clip(questions[0], 60)}")
