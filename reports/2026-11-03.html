@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shaun Daily Report · 2026-11-03</title>
-  <meta name="description" content="组织与人才：TD 视角：明年关键岗位继任图——先算「风险敞口」，再排培养预算｜伙伴动作：在 11 月人力规划评审会上，向蓝沃 AI 与智能… ｜ 经营：无授权影响：在预算评审里用「选项对比」代替「要钱」 ｜ HRD：继任不是找替身，是判断「这个人还差哪一段经历」 ｜ 英语：We have no ready succes…">
-  <meta name="report-summary" content="组织与人才：TD 视角：明年关键岗位继任图——先算「风险敞口」，再排培养预算｜伙伴动作：在 11 月人力规划评审会上，向蓝沃 AI 与智能… ｜ 经营：无授权影响：在预算评审里用「选项对比」代替「要钱」 ｜ HRD：继任不是找替身，是判断「这个人还差哪一段经历」 ｜ 英语：We have no ready succes…">
+  <meta name="description" content="组织与人才：OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕｜伙伴动作：在本周与两个事业部负责人分别的规划预沟通上，用「明… ｜ 经营：无授权影响：预算评审前先做「否决者」的私下预沟通 ｜ HRD：干部选任：从「业务最强」到「能带团队」的那道坎… ｜ 英语：justify the headcount：例… ｜ 认知（业务解剖）：非标自动化的交付漏斗：钱是在哪一段漏掉的">
+  <meta name="report-summary" content="组织与人才：OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕｜伙伴动作：在本周与两个事业部负责人分别的规划预沟通上，用「明… ｜ 经营：无授权影响：预算评审前先做「否决者」的私下预沟通 ｜ HRD：干部选任：从「业务最强」到「能带团队」的那道坎… ｜ 英语：justify the headcount：例… ｜ 认知（业务解剖）：非标自动化的交付漏斗：钱是在哪一段漏掉的">
   <meta name="report-date" content="2026-11-03">
   <meta property="og:title" content="Shaun Daily Report · 2026-11-03">
-  <meta property="og:description" content="组织与人才：TD 视角：明年关键岗位继任图——先算「风险敞口」，再排培养预算｜伙伴动作：在 11 月人力规划评审会上，向蓝沃 AI 与智能… ｜ 经营：无授权影响：在预算评审里用「选项对比」代替「要钱」 ｜ HRD：继任不是找替身，是判断「这个人还差哪一段经历」 ｜ 英语：We have no ready succes…">
+  <meta property="og:description" content="组织与人才：OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕｜伙伴动作：在本周与两个事业部负责人分别的规划预沟通上，用「明… ｜ 经营：无授权影响：预算评审前先做「否决者」的私下预沟通 ｜ HRD：干部选任：从「业务最强」到「能带团队」的那道坎… ｜ 英语：justify the headcount：例… ｜ 认知（业务解剖）：非标自动化的交付漏斗：钱是在哪一段漏掉的">
   <style>
     :root {
       --bg: #f4f6fb;
@@ -26,6 +26,8 @@
       --hrd-soft: #fff1f2;
       --english: #d97706;
       --english-soft: #fffbeb;
+      --cognition: #0e7490;
+      --cognition-soft: #ecfeff;
       --radius: 20px;
       --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -168,6 +170,7 @@
     .card-mgmt { border-top-color: var(--mgmt); }
     .card-hrd { grid-column: span 2; border-top-color: var(--hrd); }
     .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-cognition { border-top-color: var(--cognition); }
     .card-wide { grid-column: span 2; }
 
     .card-head {
@@ -194,6 +197,7 @@
     .card-mgmt .card-icon { background: var(--mgmt-soft); }
     .card-hrd .card-icon { background: var(--hrd-soft); }
     .card-english .card-icon { background: var(--english-soft); }
+    .card-cognition .card-icon { background: var(--cognition-soft); }
 
     .card-kicker {
       margin: 0 0 3px;
@@ -226,6 +230,7 @@
     .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
     .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
     .card-hrd .card-badge { background: var(--hrd-soft); color: var(--hrd); }
+    .card-cognition .card-badge { background: var(--cognition-soft); color: var(--cognition); }
 
     /* ---------- Fields ---------- */
     .field { margin-bottom: 14px; }
@@ -278,6 +283,28 @@
       color: #4338ca;
       font-size: 10.5px;
       font-weight: 700;
+    }
+
+    .fact-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .fact-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .fact-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
     }
 
     /* ---------- Action ---------- */
@@ -548,23 +575,24 @@
       </div>
       <p class="stages">HR · L4 ｜ Agent · A4 ｜ 经营 · M5b ｜ HRD · 人才发展</p>
       <p class="calendar">年度节奏：11 月 · 明年人力规划与预算</p>
-      <p class="focus">TD 视角：明年关键岗位继任图——先算「风险敞口」，再排培养预算 ｜ 无授权影响：在预算评审里用「选项对比」代替「要钱」 ｜ 继任不是找替身，是判断「这个人还差哪一段经历」</p>
+      <p class="focus">OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕 ｜ 无授权影响：预算评审前先做「否决者」的私下预沟通 ｜ 干部选任：从「业务最强」到「能带团队」的那道坎，怎么判断他过了没有 ｜ 非标自动化的交付漏斗：钱是在哪一段漏掉的</p>
     </header>
 
     <main class="grid">
-      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 组织与人才 · L4</p><h2 class="card-title">TD 视角：明年关键岗位继任图——先算「风险敞口」，再排培养预算<span class="card-badge">TD</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">继任风险敞口 = 岗位空缺概率 × 空缺影响度 × 内部就绪度缺口。空缺影响度看三件事：是否卡交付、是否卡客户、是否卡技术路线。判定标准：影响度高且 12 个月内无 Ready-now 人选的岗位，列为「红岗」，明年预算优先给红岗的培养与外部储备，其余岗位只做观察不做投入。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">11 月做明年人力规划，蓝沃 AI 的算法负责人与行业解决方案负责人、智能装备的项目交付负责人，都是「一个人走了项目就停」的岗位。往年继任培养预算按部门平均分配，结果谁都没培养出来。今年要先分清楚：哪些岗是真的红岗，哪些只是听起来重要。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>如果这个岗位的人下周离职，哪个客户项目会受影响、影响多大，能不能说清具体是哪几个项目？</li><li>现在团队里有没有人，给他 6 个月就能接这个岗？如果没有，是没人，还是我们没给过他机会？</li><li>这个岗位的能力，是必须从外部买，还是可以从内部项目里长出来？</li></ul></div><div class="partner-box"><span class="task-label">业务伙伴动作</span><p>在 11 月人力规划评审会上，向蓝沃 AI 与智能装备两位事业线负责人出示一张「红岗清单」，用「这三个岗一旦空缺，直接影响明年交付与客户续签，需要各配 1 名后备并锁定培养预算」提出请求：每个红岗指定 1 名后备人选并承诺 2 次轮岗或代岗机会；盯「红岗后备就绪率」与「红岗空缺时长」。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚用 30 分钟列出两个事业部各 5 个关键岗位，按「卡交付 / 卡客户 / 卡技术」三栏打勾，勾满两栏且无后备的标红，产出一张 10 行红岗清单。</p></div><div class="output-box"><span class="task-label">本周输出任务</span><p>一页纸《2027 年红岗继任风险清单》：岗位、影响维度、当前后备、就绪时间、明年所需投入，作为预算会附件。</p></div></article>
-<article class="card card-mgmt card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 经营与影响 · M5b</p><h2 class="card-title">无授权影响：在预算评审里用「选项对比」代替「要钱」</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">预算会上真正决定成败的不是金额，是提案的框架。把「我要加人/加钱」改写成「三个选项：A 不加投入、B 中等投入、C 全力投入，各自对应的交付风险与成本」，让决策者做选择而不是做否决。判断标准：如果对方只能回答是或否，说明你的提案还没做成选项。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">汇川技术（工业自动化）在从单机产品向行业解决方案转型期间，采用按行业线核算投入产出的方式做资源分配，把研发与销售资源按行业机会大小排序而非按部门平均切分。这是公开披露的经营逻辑，具体数字按公司实际数据替换。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚把明年的编制与培养预算需求写成 A/B/C 三个选项，每项写清对应的交付风险与人工成本，控制在半页纸，明早带着它去评审会。</p></div></article>
-<article class="card card-hrd"><header class="card-head"><span class="card-icon" aria-hidden="true">🎯</span><div><p class="card-kicker">04 · HRD 实战</p><h2 class="card-title">继任不是找替身，是判断「这个人还差哪一段经历」<span class="card-badge">人才发展</span></h2></div></header><div class="field"><p class="field-label">框架 / 判断标准</p><p class="field-text">后备人选就绪度按三段经历判定：带过完整项目周期、独立对过客户或经营单元、做过跨团队协调。三段齐为 Ready-now，缺一段为 1 年内可就绪，缺两段以上不算后备。培养预算只投给「缺一段」的人，缺两段以上的先放回业务里练，不占培养资源。</p></div><div class="field"><p class="field-label">公司情境</p><p class="field-text">工业 AI 团队的技术骨干往往只做过算法交付，没对过客户；非标自动化的项目经理只带过单项目，没管过经营。两类人放进同一个继任池就会失真，必须按各自缺的经历分别设计轮岗。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚挑 2 名后备，各用三句话写清他缺哪一段经历、明年哪个月补、补的方式是什么，写成继任发展卡。</p></div></article>
-<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语精进</p><h2 class="card-title">英语精进 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸查并收藏：succession（继任）、readiness（就绪度）、exposure（敞口/风险暴露）、retention（留任）、bench strength（后备力量深度）；各造一句与岗位继任相关的话并跟读一遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">We have no ready successor for this role. 这个岗位目前没有可即刻接任的人选。用于向上汇报关键岗位风险。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：向国际客户或海外合作方解释关键岗位交接安排。让 AI 扮演对方项目经理，你就「谁来接、何时接、过渡期如何保证交付」做 6–8 轮对话，刻意练习用 no ready successor、transition period、single point of failure 说明风险而不引发恐慌。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV12dAbzEELc/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">Love English Lab｜在会议中展现真正的领导力</span><span class="video-task">任务：记下开场、拉回跑题、收尾各 2 句，组合成一段 45 秒的会议主持开场白并录音。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 组织与人才 · L4</p><h2 class="card-title">OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕<span class="card-badge">OD</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">编制预算不是按事业部报需求加总，而是先定人工成本占营收比与人均产值两条约束线，再倒推总编制，最后按业务确定性排序分配。判断标准：新增编制必须回答「不加这个人，哪个产值或交付节点会失守」；答不上来的编制一律进「明年 Q2 复议池」而不是直接砍掉，保留弹性。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">11 月做明年规划，蓝沃 AI 报的是产品化团队扩张（算法、行业解决方案、交付），智能装备事业线报的是项目经理与现场调试工程师。两条线的钱都涨，但营收节奏不同：装备按单确认收入、可预测性强；AI 产品验证周期长、收入滞后。若按需求加总会把不确定性的钱先花掉。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>明年装备线已签和明确在谈的订单，对应的交付人力缺口是多少人月，能不能用外协补？</li><li>蓝沃 AI 明年哪几个产品能形成可复用的标准交付，从而让人均产值不再随项目数线性增长？</li></ul></div><div class="partner-box"><span class="task-label">业务伙伴动作</span><p>在本周与两个事业部负责人分别的规划预沟通上，用「明年人工成本占营收比按公司实际数据替换，已比今年上升，再按你们报的编制会到更高」这句话开场，提出「装备线编制按订单交付缺口配足、蓝沃 AI 新增编制先给 Q1 落地的人，其余挂 Q2 复议」，并要求各自给出「不加这个人的失守节点」；之后盯「人均产值」与「人工成本占营收比」两个指标。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚把两个事业部报上来的编制需求按「岗位—支撑的产值或交付节点—不可替代性」做成一张三列表，标出答不上失守节点的岗位数量与对应人工成本。</p></div><div class="output-box"><span class="task-label">本周输出任务</span><p>一页纸《明年编制总量约束与分配建议》：两条约束线、总编制、两事业部切分、Q2 复议池清单。</p></div></article>
+<article class="card card-mgmt card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 经营与影响 · M5b</p><h2 class="card-title">无授权影响：预算评审前先做「否决者」的私下预沟通</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">预算评审不是会上说服，而是会前把关键否决者的顾虑提前消解。方法：列出对人力预算有实质影响力的 3–4 人，判断各自最在意的是成本、交付还是组织稳定，会前一对一给出针对性证据；会上只做确认，不做辩论。判断标准：如果会前还有一个关键人不知道你要提什么，这次评审就不该开。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">美的集团在推进 T+3 与数字化转型时，推动方并非靠一次集团会议拍板，而是先在事业部层面与各负责人就库存与交付指标逐一对齐，把变革语言翻译成各事业部自己的经营指标，再进入正式决策流程。工业自动化与装备企业普遍适用同一逻辑：跨事业部资源分配，会前对齐决定结果。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚列出明年人力预算评审的 4 位关键影响人，各写一句他最在意的指标，并给其中 1 位准备一段 3 句话的会前预沟通话术。</p></div></article>
+<article class="card card-hrd"><header class="card-head"><span class="card-icon" aria-hidden="true">🎯</span><div><p class="card-kicker">04 · HRD 实战</p><h2 class="card-title">干部选任：从「业务最强」到「能带团队」的那道坎，怎么判断他过了没有<span class="card-badge">人才发展</span></h2></div></header><div class="field"><p class="field-label">框架 / 判断标准</p><p class="field-text">技术骨干晋升管理岗最常见的误判是拿个人产出当管理潜力。判断标准看三条证据：是否主动把方法沉淀给他人（可复制）、是否处理过一次人际冲突且结果被双方接受、是否在资源不足时做过取舍并承担后果。三条缺两条，就应先给「项目负责人」这类临时授权试岗，而不是直接任命。</p></div><div class="field"><p class="field-label">公司情境</p><p class="field-text">智能装备事业线的项目经理多由资深调试工程师提拔，技术过硬但常陷入自己上手、团队闲着；蓝沃 AI 的算法骨干转做小组长后，仍按个人节奏写代码，交付协同反而变慢。两条线的干部供给都不足，明年又要靠他们撑编制。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚从两个事业部各挑 1 名准备提拔的技术骨干，用上述三条证据各打勾或打叉，写下一条「试岗 3 个月要观察的行为」。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语精进</p><h2 class="card-title">英语精进 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸查并收藏 headcount、backfill、attrition、ramp-up、justify；每个词查完后用自己的话各造一句与编制规划相关的句子并跟读一遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">justify the headcount：例句 We need to justify the headcount with a clear delivery gap before Q1. 释义：用明确的交付缺口来论证这个编制是必要的。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">让 AI 扮演事业部负责人，你扮演 HR，就「明年多要 5 个编制」展开 6–8 轮对话。刻意练习：用 delivery gap、revenue impact 说明理由，用 If we don&#x27;t add now, we will… 做条件句表达，并练习在被质疑时用 Let me put it in numbers. 把话题拉回数据。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV12dAbzEELc/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">Love English Lab｜在会议中展现真正的领导力</span><span class="video-task">任务：记下开场、拉回跑题、收尾各 2 句，组合成一段 45 秒的会议主持开场白并录音。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+<article class="card card-cognition card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">🔭</span><div><p class="card-kicker">06 · 认知拓展</p><h2 class="card-title">非标自动化的交付漏斗：钱是在哪一段漏掉的<span class="card-badge">智能装备事业线 · 业务解剖</span></h2></div></header><div class="field"><p class="field-label">分析框架</p><p class="field-text">交付漏斗（商机—方案—中标—设计—制造—现场调试—验收回款），因为它能把「人效」落到具体环节，而不是笼统谈人均产值。</p></div><div class="field"><p class="field-label">业务事实</p><ul class="fact-list"><li>非标项目毛利高度依赖前期方案与设计阶段的选型质量，方案阶段省的人力，往往在调试阶段加倍付出。</li><li>现场调试是收入确认与回款的前置条件，调试工程师是稀缺资源，一旦多项目并行就出现排队。</li><li>项目经理常兼方案与现场协调，导致前期报价与后期交付责任不对齐，变更成本难归集。</li></ul></div><div class="field"><p class="field-label">判断</p><p class="field-text">这条线真正赚钱靠的是「一次做对」的方案与设计能力，最脆弱环节在方案—设计之间的接口，不是制造产能。</p></div><div class="field"><p class="field-label">对人才 / 编制的含义</p><p class="field-text">明年编制应向方案工程师与调试工程师倾斜，制造端可适度外协；项目经理与方案工程师若长期一人兼任，应拆开或至少设专职方案岗，否则变更成本永远算不清。</p></div><div class="field"><p class="field-label">HR 容易忽略</p><p class="field-text">HR 容易只看「人不够」就加工程师，忽略方案阶段的能力密度才是毛利开关，加错人等于把成本堆在交付末端。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>今年项目里变更成本最高的是哪几个环节，和方案阶段的投入是否相关？</li><li>项目经理兼方案的比例有多高，拆岗后交付周期会怎么变？</li></ul></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚调取 3 个已完工项目的阶段人力投入与变更记录，画一张简单漏斗图，标出人力最密集和变更最多的两个环节。</p></div></article>
     </main>
 
     <section class="preview">
       <p class="preview-label">明日预览</p>
-      <p class="preview-text">明日：COE 视角看人工成本预算的口径与分摊，HRD 练变革沟通中的坏消息表达。</p>
+      <p class="preview-text">明日：COE 视角看调薪与晋升预算的分配逻辑；职场英语练 resource ask。</p>
     </section>
 
     <footer>
-      <span>自动生成于 2026-11-03 11:39（北京时间）</span>
+      <span>自动生成于 2026-11-03 13:55（北京时间）</span>
       <span>Shaun Daily Report</span>
     </footer>
   </div>
