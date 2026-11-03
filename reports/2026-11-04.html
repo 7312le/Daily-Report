@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaun Daily Report · 2026-11-04</title>
+  <meta name="description" content="组织与人才：TD 视角：明年关键岗位继任梯队——先定「不可空缺岗」，再谈培养｜伙伴动作：在本周明年人力规划的第一轮沟通会上，向两个事业部负… ｜ Agent：A4 落地：把「关键岗继任表」做成一个可追问的 HR Agent ｜ 经营：无授权影响：预算会上被质疑「人没产出」时，如何用经营语言反打 ｜ HRD：明年组织调整的风声先于方案走漏时，第一句话怎么说 ｜ 英语：「Before we commit to th…">
+  <meta name="report-summary" content="组织与人才：TD 视角：明年关键岗位继任梯队——先定「不可空缺岗」，再谈培养｜伙伴动作：在本周明年人力规划的第一轮沟通会上，向两个事业部负… ｜ Agent：A4 落地：把「关键岗继任表」做成一个可追问的 HR Agent ｜ 经营：无授权影响：预算会上被质疑「人没产出」时，如何用经营语言反打 ｜ HRD：明年组织调整的风声先于方案走漏时，第一句话怎么说 ｜ 英语：「Before we commit to th…">
+  <meta name="report-date" content="2026-11-04">
+  <meta property="og:title" content="Shaun Daily Report · 2026-11-04">
+  <meta property="og:description" content="组织与人才：TD 视角：明年关键岗位继任梯队——先定「不可空缺岗」，再谈培养｜伙伴动作：在本周明年人力规划的第一轮沟通会上，向两个事业部负… ｜ Agent：A4 落地：把「关键岗继任表」做成一个可追问的 HR Agent ｜ 经营：无授权影响：预算会上被质疑「人没产出」时，如何用经营语言反打 ｜ HRD：明年组织调整的风声先于方案走漏时，第一句话怎么说 ｜ 英语：「Before we commit to th…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --hr: #2563eb;
+      --hr-soft: #eff6ff;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --mgmt: #059669;
+      --mgmt-soft: #ecfdf5;
+      --hrd: #be123c;
+      --hrd-soft: #fff1f2;
+      --english: #d97706;
+      --english-soft: #fffbeb;
+      --cognition: #0e7490;
+      --cognition-soft: #ecfeff;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .stages {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .calendar {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 680px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-hr { grid-column: span 2; border-top-color: var(--hr); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-mgmt { border-top-color: var(--mgmt); }
+    .card-hrd { grid-column: span 2; border-top-color: var(--hrd); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-cognition { border-top-color: var(--cognition); }
+    .card-wide { grid-column: span 2; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-hr .card-icon { background: var(--hr-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-mgmt .card-icon { background: var(--mgmt-soft); }
+    .card-hrd .card-icon { background: var(--hrd-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+    .card-cognition .card-icon { background: var(--cognition-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--hr-soft);
+      color: var(--hr);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
+    .card-hrd .card-badge { background: var(--hrd-soft); color: var(--hrd); }
+    .card-cognition .card-badge { background: var(--cognition-soft); color: var(--cognition); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    .question-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+      counter-reset: q;
+    }
+
+    .question-list li {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+      counter-increment: q;
+    }
+
+    .question-list li::before {
+      content: counter(q);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    .fact-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .fact-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .fact-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 14px;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Business partner action ---------- */
+    .partner-box {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border: 1px solid #bfdbfe;
+      border-left: 3px solid var(--hr);
+      border-radius: 10px;
+      background: var(--hr-soft);
+    }
+
+    .partner-box .task-label {
+      color: var(--hr);
+    }
+
+    .partner-box p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    /* ---------- Output / milestone / influence ---------- */
+    .output-box,
+    .milestone-box,
+    .influence-box,
+    .deliverable-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px dashed transparent;
+    }
+
+    .output-box {
+      background: var(--hr-soft);
+      border-color: #bfdbfe;
+    }
+
+    .milestone-box {
+      background: var(--agent-soft);
+      border-color: #ddd6fe;
+    }
+
+    .influence-box {
+      background: var(--mgmt-soft);
+      border-color: #a7f3d0;
+    }
+
+    .deliverable-box {
+      background: var(--hrd-soft);
+      border-color: #fecdd3;
+    }
+
+    .task-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .output-box .task-label { color: var(--hr); }
+    .milestone-box .task-label { color: var(--agent); }
+    .influence-box .task-label { color: var(--mgmt); }
+    .deliverable-box .task-label { color: var(--hrd); }
+
+    .output-box p,
+    .milestone-box p,
+    .influence-box p,
+    .deliverable-box p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #1e293b;
+      line-height: 1.7;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-hr, .card-hrd, .card-english, .card-wide { grid-column: span 1; }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">AI-Native HR · Daily Growth</p>
+      <h1>Shaun Daily Report · 2026-11-04</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-04</span>
+        <span class="meta-weekday">星期三</span>
+      </div>
+      <p class="stages">HR · L4 ｜ Agent · A4 ｜ 经营 · M5b ｜ HRD · 变革沟通</p>
+      <p class="calendar">年度节奏：11 月 · 明年人力规划与预算</p>
+      <p class="focus">TD 视角：明年关键岗位继任梯队——先定「不可空缺岗」，再谈培养 ｜ A4 落地：把「关键岗继任表」做成一个可追问的 HR Agent ｜ 无授权影响：预算会上被质疑「人没产出」时，如何用经营语言反打 ｜ 明年组织调整的风声先于方案走漏时，第一句话怎么说</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 组织与人才 · L4</p><h2 class="card-title">TD 视角：明年关键岗位继任梯队——先定「不可空缺岗」，再谈培养<span class="card-badge">TD</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">关键岗位继任深度分三档：Ready-now（6 个月内可接任）、Ready-later（1–2 年，需一个明确历练）、No-bench（无后备，只能是外部或空转）。判断标准：Ready-now 必须已有跨项目或跨客户的独立交付记录，不能只凭直属上级评价；关键岗的判定标准是「空缺 3 个月会直接打穿交付或签约」，不是职级高低。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">明年人力规划要报关键岗继任图。蓝沃 AI 的算法负责人、行业解决方案负责人一旦空缺，客户 POC 会停摆；智能装备事业线的项目经理、调试总负责人空缺，在制项目直接延期。两类岗位的培养路径完全不同：前者靠产品化历练，后者靠多项目并行交付历练，不能用同一套后备名单。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>你们事业部如果算法/行业解决方案负责人明天离职，谁能顶 6 个月？他有没有独立扛过一个客户的全流程？</li><li>项目经理里，谁已经同时管过 2 个以上在制项目且按期交付？把他名字写下来，作为 Ready-later 第一顺位。</li></ul></div><div class="partner-box"><span class="task-label">业务伙伴动作</span><p>在本周明年人力规划的第一轮沟通会上，向两个事业部负责人各要一张「关键岗 3 人后备表」，并当场用一句业务语言定调：「这两个岗空缺 3 个月，蓝沃的 POC 会断、装备线的在制项目会延期，所以后备不是培养名单，是交付保险」；要求他们按 Ready-now / Ready-later 标注，会后盯「关键岗 Ready-now 覆盖率」这个指标。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚列出两个事业部各 3 个「不可空缺岗」，每个岗写一行：空缺 3 个月的业务后果 + 现有后备名字或「无」。30 分钟内做完，形成一页表。</p></div><div class="output-box"><span class="task-label">本周输出任务</span><p>一页纸《明年关键岗位继任缺口表》：岗位、业务后果、现有后备、档位、明年需要的一次历练安排。</p></div></article>
+<article class="card card-agent"><header class="card-head"><span class="card-icon" aria-hidden="true">🤖</span><div><p class="card-kicker">02 · Agent 体系化 · A4</p><h2 class="card-title">A4 落地：把「关键岗继任表」做成一个可追问的 HR Agent</h2></div></header><div class="field"><p class="field-label">核心概念</p><p class="field-text">继任数据 Agent 的价值不在存表，而在「能回答追问」：给定岗位，能自动列出后备、档位、缺口理由和下一步历练建议。落地关键是先把数据结构定死（岗位—后备—证据—档位—历练），再让模型只做检索与组织语言，不做判断。</p></div><div class="field"><p class="field-label">动手实验</p><p class="field-text">步骤：1）把你今晚那张缺口表整理成 5 列结构化字段；2）在 Agent 平台建一个知识库，只放这张表和一份岗位说明；3）设提示词「只依据表内信息回答，缺信息就说『表中无记录』」；4）测 5 个问题：某岗 Ready-now 是谁、哪些岗无后备、某后备的档位依据是什么、缺口最多的部门、明年该给谁安排什么历练。预期产出：5 题中至少 4 题回答准确且不编造。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚用 20 分钟把这 5 个测试问题跑一遍，把答错的那一题记下来，作为下周补数据结构的依据。</p></div></article>
+<article class="card card-mgmt"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 经营与影响 · M5b</p><h2 class="card-title">无授权影响：预算会上被质疑「人没产出」时，如何用经营语言反打</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">预算评审的本质是资源再分配，不是算术。被 pushback 时的三步：先承认对方的数据前提（不辩解），再把话题从「人头成本」拉到「人头对应的交付与签约」，最后给一个可验证的承诺指标。判断标准：如果对方在你讲完后开始问「那明年这个指标怎么保证」，说明对话已从防守转为共建。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">工业自动化与机器视觉领域的基恩士（Keyence），长期以高人均产值著称，其做法是销售与应用工程师深度绑定客户现场，把人力投入直接对应到客户渗透与复购上，而不是按部门分摊人头。这说明在装备与工业软件行业，人效论证要落到「每个岗位对应哪类客户结果」，而不是总量对比。（具体数字按公司实际数据替换）</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚写三句话备用：1）承认对方的人效口径；2）把你的增编翻译成一个交付或签约指标；3）给出一个季度可验证的承诺。写在手机备忘录里，明天评审会用。</p></div></article>
+<article class="card card-hrd"><header class="card-head"><span class="card-icon" aria-hidden="true">🎯</span><div><p class="card-kicker">04 · HRD 实战</p><h2 class="card-title">明年组织调整的风声先于方案走漏时，第一句话怎么说<span class="card-badge">变革沟通</span></h2></div></header><div class="field"><p class="field-label">框架 / 判断标准</p><p class="field-text">变革沟通的第一原则：信息真空一定会被谣言填满，所以要在方案未定但方向已定时，主动给出「已定 / 未定 / 何时定」三栏。判断标准：如果员工能复述出「什么变了、什么没变、什么时候知道更多」，第一轮沟通就算合格；反之，任何「等通知」都是把话语权交给小道消息。</p></div><div class="field"><p class="field-label">公司情境</p><p class="field-text">11 月做明年组织设计与编制，蓝沃 AI 可能要从项目制进一步向产品化收拢，智能装备事业线可能调整项目经理与调试的配比。这类调整一旦在部门会上漏出一句，工程师群体立刻会联想到裁员。两个事业部对不确定性的反应不同：产品型团队会私下打听，项目型团队会直接影响现场士气与交付节奏。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚写一份 200 字的口径草稿，只写三栏：已经确定的方向、还没定的部分、什么时候给大家更明确的信息。写完读一遍，删掉所有形容词，只留事实和时间点。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语精进</p><h2 class="card-title">英语精进 · 高管英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸任务：查并收藏 headcount、attrition、backfill、ramp-up、run-rate 五个词；每个词看一条真实例句，跟读两遍，再用 headcount 和 backfill 各造一句与明年编制相关的话，存进生词本。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">「Before we commit to the number, let me frame what it buys us.」——在给出数字前先说明这笔投入买到什么。例句：Before we commit to the number, let me frame what it buys us: two more project managers mean three on-time deliveries next quarter. 释义：先讲价值再讲数字，是高管沟通里把 resource ask 从「要钱」转为「买结果」的常用开场。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：向 CEO 做明年人力预算的 board-style update，中途 CFO 式角色 pushback「headcount 涨了但产出没跟上」。让 AI 扮演质疑的高管，进行 7 轮对话：第 1–2 轮你陈述增编对应的交付指标，第 3–4 轮应对 pushback 不辩解、先承认口径，第 5–6 轮给出可验证的季度承诺，第 7 轮收尾要一句 executive summary。刻意练习：用「let me frame what it buys us」「here is the number I will be held to」两句结构。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1gYHSz8EtH/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">职场英文实战｜主持会议，对齐颗粒度</span><span class="video-task">任务：收集 5 个会议实战表达（如 async update、hard date），用英文写一份 3 行会议同步消息。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：COE 视角看人工成本预算的弹性结构；Agent 停更；经营模块练一次人效测算；HRD 继续变革沟通。</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-04 07:29（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>
