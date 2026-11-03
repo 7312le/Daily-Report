@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shaun Daily Report · 2026-11-03</title>
-  <meta name="description" content="HRBP &amp; COE：HRBP 视角：季度人才盘点会前的校准预演 ｜ Agent：A4 落地：给 HR Agent 划清「能自动执行」与「必须人工确认」的边界 ｜ 经营：M4 决策实战：用增量贡献法判断一次组织调整的财务合理性 ｜ 英语：bring someone up to spe…">
-  <meta name="report-summary" content="HRBP &amp; COE：HRBP 视角：季度人才盘点会前的校准预演 ｜ Agent：A4 落地：给 HR Agent 划清「能自动执行」与「必须人工确认」的边界 ｜ 经营：M4 决策实战：用增量贡献法判断一次组织调整的财务合理性 ｜ 英语：bring someone up to spe…">
+  <meta name="description" content="组织与人才：TD 视角：编制冻结期用「岗位价值分级」决定增编顺序 ｜ 经营：无授权影响：在预算会上用「不增编也能做」的方案换取信任 ｜ HRD：关键岗位继任：先定「谁是关键岗位」，再谈继任 ｜ 英语：We are not asking for m…">
+  <meta name="report-summary" content="组织与人才：TD 视角：编制冻结期用「岗位价值分级」决定增编顺序 ｜ 经营：无授权影响：在预算会上用「不增编也能做」的方案换取信任 ｜ HRD：关键岗位继任：先定「谁是关键岗位」，再谈继任 ｜ 英语：We are not asking for m…">
   <meta name="report-date" content="2026-11-03">
   <meta property="og:title" content="Shaun Daily Report · 2026-11-03">
-  <meta property="og:description" content="HRBP &amp; COE：HRBP 视角：季度人才盘点会前的校准预演 ｜ Agent：A4 落地：给 HR Agent 划清「能自动执行」与「必须人工确认」的边界 ｜ 经营：M4 决策实战：用增量贡献法判断一次组织调整的财务合理性 ｜ 英语：bring someone up to spe…">
+  <meta property="og:description" content="组织与人才：TD 视角：编制冻结期用「岗位价值分级」决定增编顺序 ｜ 经营：无授权影响：在预算会上用「不增编也能做」的方案换取信任 ｜ HRD：关键岗位继任：先定「谁是关键岗位」，再谈继任 ｜ 英语：We are not asking for m…">
   <style>
     :root {
       --bg: #f4f6fb;
@@ -22,6 +22,8 @@
       --agent-soft: #f5f3ff;
       --mgmt: #059669;
       --mgmt-soft: #ecfdf5;
+      --hrd: #be123c;
+      --hrd-soft: #fff1f2;
       --english: #d97706;
       --english-soft: #fffbeb;
       --radius: 20px;
@@ -125,6 +127,14 @@
       color: #93c5fd;
     }
 
+    .calendar {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
     .focus {
       position: relative;
       margin: 0;
@@ -156,7 +166,9 @@
     .card-hr { grid-column: span 2; border-top-color: var(--hr); }
     .card-agent { border-top-color: var(--agent); }
     .card-mgmt { border-top-color: var(--mgmt); }
+    .card-hrd { grid-column: span 2; border-top-color: var(--hrd); }
     .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-wide { grid-column: span 2; }
 
     .card-head {
       display: flex;
@@ -180,6 +192,7 @@
     .card-hr .card-icon { background: var(--hr-soft); }
     .card-agent .card-icon { background: var(--agent-soft); }
     .card-mgmt .card-icon { background: var(--mgmt-soft); }
+    .card-hrd .card-icon { background: var(--hrd-soft); }
     .card-english .card-icon { background: var(--english-soft); }
 
     .card-kicker {
@@ -212,6 +225,7 @@
 
     .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
     .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
+    .card-hrd .card-badge { background: var(--hrd-soft); color: var(--hrd); }
 
     /* ---------- Fields ---------- */
     .field { margin-bottom: 14px; }
@@ -299,7 +313,8 @@
     /* ---------- Output / milestone / influence ---------- */
     .output-box,
     .milestone-box,
-    .influence-box {
+    .influence-box,
+    .deliverable-box {
       margin-top: auto;
       padding: 12px 14px;
       border-radius: 10px;
@@ -321,6 +336,11 @@
       border-color: #a7f3d0;
     }
 
+    .deliverable-box {
+      background: var(--hrd-soft);
+      border-color: #fecdd3;
+    }
+
     .task-label {
       display: block;
       margin-bottom: 3px;
@@ -333,10 +353,12 @@
     .output-box .task-label { color: var(--hr); }
     .milestone-box .task-label { color: var(--agent); }
     .influence-box .task-label { color: var(--mgmt); }
+    .deliverable-box .task-label { color: var(--hrd); }
 
     .output-box p,
     .milestone-box p,
-    .influence-box p {
+    .influence-box p,
+    .deliverable-box p {
       margin: 0;
       font-size: 13.5px;
       color: #1e293b;
@@ -486,7 +508,7 @@
       .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
       .hero { padding: 28px 22px 24px; border-radius: 20px; }
       .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-      .card-hr, .card-english { grid-column: span 1; }
+      .card-hr, .card-hrd, .card-english, .card-wide { grid-column: span 1; }
       .card { padding: 20px 18px; }
       .english-grid { grid-template-columns: minmax(0, 1fr); }
       .english-video { grid-column: span 1; }
@@ -503,24 +525,25 @@
         <span class="meta-date">2026-11-03</span>
         <span class="meta-weekday">星期二</span>
       </div>
-      <p class="stages">HR · L4 ｜ Agent · A4 ｜ 经营 · M4</p>
-      <p class="focus">HRBP 视角：季度人才盘点会前的校准预演 ｜ A4 落地：给 HR Agent 划清「能自动执行」与「必须人工确认」的边界 ｜ M4 决策实战：用增量贡献法判断一次组织调整的财务合理性</p>
+      <p class="stages">HR · L4 ｜ Agent · A4 ｜ 经营 · M5b ｜ HRD · 人才发展</p>
+      <p class="calendar">年度节奏：11 月 · 明年人力规划与预算</p>
+      <p class="focus">TD 视角：编制冻结期用「岗位价值分级」决定增编顺序 ｜ 无授权影响：在预算会上用「不增编也能做」的方案换取信任 ｜ 关键岗位继任：先定「谁是关键岗位」，再谈继任</p>
     </header>
 
     <main class="grid">
-      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · HRBP &amp; COE · L4</p><h2 class="card-title">HRBP 视角：季度人才盘点会前的校准预演<span class="card-badge">HRBP</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">人才盘点会（Talent Review）的核心不是排座次，而是让业务负责人对同一批人形成共识的校准机制。九宫格只是共识的载体，判断标准必须事先公开：绩效看连续两个考核周期的结果，潜力看可迁移能力与动机，不看当前岗位熟练度。边界：团队少于 8 人时强制分布会失真；业务处于剧烈重组期，潜力评估的有效期不超过一个季度。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">一家 600 人规模的 SaaS 公司，销售体系在 9 月调整为行业线与区域线双轨。销售 VP 认为原区域总监属下有 3 名骨干应进高潜池，而 HRBP 手上的数据是这 3 人连续两个季度完成率低于 70%，原因是他们负责的行业客户结构变化。双方在是否进入高潜池上判断相反。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>这三位过去两个季度的完成率下滑，你认为有多少来自客户结构变化、多少来自个人动作？依据是什么？</li><li>如果把他们放进高潜池，未来两个季度你用什么具体结果来验证这个判断？</li><li>在你的团队里，谁是不可替代但现在被放在错误位置上的人？</li></ul></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚花 30 分钟，把你要上会讨论的 6 个人列成表，每行只写三列：连续两期绩效结果、一条可验证的潜力证据、一条可能推翻该判断的反例。不写形容词。</p></div></article>
-<article class="card card-agent"><header class="card-head"><span class="card-icon" aria-hidden="true">🤖</span><div><p class="card-kicker">02 · Agent 体系化 · A4</p><h2 class="card-title">A4 落地：给 HR Agent 划清「能自动执行」与「必须人工确认」的边界</h2></div></header><div class="field"><p class="field-label">核心概念</p><p class="field-text">HR Agent 落地时最常被忽略的不是准确率，而是动作分级。按后果可逆性与影响范围，把 Agent 输出分成三级：只读建议（直接给 HR 看）、受限写入（生成待审草稿，人工一键确认后发出）、自动执行（无需确认直接生效）。绝大多数 HR 场景应停在前两级，只有低风险、可回滚、影响单个内部对象的动作才进入第三级。这与单纯调提示词的区别在于：分级写在系统层，不依赖用户自觉。</p></div><div class="field"><p class="field-label">动手实验</p><p class="field-text">打开你常用的 Agent 平台（如 Coze、Dify），建一个最小的「候选人面试反馈整理」智能体。第一步，让它把面试记录整理成结构化反馈；第二步，为它的输出加一个确认节点，配置为「生成草稿后暂停，等待人工确认」；第三步，跑 3 条真实面试记录，记录有多少次需要人工修改关键结论。预期产出：一张三行记录表，含修改点与原因分类。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>为你手上任何一个 HR Agent 画一张动作分级表：列出它当前所有输出，逐条标为只读建议、受限写入或自动执行，并标出哪几条你其实并不放心。产出：一页表格截图或手绘照片。</p></div></article>
-<article class="card card-mgmt"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 公司经营管理 · M4</p><h2 class="card-title">M4 决策实战：用增量贡献法判断一次组织调整的财务合理性</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">组织调整（合并团队、增设管理层级）的财务论证常犯的错误是只看新增成本，不看对照方案。增量贡献法的做法是：明确基准情境（不调整会怎样），只计算调整带来的增量收入与增量成本，两者相减得增量利润；再测算回本周期，公式为一次性投入除以每月增量利润。判断标准：回本周期超过 12 个月的调整应拆小步验证，而不是一次性铺开。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">2018 年前后，海尔推行「人单合一」下的小微组织改造，把大事业部拆分为可独立核算的小微，每个小微自负盈亏、直接对接市场。公开报道显示，这一改造使内部审批层级大幅压缩，部分小微直接面向用户定价与结算。其财务逻辑正是把组织单元变成利润中心，用增量核算替代总量分摊。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚 30 分钟，选一个你正在讨论的组织调整方案（例如某模块增设一名负责人），列出三行数字：每月新增人力成本、预期每月增量收益、一次性投入。算出回本周期，并写下如果增量收益打五折，结论会不会翻转。产出：一页测算草稿。</p></div></article>
-<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">04 · 英语精进</p><h2 class="card-title">英语精进 · 每天 20 分钟</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">在金山词霸中查这 5 个词：stakeholder、escalate、trade-off、alignment、pushback。操作：逐个查词并加入生词本，听一遍英式与美式发音后跟读各 3 次，然后用 escalate 和 trade-off 各造一个与你本职工作相关的句子，保存到词霸的例句笔记。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">bring someone up to speed——让某人快速了解最新情况。例句：Let me bring you up to speed on the hiring plan before the review meeting. 释义：在评审会前，我先跟你同步一下招聘计划的最新进展。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：你是 HRBP，业务负责人临时要求把一个岗位的招聘优先级提到最高，但预算已锁定。让 AI 扮演这位业务负责人，完成 6 到 8 轮对话。刻意练习：用 bring someone up to speed 开场同步背景，用 trade-off 说明取舍，用 pushback 礼貌地表达不同意见，避免直接说 no。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV12dAbzEELc/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">Love English Lab｜在会议中展现真正的领导力</span><span class="video-task">任务：记下开场、拉回跑题、收尾各 2 句，组合成一段 45 秒的会议主持开场白并录音。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 组织与人才 · L4</p><h2 class="card-title">TD 视角：编制冻结期用「岗位价值分级」决定增编顺序<span class="card-badge">TD</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">岗位价值分级不是岗位评估的完整重做，而是在预算受限时用三个维度快速排序：对明年营收的直接影响度（是否直接决定交付或签约）、不可替代性（外部招聘周期与内部可培养周期）、失效成本（空缺 3 个月会造成什么损失）。判断标准：只有「直接影响度高一且不可替代性高」的岗位进入第一批增编；直接影响度高但可培养周期在 6 个月内的，走内部调配不占新增编制；两项都低的，一律等。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">11 月两个事业部同时报明年编制。蓝沃 AI 会报算法、产品、行业解决方案三类岗位，理由都是「明年要放量」；智能装备事业线会报项目经理、电气工程师、现场调试工程师，理由是「在手订单撑不住」。预算盘子有限，不可能两边都满足，必须给出排序依据而不是平均分配。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>你们报的这几个岗位里，哪两个如果明年空缺，会直接导致某个已签合同延期或某个客户验证中断？</li><li>这几个岗位中，哪一个在市场上招满需要 4 个月以上，内部培养要 1 年以上？</li><li>如果只给你现在申报数的 60%，你会砍掉哪些，理由是什么？</li></ul></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚把两个事业部报上来的编制需求整理成一张三列表（岗位、直接影响度、不可替代性），每个岗位只填高/中/低，20 分钟内完成初排，标出第一批增编的 5 个以内岗位。</p></div><div class="output-box"><span class="task-label">本周输出任务</span><p>一页纸《明年增编优先级排序表》，含排序逻辑与前三位的理由，供经营会讨论用</p></div></article>
+<article class="card card-mgmt card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 经营与影响 · M5b</p><h2 class="card-title">无授权影响：在预算会上用「不增编也能做」的方案换取信任</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">无授权影响的核心不是说服，而是降低对方说「不」的成本。做法是先自己提出一个不增加编制的替代方案（内部调配、跨事业部借调、外包部分非核心环节），把这个方案和增编请求一起摆上桌。判断标准：如果对方拒绝你的增编请求，但仍然采纳了你的替代方案，说明你已经获得了影响力；如果两个都被拒，说明问题在信任而不是在方案。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">汇川技术（工业自动化）在从单一产品向多产品线扩张时，长期采用「行业线 + 产品线」的矩阵式资源调配，新增需求优先在内部行业线之间调剂工程师，而不是每个产品线各自扩编。其公开年报中多次提到人均效率是核心考核指标之一。具体数字按公司实际数据替换。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚写出一个替代方案草稿：从智能装备事业线抽调 2 名有调试经验的工程师，支援蓝沃 AI 的客户现场验证 3 个月，写清抽调对原项目的影响和补偿办法，200 字以内。</p></div></article>
+<article class="card card-hrd"><header class="card-head"><span class="card-icon" aria-hidden="true">🎯</span><div><p class="card-kicker">04 · HRD 实战</p><h2 class="card-title">关键岗位继任：先定「谁是关键岗位」，再谈继任<span class="card-badge">人才发展</span></h2></div></header><div class="field"><p class="field-label">框架 / 判断标准</p><p class="field-text">继任规划最常见的错误是先做人才盘点再找岗位。正确顺序是先识别关键岗位，标准有三条：空缺 3 个月会造成营收或交付实质损失、岗位所需能力在外部市场稀缺、现任者没有可在 12 个月内接替的内部人选。三条中满足两条即为关键岗位。关键岗位名单应该控制在 15 个以内，超过说明标准太松。</p></div><div class="field"><p class="field-label">公司情境</p><p class="field-text">智能装备事业线的项目经理岗和蓝沃 AI 的行业解决方案岗，都高度依赖个人经验和客户关系，一旦离职短期无人接替；但两个事业部负责人都不认为自己的岗位「关键」，因为一旦确认为关键岗位，就意味着要接受总部的继任审查和人才储备要求。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚列出你认为的 12 个关键岗位候选（两个事业部各 6 个），每个岗位只写现任是否有人在 12 个月内可接替：有/没有/不确定。不确定的单独标记出来。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语精进</p><h2 class="card-title">英语精进 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸：查 headcount、backfill、attrition、succession、bandwidth 五个词，收藏到「HR 预算」词单，各跟读 3 遍，用 headcount 和 backfill 各造一句与编制相关的句子</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">We are not asking for more headcount; we are asking to reallocate it. 例句：We are not asking for more headcount; we are asking to reallocate it from the project line to the AI team for two quarters. 释义：我们不是要增加编制，而是申请把编制从项目线调配到 AI 团队两个季度。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：你向 CFO 说明明年的编制申请被砍了 30%，需要争取部分恢复。让 AI 扮演 CFO，态度偏保守，反复追问「为什么现在不能等」。完成 7 轮对话，刻意练习：先承认约束、再给替代方案、最后只提一个具体请求，避免一次要太多。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV12dAbzEELc/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">Love English Lab｜在会议中展现真正的领导力</span><span class="video-task">任务：记下开场、拉回跑题、收尾各 2 句，组合成一段 45 秒的会议主持开场白并录音。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
     </main>
 
     <section class="preview">
       <p class="preview-label">明日预览</p>
-      <p class="preview-text">明日：HRBP 视角处理绩效改进计划冲突，Agent 学记忆系统设计，经营看现金流。</p>
+      <p class="preview-text">明日：OD 视角看双事业部协同接口，M 线讲预算谈判中的锚定，HRD 谈变革沟通中的坏消息传递</p>
     </section>
 
     <footer>
-      <span>自动生成于 2026-11-03 07:27（北京时间）</span>
+      <span>自动生成于 2026-11-03 10:28（北京时间）</span>
       <span>Shaun Daily Report</span>
     </footer>
   </div>
