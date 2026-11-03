@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把当日「AI 原生 HR 高管」日报摘要推送到企业微信群机器人或 Server酱（微信）。
+"""把当日「AI 原生 HR 一号位」日报摘要推送到企业微信群机器人或 Server酱（微信）。
 
 - WECOM_WEBHOOK：企业微信群机器人 Webhook 地址（GitHub Secrets，可选）
 - SERVERCHAN_SENDKEY：Server酱 SendKey（GitHub Secrets，可选）
@@ -151,13 +151,13 @@ def build_markdown(data: dict, report_url: str) -> str:
     if stage_parts:
         lines.extend([f"> 阶段：{' ｜ '.join(stage_parts)}", ""])
 
-    # --- HRBP & COE ---
+    # --- 组织与人才 ---
     hrbp = _block(data, "hrbp_coe")
     if hrbp:
         topic = clip(hrbp.get("topic"), 36)
         kind = clip(hrbp.get("type"), 6)
         label = f"{kind}｜{topic}" if kind else topic
-        lines.append(f"**🧭 HRBP & COE｜{label}**")
+        lines.append(f"**🧭 组织与人才｜{label}**")
         if hrbp.get("concept"):
             lines.append(f"概念：{clip(hrbp.get('concept'), 70)}")
         if hrbp.get("scenario"):
@@ -185,10 +185,10 @@ def build_markdown(data: dict, report_url: str) -> str:
             lines.append(f"里程碑：{clip(agent.get('milestone'), 60)}")
         lines.append("")
 
-    # --- 公司经营管理 ---
+    # --- 经营与影响 ---
     management = _block(data, "management")
     if management:
-        lines.append(f"**📊 公司经营管理｜{clip(management.get('topic'), 36)}**")
+        lines.append(f"**📊 经营与影响｜{clip(management.get('topic'), 36)}**")
         if management.get("concept"):
             lines.append(f"概念：{clip(management.get('concept'), 70)}")
         if management.get("case"):
@@ -199,11 +199,29 @@ def build_markdown(data: dict, report_url: str) -> str:
             lines.append(f"影响力：{clip(management.get('influence_goal'), 60)}")
         lines.append("")
 
+    # --- HRD 实战 ---
+    hrd = _block(data, "hrd")
+    if hrd:
+        track = clip(hrd.get("track"), 8)
+        mode = clip(hrd.get("mode"), 6)
+        mode_label = "深度作业" if mode == "deep" else "轻卡"
+        label = f"{track}｜{mode_label}" if track else mode_label
+        lines.append(f"**🎯 HRD 实战｜{label}｜{clip(hrd.get('topic'), 32)}**")
+        if hrd.get("concept"):
+            lines.append(f"框架：{clip(hrd.get('concept'), 60)}")
+        if hrd.get("action"):
+            lines.append(f"今晚：{clip(hrd.get('action'), 60)}")
+        if hrd.get("deliverable"):
+            lines.append(f"交付物：{clip(hrd.get('deliverable'), 60)}")
+        lines.append("")
+
     # --- 英语 ---
     english = _block(data, "english")
     if english:
+        mode = clip(english.get("mode"), 8)
         phrase = clip(english.get("phrase"), 30)
-        lines.append(f"**🌍 英语｜{phrase}**" if phrase else "**🌍 英语**")
+        head = f"🌍 英语｜{mode}" if mode else "🌍 英语"
+        lines.append(f"**{head}｜{phrase}**" if phrase else f"**{head}**")
         if english.get("words"):
             lines.append(f"词汇：{clip(english.get('words'), 70)}")
         if english.get("ai_talk"):

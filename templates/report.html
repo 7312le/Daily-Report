@@ -22,6 +22,8 @@
       --agent-soft: #f5f3ff;
       --mgmt: #059669;
       --mgmt-soft: #ecfdf5;
+      --hrd: #be123c;
+      --hrd-soft: #fff1f2;
       --english: #d97706;
       --english-soft: #fffbeb;
       --radius: 20px;
@@ -125,6 +127,14 @@
       color: #93c5fd;
     }
 
+    .calendar {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
     .focus {
       position: relative;
       margin: 0;
@@ -156,7 +166,9 @@
     .card-hr { grid-column: span 2; border-top-color: var(--hr); }
     .card-agent { border-top-color: var(--agent); }
     .card-mgmt { border-top-color: var(--mgmt); }
+    .card-hrd { grid-column: span 2; border-top-color: var(--hrd); }
     .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-wide { grid-column: span 2; }
 
     .card-head {
       display: flex;
@@ -180,6 +192,7 @@
     .card-hr .card-icon { background: var(--hr-soft); }
     .card-agent .card-icon { background: var(--agent-soft); }
     .card-mgmt .card-icon { background: var(--mgmt-soft); }
+    .card-hrd .card-icon { background: var(--hrd-soft); }
     .card-english .card-icon { background: var(--english-soft); }
 
     .card-kicker {
@@ -212,6 +225,7 @@
 
     .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
     .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
+    .card-hrd .card-badge { background: var(--hrd-soft); color: var(--hrd); }
 
     /* ---------- Fields ---------- */
     .field { margin-bottom: 14px; }
@@ -299,7 +313,8 @@
     /* ---------- Output / milestone / influence ---------- */
     .output-box,
     .milestone-box,
-    .influence-box {
+    .influence-box,
+    .deliverable-box {
       margin-top: auto;
       padding: 12px 14px;
       border-radius: 10px;
@@ -321,6 +336,11 @@
       border-color: #a7f3d0;
     }
 
+    .deliverable-box {
+      background: var(--hrd-soft);
+      border-color: #fecdd3;
+    }
+
     .task-label {
       display: block;
       margin-bottom: 3px;
@@ -333,10 +353,12 @@
     .output-box .task-label { color: var(--hr); }
     .milestone-box .task-label { color: var(--agent); }
     .influence-box .task-label { color: var(--mgmt); }
+    .deliverable-box .task-label { color: var(--hrd); }
 
     .output-box p,
     .milestone-box p,
-    .influence-box p {
+    .influence-box p,
+    .deliverable-box p {
       margin: 0;
       font-size: 13.5px;
       color: #1e293b;
@@ -486,7 +508,7 @@
       .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
       .hero { padding: 28px 22px 24px; border-radius: 20px; }
       .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-      .card-hr, .card-english { grid-column: span 1; }
+      .card-hr, .card-hrd, .card-english, .card-wide { grid-column: span 1; }
       .card { padding: 20px 18px; }
       .english-grid { grid-template-columns: minmax(0, 1fr); }
       .english-video { grid-column: span 1; }
@@ -504,6 +526,7 @@
         <span class="meta-weekday">{{WEEKDAY}}</span>
       </div>
       <p class="stages">{{STAGES}}</p>
+      <p class="calendar">{{CALENDAR}}</p>
       <p class="focus">{{FOCUS}}</p>
     </header>
 

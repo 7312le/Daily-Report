@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""生成「AI 原生 HR 高管」成长日报。
+"""生成「AI 原生 HR 一号位」成长日报。
 
 流程：
-1. 读取 .github/prompt/system.md 作为 system prompt；
-2. 调用 Claude / Anthropic 兼容 API（如 DeepSeek）生成严格 JSON；
-3. 用 templates/report.html 渲染为 HTML，写入 reports/YYYY-MM-DD.html；
-4. 同时写入 reports/YYYY-MM-DD.json，供 notify.py 生成推送摘要；
-5. 重建 docs/index.html 中的历史日报列表（保留页面其余部分）。
+1. 读取 .github/prompt/system.md 与 data/profile.md 作为 system prompt；
+2. 按日期决定当日模块：Agent 每周 3 次、HRD 实战每日、周六深度作业、隔周高管英语；
+3. 调用 Claude / Anthropic 兼容 API（如 DeepSeek）生成严格 JSON；
+4. 用 templates/report.html 渲染为 HTML，写入 reports/YYYY-MM-DD.html；
+5. 同时写入 reports/YYYY-MM-DD.json，供 notify.py 生成推送摘要；
+6. 重建 docs/index.html 中的历史日报列表（保留页面其余部分）。
 
-日报四条主线：HRBP & COE、Agent 体系化、公司经营管理、英语精进。
+日报五个模块：组织与人才、Agent 体系化、经营与影响、HRD 实战、英语精进。
+行业聚焦：工业 AI、非标自动化（蓝沃 AI / 智能装备事业线）。
 只依赖标准库 + anthropic，保持轻量。
 """
 
@@ -31,6 +33,7 @@ import anthropic
 # ---------------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent
 SYSTEM_PROMPT_PATH = ROOT / ".github" / "prompt" / "system.md"
+PROFILE_PATH = ROOT / "data" / "profile.md"
 TEMPLATE_PATH = ROOT / "templates" / "report.html"
 REPORTS_DIR = ROOT / "reports"
 INDEX_PATH = ROOT / "docs" / "index.html"
@@ -52,21 +55,48 @@ INDEX_MARKER_RE = re.compile(
     r"<!-- REPORT_LIST_START -->.*?<!-- REPORT_LIST_END -->", re.DOTALL
 )
 
+# agent 为可选模块：非周一 / 三 / 五且非每月 1 日时为 null
 REQUIRED_TOP_KEYS = (
     "date",
     "stage",
     "hrbp_coe",
-    "agent",
     "management",
+    "hrd",
     "english",
     "preview",
 )
 
-# 三条主线的阶段标识：L1–L5 / A1–A5 / M1–M5
+# 三条主线的阶段标识：L1–L5 / A1–A5 / M1–M4 或 M5a / M5b
 STAGE_PATTERNS = {
-    "hr": re.compile(r"L[1-5]"),
-    "agent": re.compile(r"A[1-5]"),
-    "mgmt": re.compile(r"M[1-5]"),
+    "hr": re.compile(r"L[1-5]", re.IGNORECASE),
+    "agent": re.compile(r"A[1-5]", re.IGNORECASE),
+    "mgmt": re.compile(r"M[1-5][ab]?", re.IGNORECASE),
+}
+
+ALLOWED_HRBP_TYPES = {"HRBP", "COE", "OD", "TD"}
+ALLOWED_HRD_MODES = {"light", "deep"}
+ALLOWED_HRD_TRACKS = ("影响力", "人才发展", "变革沟通", "用工风险", "领导力")
+ALLOWED_ENGLISH_MODES = {"职场英语", "高管英语"}
+
+# 周一到周日：HRD 实战卡的 track；周六为深度作业，track 按周轮换
+WEEKDAY_HRD_TRACKS = ("影响力", "人才发展", "变革沟通", "用工风险", "领导力", "", "领导力")
+AGENT_WEEKDAYS = {0, 2, 4}  # 周一、周三、周五
+EXEC_ENGLISH_WEEKDAY = 2  # 隔周周三为高管英语
+
+# 年度 HR 日历：月份 -> (节点, 说明)
+HR_CALENDAR = {
+    1: ("年度人力规划落地", "年度考核、调薪方案、组织与编制冻结"),
+    2: ("关键人才保留与开工招聘", "春节前后留人、返岗与补员"),
+    3: ("调薪与晋升", "Q1 组织复盘、晋升与调薪落地"),
+    4: ("人才盘点与继任规划", "盘点会、干部校准、继任梯队"),
+    5: ("校招与管培生", "雇主品牌、校招与培养计划"),
+    6: ("半年复盘与干部轮岗", "半年经营复盘、干部轮岗"),
+    7: ("半年考核与预算中期调整", "绩效校准、人工成本中期预算"),
+    8: ("校招入职与培训体系", "新员工带教、培训体系搭建"),
+    9: ("组织诊断与 Q3 复盘", "组织诊断、明年规划预热"),
+    10: ("明年战略解码与预算启动", "战略解码、人力预算启动"),
+    11: ("明年人力规划与预算", "组织设计与编制、人工成本预算、关键岗位继任"),
+    12: ("年终奖与年度考核", "年终奖、年度考核、组织调整"),
 }
 
 # 模型常用这些词表示「本期没有」，统一视作空值
@@ -108,6 +138,34 @@ def clip(value: object, limit: int = 80) -> str:
     return text[: max(0, limit - 1)].rstrip() + "…"
 
 
+def hrd_plan(now: datetime) -> dict:
+    """按星期决定 HRD 实战卡的模式与 track；周六为深度作业。"""
+    weekday = now.weekday()
+    if weekday == 5:
+        # 周六：五个 track 按 ISO 周数轮换，避免连续重复
+        track = ALLOWED_HRD_TRACKS[now.isocalendar().week % len(ALLOWED_HRD_TRACKS)]
+        return {"mode": "deep", "track": track}
+    return {"mode": "light", "track": WEEKDAY_HRD_TRACKS[weekday]}
+
+
+def include_agent(now: datetime) -> bool:
+    """Agent 线每周 3 次；每月 1 日强制生成（用于月度里程碑）。"""
+    return now.weekday() in AGENT_WEEKDAYS or now.day == 1
+
+
+def english_mode(now: datetime) -> str:
+    """隔周周三切换为高管英语。"""
+    if now.weekday() == EXEC_ENGLISH_WEEKDAY and now.isocalendar().week % 2 == 1:
+        return "高管英语"
+    return "职场英语"
+
+
+def calendar_node(now: datetime) -> dict:
+    """返回当前月份对应的年度 HR 节奏节点。"""
+    node, detail = HR_CALENDAR.get(now.month, ("年度常规节奏", "按季度推进"))
+    return {"month": f"{now.month} 月", "node": node, "detail": detail}
+
+
 def read_env_int(name: str, default: int) -> int:
     raw = os.environ.get(name, "").strip()
     if not raw:
@@ -138,6 +196,18 @@ def read_text_file(path: Path, label: str) -> str:
     return content
 
 
+def load_profile() -> str:
+    """读取组织画像；缺失时只告警，不阻断日报生成。"""
+    if not PROFILE_PATH.exists():
+        print(f"[warn] 组织画像不存在：{PROFILE_PATH}，将使用行业通用情境", file=sys.stderr)
+        return ""
+    try:
+        return PROFILE_PATH.read_text(encoding="utf-8").strip()
+    except OSError as exc:
+        print(f"[warn] 读取组织画像失败：{exc}", file=sys.stderr)
+        return ""
+
+
 def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
     """读取最近几期 JSON，提取主题，供 Prompt 用于去重。
 
@@ -156,6 +226,7 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
         hrbp = data.get("hrbp_coe") or {}
         agent = data.get("agent") or {}
         management = data.get("management") or {}
+        hrd = data.get("hrd") or {}
         skills = data.get("skills") or {}
         wealth = data.get("wealth") or {}
         cognition = data.get("cognition") or {}
@@ -167,6 +238,7 @@ def load_recent_topics(limit: int = RECENT_LOOKBACK) -> list[str]:
                 hrbp.get("topic") or skills.get("topic"),
                 agent.get("topic") or cognition.get("model"),
                 management.get("topic") or wealth.get("topic"),
+                hrd.get("topic"),
             )
             if item
         ]
@@ -233,7 +305,10 @@ def build_user_prompt(
     date_str: str,
     weekday: str,
     recent_topics: list[str],
-    is_saturday: bool,
+    hrd: dict,
+    agent_today: bool,
+    english_today: str,
+    calendar: dict,
     is_first_of_month: bool,
     is_quarter_first_week: bool,
 ) -> str:
@@ -243,10 +318,15 @@ def build_user_prompt(
         else "- 暂无（首次生成）"
     )
 
-    if is_saturday:
-        output_rule = "今天是周六：hrbp_coe.output_task 必须填写具体的输出任务（写总结、画图、沉淀 SOP 片段等）。"
+    if hrd["mode"] == "deep":
+        output_rule = (
+            "今天是周六深度作业日：hrd.deliverable 必须给出一个真实可交付物"
+            "（一页纸备忘录、利益地图、继任图、盘点会主持稿等），hrbp_coe.output_task 可空。"
+        )
     else:
-        output_rule = "今天不是周六：若无合适的输出任务，hrbp_coe.output_task 填空字符串。"
+        output_rule = (
+            "今天不是深度作业日：hrbp_coe.output_task 若有合适输出任务则填写，否则填空字符串。"
+        )
 
     if is_first_of_month:
         milestone_rule = "今天是每月 1 日：agent.milestone 必须填写本月小型 Agent 原型的可验收标准。"
@@ -254,11 +334,37 @@ def build_user_prompt(
         milestone_rule = "今天不是每月 1 日：若无安排，agent.milestone 填空字符串。"
 
     if is_quarter_first_week:
-        influence_rule = "今天是季度首月第一周：management.influence_goal 必须填写一个基于数据的经营分析会建议。"
+        influence_rule = (
+            "今天是季度首月第一周：management.influence_goal 必须填写一个基于数据的经营分析会建议。"
+        )
     else:
         influence_rule = "今天不在季度首周：若无安排，management.influence_goal 填空字符串。"
 
-    return f"""请生成 {date_str}（{weekday}）的 AI 原生 HR 高管成长日报。
+    if agent_today:
+        agent_rule = "今天需要生成 agent 模块；如不是每月 1 日，milestone 填空字符串。"
+    else:
+        agent_rule = "今天不生成 agent 模块，顶层 agent 字段必须为 null，不要输出该对象。"
+
+    if hrd["mode"] == "deep":
+        hrd_rule = (
+            f"hrd.mode 必须为 deep，track 必须为「{hrd['track']}」；"
+            "deliverable 必须非空且可直接使用；action 也要给出今晚的准备工作。"
+        )
+    else:
+        hrd_rule = (
+            f"hrd.mode 必须为 light，track 必须为「{hrd['track']}」；"
+            "action 必须具体；deliverable 填空字符串。"
+        )
+
+    calendar_month = calendar["month"]
+    calendar_focus = calendar["node"]
+    calendar_detail = calendar["detail"]
+
+    return f"""请生成 {date_str}（{weekday}）的 AI 原生 HR 一号位成长日报。
+
+服务对象：上海精智实业股份有限公司 HR 负责人，深度参与蓝沃 AI（工业 AI）与智能装备事业线（非标自动化）。
+
+今天的年度 HR 节奏：{calendar_month} · {calendar_focus}（{calendar_detail}）。内容优先贴合这个节点。
 
 近期 7 天已出现的主题（必须全部避开，选取不同子主题）：
 {recent_block}
@@ -266,14 +372,19 @@ def build_user_prompt(
 硬性要求：
 1. 严格按 system prompt 中的 JSON 结构输出，字段齐全，不要增删字段。
 2. 只输出一个 JSON 对象，不要 Markdown 代码块，不要解释文字。
-3. 除英语学习素材外，全部使用简体中文；总字数不超过 1500 字。
+3. 除英语学习素材外，全部使用简体中文；总字数不超过 1800 字。
 4. 每个知识点必须带「今晚动作」，具体、可在 30 分钟内完成。
-5. HRBP & COE 的 type 只能填 HRBP 或 COE，并尽量与前一天交替。
-6. {output_rule}
-7. {milestone_rule}
-8. {influence_rule}
-9. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
-10. date 字段必须为 "{date_str}"；stage 三个字段填写当前阶段（L1–L5 / A1–A5 / M1–M5）。
+5. hrbp_coe.type 只能在 HRBP / COE / OD / TD 中选择，并尽量与前一天不同。
+6. 场景、案例、人才判断优先落到蓝沃 AI 与智能装备事业线；行业信息只围绕工业 AI 与非标自动化。
+7. 每天至少给出一个判断型结论（谁该上、谁该等、岗位要不要设、现在做还是等），不要只罗列概念。
+8. {output_rule}
+9. {milestone_rule}
+10. {influence_rule}
+11. {agent_rule}
+12. {hrd_rule}
+13. english.mode 必须为「{english_today}」；高管英语时围绕 board update、bad news、pushback、executive summary、resource ask。
+14. english.video 各字段一律填空字符串：短视频由系统按日期从已验证的视频库注入，禁止输出任何搜索页或自行编造链接。
+15. date 字段必须为 "{date_str}"；stage.hr 填 L1–L5，stage.agent 填 A1–A5，stage.mgmt 填 M1–M4 或 M5a/M5b。
 """
 
 
@@ -318,8 +429,11 @@ def _require_text(block: dict, key: str, prefix: str) -> str:
     return value
 
 
-def validate_report(data: dict) -> None:
-    """校验并规范化核心字段，避免把残缺内容渲染成页面。"""
+def validate_report(data: dict, expected: dict | None = None) -> None:
+    """校验并规范化核心字段，避免把残缺内容渲染成页面。
+
+    expected 用于校验当日轮转：hrd_mode / hrd_track / agent / english_mode。
+    """
     missing = [key for key in REQUIRED_TOP_KEYS if key not in data]
     if missing:
         raise ValueError(f"缺少顶层字段：{', '.join(missing)}")
@@ -337,13 +451,23 @@ def validate_report(data: dict) -> None:
         value = one_line(stage.get(key)).upper()
         match = pattern.search(value)
         if not match:
-            raise ValueError(f"stage.{key} 格式错误：{value!r}（应为 L1–L5 / A1–A5 / M1–M5）")
-        stage[key] = match.group(0)
+            raise ValueError(
+                f"stage.{key} 格式错误：{value!r}"
+                "（hr 应为 L1–L5，agent 应为 A1–A5，mgmt 应为 M1–M4 或 M5a/M5b）"
+            )
+        matched = match.group(0).upper()
+        # 统一展示为 M5a / M5b
+        if key == "mgmt" and matched[-1] in ("A", "B"):
+            matched = matched[:-1] + matched[-1].lower()
+        stage[key] = matched
 
-    # --- HRBP & COE ---
+    # --- 组织与人才 ---
     hrbp = _require_block(data, "hrbp_coe")
     for field in ("topic", "type", "concept", "scenario", "action"):
         hrbp[field] = _require_text(hrbp, field, "hrbp_coe")
+    hrbp["type"] = hrbp["type"].upper()
+    if hrbp["type"] not in ALLOWED_HRBP_TYPES:
+        raise ValueError(f"hrbp_coe.type 非法：{hrbp['type']}（应为 HRBP / COE / OD / TD）")
     hrbp["output_task"] = optional_text(hrbp.get("output_task"))
 
     questions = hrbp.get("questions")
@@ -363,17 +487,48 @@ def validate_report(data: dict) -> None:
         raise ValueError("hrbp_coe.questions 必须是非空字符串数组")
     hrbp["questions"] = normalized
 
-    # --- Agent ---
-    agent = _require_block(data, "agent")
-    for field in ("topic", "concept", "experiment", "action"):
-        agent[field] = _require_text(agent, field, "agent")
-    agent["milestone"] = optional_text(agent.get("milestone"))
+    # --- Agent（可选，按星期轮转） ---
+    agent_value = data.get("agent")
+    if expected and expected.get("agent") and agent_value is None:
+        raise ValueError("今天需要生成 agent 模块，但返回了 null")
+    if expected and not expected.get("agent") and agent_value is not None:
+        raise ValueError("今天不应生成 agent 模块，agent 必须为 null")
 
-    # --- 经营管理 ---
+    if agent_value is None:
+        data["agent"] = None
+    else:
+        agent = _require_block(data, "agent")
+        for field in ("topic", "concept", "experiment", "action"):
+            agent[field] = _require_text(agent, field, "agent")
+        agent["milestone"] = optional_text(agent.get("milestone"))
+
+    # --- 经营与影响 ---
     management = _require_block(data, "management")
     for field in ("topic", "concept", "case", "action"):
         management[field] = _require_text(management, field, "management")
     management["influence_goal"] = optional_text(management.get("influence_goal"))
+
+    # --- HRD 实战 ---
+    hrd = _require_block(data, "hrd")
+    hrd["mode"] = one_line(hrd.get("mode")).lower()
+    if hrd["mode"] not in ALLOWED_HRD_MODES:
+        raise ValueError(f"hrd.mode 非法：{hrd['mode']!r}（应为 light / deep）")
+    hrd["track"] = one_line(hrd.get("track"))
+    if hrd["track"] not in ALLOWED_HRD_TRACKS:
+        raise ValueError(
+            f"hrd.track 非法：{hrd['track']!r}（应为 {' / '.join(ALLOWED_HRD_TRACKS)}）"
+        )
+    for field in ("topic", "concept", "scenario", "action"):
+        hrd[field] = _require_text(hrd, field, "hrd")
+    hrd["deliverable"] = optional_text(hrd.get("deliverable"))
+    if hrd["mode"] == "deep" and not hrd["deliverable"]:
+        raise ValueError("hrd.mode=deep 时 deliverable 不能为空")
+
+    if expected:
+        if expected.get("hrd_mode") and hrd["mode"] != expected["hrd_mode"]:
+            raise ValueError(f"hrd.mode 应为 {expected['hrd_mode']}，实际为 {hrd['mode']}")
+        if expected.get("hrd_track") and hrd["track"] != expected["hrd_track"]:
+            raise ValueError(f"hrd.track 应为 {expected['hrd_track']}，实际为 {hrd['track']}")
 
     # --- 英语 ---
     english = data.get("english")
@@ -381,6 +536,13 @@ def validate_report(data: dict) -> None:
         raise ValueError("english 必须是对象")
     for field in ("words", "phrase", "ai_talk"):
         english[field] = _require_text(english, field, "english")
+    english["mode"] = one_line(english.get("mode")) or "职场英语"
+    if english["mode"] not in ALLOWED_ENGLISH_MODES:
+        raise ValueError(f"english.mode 非法：{english['mode']!r}（应为 职场英语 / 高管英语）")
+    if expected and expected.get("english_mode") and english["mode"] != expected["english_mode"]:
+        raise ValueError(
+            f"english.mode 应为 {expected['english_mode']}，实际为 {english['mode']}"
+        )
 
     video = english.get("video")
     if video is None:
@@ -399,7 +561,12 @@ def validate_report(data: dict) -> None:
     english["video"] = video
 
 
-def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: str) -> dict:
+def call_claude(
+    client: anthropic.Anthropic,
+    system_prompt: str,
+    user_prompt: str,
+    expected: dict | None = None,
+) -> dict:
     """调用模型，解析失败时携带错误信息重试。"""
     attempt_prompt = user_prompt
     last_error: Exception | None = None
@@ -427,7 +594,7 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_prompt: st
                 if getattr(block, "type", "") == "text"
             )
             data = extract_json(text)
-            validate_report(data)
+            validate_report(data, expected)
             return data
 
         except anthropic.AuthenticationError:
@@ -515,7 +682,7 @@ def render_task_box(label: str, value: object, css_class: str) -> str:
 
 
 def render_hrbp_coe(hrbp: dict, stage: str) -> str:
-    title = one_line(hrbp.get("topic")) or "HRBP & COE"
+    title = one_line(hrbp.get("topic")) or "组织与人才"
     body = "".join(
         [
             render_field("概念 / 工具", hrbp.get("concept")),
@@ -525,7 +692,7 @@ def render_hrbp_coe(hrbp: dict, stage: str) -> str:
     )
     return (
         '<article class="card card-hr">'
-        + card_head("🧭", f"01 · HRBP & COE · {stage}", title, badge=one_line(hrbp.get("type")))
+        + card_head("🧭", f"01 · 组织与人才 · {stage}", title, badge=one_line(hrbp.get("type")))
         + body
         + render_action(hrbp.get("action"))
         + render_task_box("本周输出任务", hrbp.get("output_task"), "output-box")
@@ -551,8 +718,9 @@ def render_agent(agent: dict, stage: str) -> str:
     )
 
 
-def render_management(management: dict, stage: str) -> str:
-    title = one_line(management.get("topic")) or "公司经营管理"
+def render_management(management: dict, stage: str, wide: bool = False) -> str:
+    title = one_line(management.get("topic")) or "经营与影响"
+    css = "card card-mgmt card-wide" if wide else "card card-mgmt"
     body = "".join(
         [
             render_field("概念 / 指标", management.get("concept")),
@@ -560,11 +728,37 @@ def render_management(management: dict, stage: str) -> str:
         ]
     )
     return (
-        '<article class="card card-mgmt">'
-        + card_head("📊", f"03 · 公司经营管理 · {stage}", title)
+        f'<article class="{css}">'
+        + card_head("📊", f"03 · 经营与影响 · {stage}", title)
         + body
         + render_action(management.get("action"))
         + render_task_box("季度影响力目标", management.get("influence_goal"), "influence-box")
+        + "</article>"
+    )
+
+
+def render_hrd(hrd: dict) -> str:
+    title = one_line(hrd.get("topic")) or "HRD 实战"
+    mode = one_line(hrd.get("mode"))
+    track = one_line(hrd.get("track"))
+    badge = f"{track} · 深度作业" if mode == "deep" else track
+    body = "".join(
+        [
+            render_field("框架 / 判断标准", hrd.get("concept")),
+            render_field("公司情境", hrd.get("scenario")),
+        ]
+    )
+    deliverable = (
+        render_task_box("周六深度交付物", hrd.get("deliverable"), "deliverable-box")
+        if mode == "deep"
+        else ""
+    )
+    return (
+        '<article class="card card-hrd">'
+        + card_head("🎯", "04 · HRD 实战", title, badge=badge)
+        + body
+        + render_action(hrd.get("action"))
+        + deliverable
         + "</article>"
     )
 
@@ -618,9 +812,11 @@ def render_english(english: dict) -> str:
             "</section>"
         )
 
+    mode = one_line(english.get("mode"))
+    title = f"英语精进 · {mode}" if mode else "英语精进 · 每天 20 分钟"
     return (
         '<article class="card card-english">'
-        + card_head("🌍", "04 · 英语精进", "英语精进 · 每天 20 分钟")
+        + card_head("🌍", "05 · 英语精进", title)
         + '<div class="english-grid">'
         + "".join(blocks)
         + "</div>"
@@ -630,14 +826,22 @@ def render_english(english: dict) -> str:
 
 def render_cards(data: dict) -> str:
     stage = data.get("stage") or {}
-    return "\n".join(
-        [
-            render_hrbp_coe(data.get("hrbp_coe") or {}, one_line(stage.get("hr"))),
-            render_agent(data.get("agent") or {}, one_line(stage.get("agent"))),
-            render_management(data.get("management") or {}, one_line(stage.get("mgmt"))),
-            render_english(data.get("english") or {}),
-        ]
+    agent = data.get("agent")
+    has_agent = isinstance(agent, dict) and bool(agent)
+
+    cards = [render_hrbp_coe(data.get("hrbp_coe") or {}, one_line(stage.get("hr")))]
+    if has_agent:
+        cards.append(render_agent(agent, one_line(stage.get("agent"))))
+    cards.append(
+        render_management(
+            data.get("management") or {},
+            one_line(stage.get("mgmt")),
+            wide=not has_agent,
+        )
     )
+    cards.append(render_hrd(data.get("hrd") or {}))
+    cards.append(render_english(data.get("english") or {}))
+    return "\n".join(cards)
 
 
 def build_summary(data: dict) -> str:
@@ -646,31 +850,43 @@ def build_summary(data: dict) -> str:
     hrbp = data.get("hrbp_coe") or {}
     agent = data.get("agent") or {}
     management = data.get("management") or {}
+    hrd = data.get("hrd") or {}
     english = data.get("english") or {}
 
     if one_line(hrbp.get("topic")):
-        parts.append(f"HRBP & COE：{one_line(hrbp.get('topic'))}")
+        parts.append(f"组织与人才：{one_line(hrbp.get('topic'))}")
     if one_line(agent.get("topic")):
         parts.append(f"Agent：{one_line(agent.get('topic'))}")
     if one_line(management.get("topic")):
         parts.append(f"经营：{one_line(management.get('topic'))}")
+    if one_line(hrd.get("topic")):
+        parts.append(f"HRD：{clip(hrd.get('topic'), 24)}")
     if one_line(english.get("phrase")):
         parts.append(f"英语：{clip(english.get('phrase'), 24)}")
 
     return " ｜ ".join(parts)
 
 
-def render_report(data: dict, template: str, date_str: str, weekday: str, now: datetime) -> str:
+def render_report(
+    data: dict,
+    template: str,
+    date_str: str,
+    weekday: str,
+    now: datetime,
+    calendar: dict,
+) -> str:
     stage = data.get("stage") or {}
     hrbp = data.get("hrbp_coe") or {}
     agent = data.get("agent") or {}
     management = data.get("management") or {}
+    hrd = data.get("hrd") or {}
 
     stage_text = " ｜ ".join(
         [
             f"HR · {one_line(stage.get('hr'))}",
             f"Agent · {one_line(stage.get('agent'))}",
             f"经营 · {one_line(stage.get('mgmt'))}",
+            f"HRD · {one_line(hrd.get('track'))}",
         ]
     )
     focus = " ｜ ".join(
@@ -679,15 +895,18 @@ def render_report(data: dict, template: str, date_str: str, weekday: str, now: d
             one_line(hrbp.get("topic")),
             one_line(agent.get("topic")),
             one_line(management.get("topic")),
+            one_line(hrd.get("topic")),
         )
         if part
     )
+    calendar_text = f"年度节奏：{calendar.get('month', '')} · {calendar.get('node', '')}"
 
     replacements = {
         "PAGE_TITLE": esc(f"Shaun Daily Report · {date_str}"),
         "DATE": esc(date_str),
         "WEEKDAY": esc(weekday),
         "STAGES": esc(stage_text),
+        "CALENDAR": esc(calendar_text),
         "FOCUS": esc(focus),
         "SUMMARY_ATTR": esc(build_summary(data)),
         "DATA": render_cards(data),
@@ -803,15 +1022,33 @@ def main() -> int:
         print(f"[error] {exc}", file=sys.stderr)
         return 1
 
+    profile = load_profile()
+    if profile:
+        system_prompt = (
+            system_prompt.rstrip()
+            + "\n\n## 十一、组织画像（本次生成必须结合）\n\n"
+            + profile
+        )
+
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     now = datetime.now(BEIJING)
     date_str = now.strftime("%Y-%m-%d")
     weekday = WEEKDAYS[now.weekday()]
 
-    is_saturday = now.weekday() == 5
+    plan = hrd_plan(now)
+    agent_today = include_agent(now)
+    english_today = english_mode(now)
+    calendar = calendar_node(now)
     is_first_of_month = now.day == 1
     is_quarter_first_week = now.month in (1, 4, 7, 10) and now.day <= 7
+
+    print(
+        f"[info] 今日安排：HRD {plan['mode']}/{plan['track']}，"
+        f"Agent {'生成' if agent_today else '跳过'}，英语 {english_today}，"
+        f"节奏 {calendar['month']}·{calendar['node']}",
+        file=sys.stderr,
+    )
 
     recent_topics = load_recent_topics()
     if recent_topics:
@@ -821,7 +1058,10 @@ def main() -> int:
         date_str,
         weekday,
         recent_topics,
-        is_saturday,
+        plan,
+        agent_today,
+        english_today,
+        calendar,
         is_first_of_month,
         is_quarter_first_week,
     )
@@ -835,7 +1075,13 @@ def main() -> int:
             timeout=120.0,
             max_retries=2,
         )
-        data = call_claude(client, system_prompt, user_prompt)
+        expected = {
+            "hrd_mode": plan["mode"],
+            "hrd_track": plan["track"],
+            "agent": agent_today,
+            "english_mode": english_today,
+        }
+        data = call_claude(client, system_prompt, user_prompt, expected)
     except anthropic.AuthenticationError as exc:
         # 输出 API 返回的原文（如 invalid x-api-key），便于区分密钥错误与其他鉴权问题
         print(f"[error] ANTHROPIC_API_KEY 无效或已过期：{exc}", file=sys.stderr)
@@ -858,7 +1104,7 @@ def main() -> int:
         data["english"]["video"] = daily_video
 
     try:
-        page = render_report(data, template, date_str, weekday, now)
+        page = render_report(data, template, date_str, weekday, now, calendar)
     except Exception as exc:  # noqa: BLE001
         print(f"[error] 渲染 HTML 失败：{exc}", file=sys.stderr)
         return 1
