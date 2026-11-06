@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日 HR 系统课 · 2026-11-07</title>
+  <meta name="description" content="第 2/60 课：岗位分析与岗位说明书 ｜ 案例：阿里巴巴的「政委」体系 ｜ 小测：假设一家公司（虚构示例）要招一名行政专员，HR 直接拿网上…">
+  <meta name="report-summary" content="第 2/60 课：岗位分析与岗位说明书 ｜ 案例：阿里巴巴的「政委」体系 ｜ 小测：假设一家公司（虚构示例）要招一名行政专员，HR 直接拿网上…">
+  <meta name="report-date" content="2026-11-07">
+  <meta property="og:title" content="每日 HR 系统课 · 2026-11-07">
+  <meta property="og:description" content="第 2/60 课：岗位分析与岗位说明书 ｜ 案例：阿里巴巴的「政委」体系 ｜ 小测：假设一家公司（虚构示例）要招一名行政专员，HR 直接拿网上…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --lesson: #2563eb;
+      --lesson-soft: #eff6ff;
+      --case: #059669;
+      --case-soft: #ecfdf5;
+      --quiz: #d97706;
+      --quiz-soft: #fffbeb;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --english: #ea580c;
+      --english-soft: #fff7ed;
+      --landing: #0e7490;
+      --landing-soft: #ecfeff;
+      --review: #be123c;
+      --review-soft: #fff1f2;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .progress {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .review-line {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
+    .review-line:empty { display: none; }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 700px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-lesson { grid-column: span 2; border-top-color: var(--lesson); }
+    .card-case { grid-column: span 2; border-top-color: var(--case); }
+    .card-quiz { border-top-color: var(--quiz); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-landing { border-top-color: var(--landing); }
+    .card-wide { grid-column: span 2; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-lesson .card-icon { background: var(--lesson-soft); }
+    .card-case .card-icon { background: var(--case-soft); }
+    .card-quiz .card-icon { background: var(--quiz-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+    .card-landing .card-icon { background: var(--landing-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-case .card-badge { background: var(--case-soft); color: var(--case); }
+    .card-quiz .card-badge { background: var(--quiz-soft); color: var(--quiz); }
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-landing .card-badge { background: var(--landing-soft); color: var(--landing); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Lists ---------- */
+    .bullet-list,
+    .step-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .bullet-list li,
+    .step-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    .step-list { counter-reset: step; }
+
+    .step-list li {
+      padding-left: 28px;
+      counter-increment: step;
+    }
+
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    /* ---------- Glossary ---------- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin: 0;
+    }
+
+    .glossary-item {
+      padding: 8px 10px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+    }
+
+    .glossary-item dt {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--lesson);
+    }
+
+    .glossary-item dd {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Review ---------- */
+    .review-strip {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--review);
+      border-radius: 8px;
+      background: var(--review-soft);
+    }
+
+    .review-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--review);
+      text-transform: uppercase;
+    }
+
+    .review-strip p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #881337;
+      line-height: 1.7;
+    }
+
+    /* ---------- Case ---------- */
+    .judgement-box {
+      margin: 4px 0 12px;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-left: 3px solid var(--case);
+      border-radius: 10px;
+      background: var(--case-soft);
+    }
+
+    .judgement-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--case);
+      text-transform: uppercase;
+    }
+
+    .judgement-box p {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #064e3b;
+      line-height: 1.7;
+    }
+
+    .source-note {
+      margin: auto 0 0;
+      padding-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .source-note a {
+      color: var(--case);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--case);
+    }
+
+    .source-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz-options {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quiz-options li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .option-letter {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--quiz-soft);
+      color: var(--quiz);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      background: #f0fdf4;
+    }
+
+    .answer-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+
+    /* ---------- Agent ---------- */
+    .card-agent .action-box {
+      margin-top: auto;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Landing ---------- */
+    .landing-question {
+      margin: 0 0 14px;
+      padding: 16px 18px;
+      border: 1px solid #a5f3fc;
+      border-left: 3px solid var(--landing);
+      border-radius: 10px;
+      background: var(--landing-soft);
+    }
+
+    .landing-question p {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #155e75;
+      line-height: 1.7;
+    }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-lesson, .card-case, .card-english, .card-landing, .card-wide {
+        grid-column: span 1;
+      }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .glossary-list { grid-template-columns: minmax(0, 1fr); }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课 · 2026-11-07</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-07</span>
+        <span class="meta-weekday">星期六</span>
+      </div>
+      <p class="progress">领域 1/18 · 人社部四级 · 人力资源规划　｜　第 2/60 课</p>
+      <p class="review-line"></p>
+      <p class="focus">岗位分析与岗位说明书 ｜ 案例：阿里巴巴的「政委」体系</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-lesson"><header class="card-head"><span class="card-icon" aria-hidden="true">📚</span><div><p class="card-kicker">01 · 今日一课 · 人社部四级 · 人力资源规划</p><h2 class="card-title">岗位分析与岗位说明书<span class="card-badge">第 2/60 课</span></h2></div></header><div class="field"><p class="field-label">一句话定义</p><p class="field-text">岗位分析是搞清楚一个岗位到底做什么、要什么条件；岗位说明书是把这些写成一份可用的文件。</p></div><div class="field"><p class="field-label">为什么重要</p><p class="field-text">没有岗位分析，招聘就靠感觉，考核就靠印象，发工资就靠拍脑袋；它是招聘、绩效、薪酬、培训的共同起点。</p></div><div class="field"><p class="field-label">怎么用</p><ol class="step-list"><li>先访谈在岗的人和直属上级，各问三个问题：每天主要做什么、什么事最难、做得好和做得差的区别在哪。</li><li>把收集到的任务按频率和重要性排序，删掉一年做不了几次的边缘任务，留下核心职责，每条职责用动词开头。</li><li>写完后找直属上级确认一遍，再让在岗的人读一遍，问他有没有哪条不像自己每天干的事。</li></ol></div><div class="field"><p class="field-label">常见误区</p><ul class="bullet-list"><li>把岗位说明书写成岗位职责大全，什么琐事都往里塞，最后没人看。</li><li>照抄网上同名的岗位模板，不访谈在岗的人，写出来的要求和实际工作对不上。</li><li>写完就锁进抽屉，招聘、考核、调薪都不拿来用，等于白写。</li></ul></div><div class="field"><p class="field-label">今日术语</p><dl class="glossary-list"><div class="glossary-item"><dt>岗位分析</dt><dd>用访谈、观察等方法，搞清楚一个岗位实际干什么、需要什么能力的过程。</dd></div><div class="glossary-item"><dt>岗位说明书</dt><dd>岗位分析的产出，一页纸写清岗位名称、核心职责、任职条件、汇报关系。</dd></div><div class="glossary-item"><dt>任职资格</dt><dd>做好这个岗位至少需要什么学历、经验、技能，是最低门槛，不是理想画像。</dd></div></dl></div><div class="action-box"><span class="action-label">今晚 10 分钟</span><p>今晚挑一个你熟悉的岗位，用三条核心职责的格式写一页岗位说明书草稿，明天找在岗的人对一遍。</p></div></article>
+<article class="card card-case"><header class="card-head"><span class="card-icon" aria-hidden="true">🪞</span><div><p class="card-kicker">02 · 案例照镜子</p><h2 class="card-title">阿里巴巴的「政委」体系<span class="card-badge">公开案例</span></h2></div></header><div class="field"><p class="field-label">它解决什么问题</p><p class="field-text">业务扩张太快，HR 坐在总部做制度，跟不上业务；业务负责人又只管业绩，组织状态没人管。</p></div><div class="field"><p class="field-label">它怎么做</p><p class="field-text">把 HR 派进业务线做「政委」，与业务负责人搭档；政委参加业务会、听得懂业务语言，对干部任用和组织状态有发言权，但不替业务做决定。</p></div><div class="field"><p class="field-label">公开信息能看到的结果</p><p class="field-text">公开报道普遍把它视为阿里在快速扩张期保持组织一致性的一种机制；没有公开的量化数据能证明它必然提升业绩。</p></div><div class="field"><p class="field-label">能不能迁移</p><p class="field-text">可迁移的是 HR 进入业务会议、听得懂业务、对干部有判断；不是照搬「政委」这个头衔。小公司照搬，常见结果是多了一个盯人的人。</p></div><div class="judgement-box"><span class="judgement-label">一句判断</span><p>三支柱有没有用，不取决于组织图画了几个框，而取决于 HRBP 是否被业务负责人当成能一起做决定的人。</p></div><p class="source-note">来源：公开报道与公开访谈，不含未公开数据</p></article>
+<article class="card card-quiz card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">✅</span><div><p class="card-kicker">03 · 小测一题</p><h2 class="card-title">检验一下<span class="card-badge">3 选 1</span></h2></div></header><div class="field"><p class="field-label">情境</p><p class="field-text">假设一家公司（虚构示例）要招一名行政专员，HR 直接拿网上的模板写了岗位说明书，面试时发现候选人会的东西和实际工作对不上。最可能漏了哪一步？</p></div><div class="field"><p class="field-label">选项</p><ul class="quiz-options"><li><span class="option-letter">A</span><span>没有做岗位分析，没访谈在岗的人和上级</span></li><li><span class="option-letter">B</span><span>岗位说明书写得太短，应该写满五页</span></li><li><span class="option-letter">C</span><span>没有在招聘广告里写清楚薪资范围</span></li></ul></div><div class="answer-box"><span class="answer-label">答案 A</span><p>岗位说明书要基于岗位分析，访谈在岗的人和上级才能知道实际做什么。B 错在篇幅长短不是关键，内容对得上才关键。C 错在薪资范围属于招聘信息，和岗位说明书是否准确是两件事。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语 5 分钟</p><h2 class="card-title">英语 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸词汇任务：查 job description、responsibility、qualification、report to，各抄一个例句并朗读三遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">This role reports to... 例句：This role reports to the operations manager and covers three main areas. 中文释义：这个岗位向运营经理汇报，负责三个主要方面。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">让 AI 扮演业务负责人，你练三轮：每轮用英文说清一个岗位的三条核心职责和一个任职条件，请对方追问细节。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1XndbY7EiA/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">25 句职场版美式口语练习</span><span class="video-task">任务：跟读 25 句中的 10 句，选 5 句写进你的日常口语清单，明早通勤时复述一遍。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+<article class="card card-landing card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">🧩</span><div><p class="card-kicker">06 · 周六落地日</p><h2 class="card-title">把这一周放回你的工作<span class="card-badge">可选</span></h2></div></header><div class="landing-question"><p>本周你接触过的岗位里，哪一个的岗位说明书最需要更新？你打算先访谈谁？</p></div><div class="field"><p class="field-label">提示</p><p class="field-text">不用写公司名，只说岗位和你准备访谈的对象角色即可。</p></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：第 3/60 课《人力资源需求预测的三种方法》｜Agent 卡暂停｜英语 职场英语</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-07 07:27（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>

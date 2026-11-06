@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "updated_at": "2026-11-06",
+  "updated_at": "2026-11-07",
   "lessons": {
     "mof-plan-l01": {
       "covered_on": "2026-11-06",
+      "review_7_on": null,
+      "review_30_on": null
+    },
+    "mof-plan-l02": {
+      "covered_on": "2026-11-07",
       "review_7_on": null,
       "review_30_on": null
     }
@@ -11,6 +16,9 @@
   "cases": {
     "cipd-resourcing-talent": {
       "used_on": "2026-11-06"
+    },
+    "alibaba-commissar": {
+      "used_on": "2026-11-07"
     }
   }
 }
