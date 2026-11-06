@@ -1,0 +1,52 @@
+name: Notify Today's Report
+
+# 手动重发：Actions → Notify Today's Report → Run workflow
+# 自动重发：推送 notify/* 临时分支即可；删除分支不会重复发送
+on:
+  push:
+    branches:
+      - notify/*
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "日报日期 YYYY-MM-DD；留空则取最新一期"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    name: Send report notification
+    # 分支删除也会触发 push 事件，这里排除删除，避免重复发送
+    if: github.event_name == 'workflow_dispatch' || github.event.deleted == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send notification
+        env:
+          WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+          SERVERCHAN_SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}
+          REPORT_DATE: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          if [ -n "${REPORT_DATE:-}" ]; then
+            python scripts/notify.py --date "$REPORT_DATE"
+          else
+            python scripts/notify.py
+          fi
