@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把当日「AI 原生 HR 一号位」日报摘要推送到企业微信群机器人或 Server酱（微信）。
+"""把当日「每日 HR 系统课」摘要推送到企业微信群机器人或 Server酱（微信）。
 
 - WECOM_WEBHOOK：企业微信群机器人 Webhook 地址（GitHub Secrets，可选）
 - SERVERCHAN_SENDKEY：Server酱 SendKey（GitHub Secrets，可选）
@@ -139,108 +139,124 @@ def build_markdown(data: dict, report_url: str) -> str:
     weekday = weekday_cn(date_str)
     heading_date = f"{date_str} {weekday}".strip()
 
-    lines: list[str] = [f"# 📘 Shaun Daily Report · {heading_date}", ""]
+    lines: list[str] = [f"# 📘 每日 HR 系统课 · {heading_date}", ""]
 
-    stage = _block(data, "stage")
-    stage_pairs = (("HR", "hr"), ("Agent", "agent"), ("经营", "mgmt"))
-    stage_parts = []
-    for label, key in stage_pairs:
-        value = clip(stage.get(key), 6)
-        if value:
-            stage_parts.append(f"{label} {value}")
-    if stage_parts:
-        lines.extend([f"> 阶段：{' ｜ '.join(stage_parts)}", ""])
+    progress = _block(data, "progress")
+    if progress:
+        domain = clip(progress.get("domain"), 20)
+        domain_index = clip(progress.get("domain_index"), 4)
+        domain_total = clip(progress.get("domain_total"), 4)
+        lesson_no = clip(progress.get("lesson_no"), 4)
+        total = clip(progress.get("total"), 4)
+        source = clip(progress.get("source"), 8)
+        group = clip(progress.get("group"), 8)
+        level = clip(progress.get("level"), 4)
+        if source == "人社部":
+            source_label = f"人社部{level}"
+        else:
+            source_label = " ".join(part for part in (source, group) if part)
+        lines.extend(
+            [
+                f"> 领域 {domain_index}/{domain_total} · {source_label} · {domain}"
+                f" ｜ 第 {lesson_no}/{total} 课",
+                "",
+            ]
+        )
 
-    # --- 组织与人才 ---
-    hrbp = _block(data, "hrbp_coe")
-    if hrbp:
-        topic = clip(hrbp.get("topic"), 36)
-        kind = clip(hrbp.get("type"), 6)
-        label = f"{kind}｜{topic}" if kind else topic
-        lines.append(f"**🧭 组织与人才｜{label}**")
-        if hrbp.get("concept"):
-            lines.append(f"概念：{clip(hrbp.get('concept'), 70)}")
-        if hrbp.get("scenario"):
-            lines.append(f"场景：{clip(hrbp.get('scenario'), 60)}")
-        if hrbp.get("partner_action"):
-            lines.append(f"伙伴动作：{clip(hrbp.get('partner_action'), 70)}")
-        questions = hrbp.get("questions")
-        if isinstance(questions, list) and questions:
-            lines.append(f"诊断：{clip(questions[0], 60)}")
-        if hrbp.get("action"):
-            lines.append(f"今晚：{clip(hrbp.get('action'), 60)}")
-        if hrbp.get("output_task"):
-            lines.append(f"本周输出：{clip(hrbp.get('output_task'), 60)}")
+    review = _block(data, "review")
+    if review:
+        lines.append(
+            f"**🔁 今日复习｜第 {clip(review.get('lesson_no'), 4)} 课"
+            f"《{clip(review.get('lesson_title'), 30)}》**"
+        )
+        if review.get("prompt"):
+            lines.append(f"回忆：{clip(review.get('prompt'), 70)}")
         lines.append("")
 
-    # --- Agent 体系化 ---
+    # --- 今日一课 ---
+    lesson = _block(data, "lesson")
+    if lesson:
+        title = clip(lesson.get("title"), 40)
+        no = clip(lesson.get("lesson_no"), 4)
+        total = clip((_block(data, "progress")).get("total"), 4)
+        label = f"第 {no}/{total} 课｜{title}" if total else title
+        lines.append(f"**📚 今日一课｜{label}**")
+        if lesson.get("one_liner"):
+            lines.append(f"一句话：{clip(lesson.get('one_liner'), 60)}")
+        if lesson.get("why"):
+            lines.append(f"为什么：{clip(lesson.get('why'), 70)}")
+        steps = lesson.get("how_to_use")
+        if isinstance(steps, list) and steps:
+            lines.append(f"怎么用：{clip(' → '.join(str(s) for s in steps), 90)}")
+        misconceptions = lesson.get("misconceptions")
+        if isinstance(misconceptions, list) and misconceptions:
+            lines.append(
+                f"误区：{clip('；'.join(str(m) for m in misconceptions[:2]), 80)}"
+            )
+        glossary = lesson.get("glossary")
+        if isinstance(glossary, list) and glossary:
+            terms = "；".join(
+                f"{clip(item.get('term'), 12)}={clip(item.get('plain'), 28)}"
+                for item in glossary
+                if isinstance(item, dict)
+            )
+            if terms:
+                lines.append(f"术语：{clip(terms, 90)}")
+        if lesson.get("action"):
+            lines.append(f"今晚：{clip(lesson.get('action'), 70)}")
+        lines.append("")
+
+    # --- 案例照镜子 ---
+    case = _block(data, "case")
+    if case:
+        lines.append(f"**🪞 案例照镜子｜{clip(case.get('title'), 36)}**")
+        if case.get("problem"):
+            lines.append(f"问题：{clip(case.get('problem'), 60)}")
+        if case.get("practice"):
+            lines.append(f"做法：{clip(case.get('practice'), 70)}")
+        if case.get("transfer"):
+            lines.append(f"迁移：{clip(case.get('transfer'), 70)}")
+        if case.get("judgement"):
+            lines.append(f"判断：{clip(case.get('judgement'), 60)}")
+        source = clip(case.get("source"), 50)
+        source_url = clip(case.get("source_url"), 200)
+        if source_url:
+            lines.append(f"来源：[{source or source_url}]({source_url})")
+        elif source:
+            lines.append(f"来源：{source}")
+        lines.append("")
+
+    # --- 小测一题 ---
+    quiz = _block(data, "quiz")
+    if quiz:
+        lines.append("**✅ 小测一题**")
+        if quiz.get("question"):
+            lines.append(f"情境：{clip(quiz.get('question'), 70)}")
+        options = quiz.get("options")
+        if isinstance(options, list) and options:
+            letters = "ABC"
+            option_text = " / ".join(
+                f"{letters[index]}. {clip(option, 30)}"
+                for index, option in enumerate(options)
+                if index < len(letters)
+            )
+            lines.append(f"选项：{option_text}")
+        if quiz.get("answer"):
+            lines.append(f"答案：{clip(quiz.get('answer'), 4)}")
+        if quiz.get("explanation"):
+            lines.append(f"解析：{clip(quiz.get('explanation'), 80)}")
+        lines.append("")
+
+    # --- Agent 小卡 ---
     agent = _block(data, "agent")
     if agent:
-        lines.append(f"**🤖 Agent 体系化｜{clip(agent.get('topic'), 36)}**")
-        if agent.get("concept"):
-            lines.append(f"概念：{clip(agent.get('concept'), 70)}")
-        if agent.get("experiment"):
-            lines.append(f"实验：{clip(agent.get('experiment'), 60)}")
+        lines.append(f"**🤖 Agent 小卡｜{clip(agent.get('title'), 36)}**")
+        if agent.get("goal"):
+            lines.append(f"目标：{clip(agent.get('goal'), 60)}")
+        if agent.get("steps"):
+            lines.append(f"怎么做：{clip(agent.get('steps'), 70)}")
         if agent.get("action"):
             lines.append(f"今晚：{clip(agent.get('action'), 60)}")
-        if agent.get("milestone"):
-            lines.append(f"里程碑：{clip(agent.get('milestone'), 60)}")
-        lines.append("")
-
-    # --- 经营与影响 ---
-    management = _block(data, "management")
-    if management:
-        lines.append(f"**📊 经营与影响｜{clip(management.get('topic'), 36)}**")
-        if management.get("concept"):
-            lines.append(f"概念：{clip(management.get('concept'), 70)}")
-        if management.get("case"):
-            lines.append(f"案例：{clip(management.get('case'), 60)}")
-        if management.get("action"):
-            lines.append(f"今晚：{clip(management.get('action'), 60)}")
-        if management.get("influence_goal"):
-            lines.append(f"影响力：{clip(management.get('influence_goal'), 60)}")
-        lines.append("")
-
-    # --- HRD 实战 ---
-    hrd = _block(data, "hrd")
-    if hrd:
-        track = clip(hrd.get("track"), 8)
-        mode = clip(hrd.get("mode"), 6)
-        mode_label = "深度作业" if mode == "deep" else "轻卡"
-        label = f"{track}｜{mode_label}" if track else mode_label
-        lines.append(f"**🎯 HRD 实战｜{label}｜{clip(hrd.get('topic'), 32)}**")
-        if hrd.get("concept"):
-            lines.append(f"框架：{clip(hrd.get('concept'), 60)}")
-        if hrd.get("action"):
-            lines.append(f"今晚：{clip(hrd.get('action'), 60)}")
-        if hrd.get("deliverable"):
-            lines.append(f"交付物：{clip(hrd.get('deliverable'), 60)}")
-        lines.append("")
-
-    # --- 认知拓展 ---
-    cognition = _block(data, "cognition")
-    if cognition:
-        is_review = cognition.get("mode") == "decision_review"
-        kind = "决策复盘" if is_review else "业务解剖"
-        bu = clip(cognition.get("bu"), 12)
-        label = f"{bu}｜{kind}" if bu else kind
-        icon = "🪞" if is_review else "🔭"
-        lines.append(f"**{icon} 认知拓展｜{label}｜{clip(cognition.get('topic'), 32)}**")
-        if cognition.get("framework"):
-            lines.append(f"框架：{clip(cognition.get('framework'), 60)}")
-        facts = cognition.get("facts")
-        if isinstance(facts, list) and facts:
-            lines.append(f"事实：{clip('；'.join(str(f) for f in facts), 70)}")
-        if cognition.get("insight"):
-            lines.append(f"判断：{clip(cognition.get('insight'), 60)}")
-        if cognition.get("implication"):
-            lines.append(f"含义：{clip(cognition.get('implication'), 60)}")
-        if cognition.get("blind_spot"):
-            lines.append(f"盲点：{clip(cognition.get('blind_spot'), 50)}")
-        if cognition.get("action"):
-            lines.append(f"今晚：{clip(cognition.get('action'), 60)}")
-        if cognition.get("deliverable"):
-            lines.append(f"交付物：{clip(cognition.get('deliverable'), 60)}")
         lines.append("")
 
     # --- 英语 ---
@@ -261,9 +277,19 @@ def build_markdown(data: dict, report_url: str) -> str:
             lines.append(f"视频：[{v_title}]({clip(video.get('url'), 200)})")
         lines.append("")
 
+    # --- 周六落地日 ---
+    landing = _block(data, "landing")
+    if landing:
+        lines.append("**🧩 周六落地日（可选）**")
+        if landing.get("question"):
+            lines.append(f"问题：{clip(landing.get('question'), 80)}")
+        if landing.get("note"):
+            lines.append(f"提示：{clip(landing.get('note'), 60)}")
+        lines.append("")
+
     preview = clip(data.get("preview"), 70)
     if preview:
-        lines.extend([f"🔭 明日预览：{preview}", ""])
+        lines.extend([f"🔭 {preview}", ""])
 
     # 链接单独预留位置，避免被截断导致无法点击
     link_block = f"\n[👉 阅读完整日报]({report_url})\n"
@@ -424,7 +450,7 @@ def main() -> int:
             failed += 1
 
     if sendkey:
-        title = f"Shaun Daily Report · {date_str}"
+        title = f"每日 HR 系统课 · {date_str}"
         try:
             send_serverchan(sendkey, title, content)
         except NotifyError as exc:

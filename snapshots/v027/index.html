@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaun Daily Report · 归档</title>
+  <meta name="description" content="按知识地图推进的每日 HR 系统课：今日一课、案例照镜子、小测一题、英语 5 分钟，以及 Agent 小卡与周六落地日。">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --radius: 22px;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.7;
+      background:
+        radial-gradient(900px 420px at 12% -8%, rgba(79, 124, 255, 0.14), transparent 65%),
+        radial-gradient(760px 380px at 92% 2%, rgba(18, 163, 122, 0.10), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(880px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 46px 0 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 40px 38px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -100px;
+      top: -160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    h1 {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: clamp(32px, 6vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .lede {
+      position: relative;
+      margin: 0;
+      max-width: 560px;
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .chips {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .chips span {
+      padding: 5px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.35);
+      color: #e2e8f0;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .radar-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+      padding: 16px 20px;
+      border: 1px solid #cdece6;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ffffff, #f1faf7);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(15, 118, 110, 0.06);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .radar-card:hover {
+      transform: translateY(-2px);
+      border-color: #99d8ca;
+      box-shadow: 0 16px 34px rgba(15, 118, 110, 0.12);
+    }
+
+    .radar-icon {
+      flex: 0 0 auto;
+      font-size: 22px;
+    }
+
+    .radar-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .radar-body strong {
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .radar-body span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 38px 0 14px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .report-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .report-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 22px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .report-item:hover {
+      transform: translateY(-2px);
+      border-color: #bfdbfe;
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
+    }
+
+    .item-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item-date-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .item-date {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .item-weekday {
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .item-summary {
+      color: #475569;
+      font-size: 13.5px;
+      line-height: 1.65;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .item-arrow {
+      flex: 0 0 auto;
+      color: #94a3b8;
+      font-size: 18px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .report-item:hover .item-arrow {
+      transform: translateX(3px);
+      color: #3b82f6;
+    }
+
+    .empty-state {
+      padding: 34px 22px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        width: calc(100% - 28px);
+        padding: 28px 0 48px;
+      }
+      .hero { padding: 30px 24px; }
+      .report-item { padding: 16px; gap: 12px; }
+      .item-summary { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课</h1>
+      <p class="lede">
+        每天 15–20 分钟，按「人社部标准打底 + CIPD 补战略 / OD」的知识地图学一个 HR 概念：
+        今日一课、案例照镜子、小测一题、英语 5 分钟；每周三加一张 Agent 小卡，周六留一个可选的落地问题。
+      </p>
+      <div class="chips">
+        <span>📚 今日一课</span>
+        <span>🪞 案例照镜子</span>
+        <span>✅ 小测一题</span>
+        <span>🤖 Agent 小卡</span>
+        <span>🌍 英语 5 分钟</span>
+        <span>🧩 周六落地日</span>
+      </div>
+    </header>
+
+    <a class="radar-card" href="radar/index.html">
+      <span class="radar-icon" aria-hidden="true">🧭</span>
+      <span class="radar-body">
+        <strong>机会雷达</strong>
+        <span>上海 / 江苏消费券、补贴、发票抽奖与长期资格，每日 14:00 扫描，只推新增</span>
+      </span>
+      <span class="item-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <div class="section-head">
+      <h2>往期归档</h2>
+      <span>最新在前</span>
+    </div>
+
+    <ul class="report-list">
+      <!-- REPORT_LIST_START -->
+      <li>
+        <a class="report-item" href="reports/2026-11-06.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-11-06</span>
+              <span class="item-weekday">星期五</span>
+            </span>
+            <span class="item-summary">第 1/60 课：人力资源规划到底规划什么 ｜ 案例：CIPD 招聘与人才规划案例集 ｜ 小测：假设一家连锁门店（虚构示例）明年要新开 5 家店，HR 做…</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="report-item" href="reports/2026-11-04.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-11-04</span>
+              <span class="item-weekday">星期三</span>
+            </span>
+            <span class="item-summary">组织与人才：TD 视角：明年继任规划里，关键岗位的 Ready-now 判定要向前看一步｜伙伴动作：在下周与智能装备事业线负责人的年度人力规划沟通会上… ｜ Agent：A4 落地：把继任缺口表做成一个可追问的 HR Agent ｜ 经营：无授权影响：明年预算评审前，先摸清关键岗位继任投入的沉默否决者 ｜ HRD：明年组织调整前，先把「谁受影响」说清楚，别让谣… ｜ 英语：We are asking for a mod…</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="report-item" href="reports/2026-11-03.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-11-03</span>
+              <span class="item-weekday">星期二</span>
+            </span>
+            <span class="item-summary">组织与人才：OD 视角：明年编制盘子的「产值—人效」双约束——先定总量，再分蛋糕｜伙伴动作：在本周与两个事业部负责人分别的规划预沟通上，用「明… ｜ 经营：无授权影响：预算评审前先做「否决者」的私下预沟通 ｜ HRD：干部选任：从「业务最强」到「能带团队」的那道坎… ｜ 英语：justify the headcount：例… ｜ 认知（业务解剖）：非标自动化的交付漏斗：钱是在哪一段漏掉的</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="report-item" href="reports/2026-11-02.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-11-02</span>
+              <span class="item-weekday">星期一</span>
+            </span>
+            <span class="item-summary">HRBP &amp; COE：COE 视角：用六盒模型做一次轻量组织诊断 ｜ Agent：A4 落地：为 HR Agent 做一次场景 ROI 测算 ｜ 经营：M5 影响：用一页纸把组织问题讲成经营问题 ｜ 英语：circle back——例：Let&#x27;s ci…</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="report-item" href="reports/2026-11-01.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-11-01</span>
+              <span class="item-weekday">星期日</span>
+            </span>
+            <span class="item-summary">HRBP &amp; COE：COE 视角：用岗位评估建立职级与薪酬带宽的锚点 ｜ Agent：A3 进阶：HR Agent 的评测集——用固定题库验证回答可靠性 ｜ 经营：M4 决策实战：用单位经济模型判断增编是否值得 ｜ 英语：Let&#x27;s align on the trad…</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="report-item" href="reports/2026-10-31.html">
+          <span class="item-main">
+            <span class="item-date-row">
+              <span class="item-date">2026-10-31</span>
+              <span class="item-weekday">星期六</span>
+            </span>
+            <span class="item-summary">周六不排会，用半天做一次组织权责与个人决策偏误的双重体检。 ｜ 技能：组织学视角：权责边界模糊引发的协作损耗诊断 ｜ 财富：能力圈：如何界定自己真正能判断的边界 ｜ 认知：机会成本 ｜ 英语：虚拟语气中的 should 省略结构（suggest / insist / require that + 动词原形）</span>
+          </span>
+          <span class="item-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <!-- REPORT_LIST_END -->
+    </ul>
+
+    <footer>
+      <span>由 GitHub Actions 每日北京时间 07:00 自动更新</span>
+      <span>Shaun Daily Report · Powered by DeepSeek API</span>
+    </footer>
+  </div>
+</body>
+</html>

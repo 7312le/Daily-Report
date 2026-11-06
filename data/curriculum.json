@@ -1,0 +1,210 @@
+{
+  "version": 2,
+  "note": "课程表：人社部《企业人力资源管理师》六大模块打底，CIPD Profession Map 补战略与 OD。人社部课程按四级→一级递进；CIPD 分为核心知识与专业领域。",
+  "domains": [
+    {
+      "id": "mof-hr-planning",
+      "name": "人力资源规划",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-plan-l01", "title": "人力资源规划到底规划什么", "level": "四级" },
+        { "id": "mof-plan-l02", "title": "岗位分析与岗位说明书", "level": "四级" },
+        { "id": "mof-plan-l03", "title": "人力资源需求预测的三种方法", "level": "三级" },
+        { "id": "mof-plan-l04", "title": "人力资源供给预测与供需平衡", "level": "三级" },
+        { "id": "mof-plan-l05", "title": "组织与编制规划", "level": "二级" },
+        { "id": "mof-plan-l06", "title": "人力资源战略与业务规划对齐", "level": "一级" }
+      ]
+    },
+    {
+      "id": "mof-recruiting",
+      "name": "招聘与配置",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-rec-l01", "title": "招聘流程与渠道选择", "level": "四级" },
+        { "id": "mof-rec-l02", "title": "简历筛选与面试基础", "level": "四级" },
+        { "id": "mof-rec-l03", "title": "结构化面试与 STAR 追问", "level": "三级" },
+        { "id": "mof-rec-l04", "title": "招聘评估：成本、周期与质量", "level": "三级" },
+        { "id": "mof-rec-l05", "title": "关键岗位招聘与人才地图", "level": "二级" },
+        { "id": "mof-rec-l06", "title": "雇主品牌与人才供应链", "level": "一级" }
+      ]
+    },
+    {
+      "id": "mof-training",
+      "name": "培训与开发",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-trn-l01", "title": "培训需求分析：别从课程开始", "level": "四级" },
+        { "id": "mof-trn-l02", "title": "培训计划与课程设计", "level": "四级" },
+        { "id": "mof-trn-l03", "title": "培训实施与效果评估", "level": "三级" },
+        { "id": "mof-trn-l04", "title": "新员工带教与导师制", "level": "三级" },
+        { "id": "mof-trn-l05", "title": "领导力发展与继任培养", "level": "二级" },
+        { "id": "mof-trn-l06", "title": "学习型组织与知识管理", "level": "一级" }
+      ]
+    },
+    {
+      "id": "mof-performance",
+      "name": "绩效管理",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-per-l01", "title": "绩效管理循环：计划、辅导、评估、反馈", "level": "四级" },
+        { "id": "mof-per-l02", "title": "KPI 设计与目标分解", "level": "四级" },
+        { "id": "mof-per-l03", "title": "绩效沟通与绩效面谈", "level": "三级" },
+        { "id": "mof-per-l04", "title": "绩效校准与强制分布", "level": "三级" },
+        { "id": "mof-per-l05", "title": "OKR 与敏捷绩效", "level": "二级" },
+        { "id": "mof-per-l06", "title": "战略绩效与经营目标对齐", "level": "一级" }
+      ]
+    },
+    {
+      "id": "mof-reward",
+      "name": "薪酬福利管理",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-rew-l01", "title": "薪酬结构与薪酬调查", "level": "四级" },
+        { "id": "mof-rew-l02", "title": "岗位评估与职级体系", "level": "四级" },
+        { "id": "mof-rew-l03", "title": "薪酬带宽与调薪", "level": "三级" },
+        { "id": "mof-rew-l04", "title": "绩效奖金与短期激励", "level": "三级" },
+        { "id": "mof-rew-l05", "title": "长期激励与股权", "level": "二级" },
+        { "id": "mof-rew-l06", "title": "全面薪酬与总回报", "level": "一级" }
+      ]
+    },
+    {
+      "id": "mof-employee-relations",
+      "name": "劳动关系管理",
+      "source": "人社部",
+      "group": "六大模块",
+      "lessons": [
+        { "id": "mof-er-l01", "title": "劳动合同与用工基础", "level": "四级" },
+        { "id": "mof-er-l02", "title": "试用期、调岗、调薪的边界", "level": "四级" },
+        { "id": "mof-er-l03", "title": "员工沟通与劳动争议预防", "level": "三级" },
+        { "id": "mof-er-l04", "title": "裁员与优化的合法路径", "level": "三级" },
+        { "id": "mof-er-l05", "title": "竞业限制与保密协议", "level": "二级" },
+        { "id": "mof-er-l06", "title": "员工关系战略与合规体系", "level": "一级" }
+      ]
+    },
+    {
+      "id": "cipd-people-practice",
+      "name": "People practice（人员实践）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-pp-l01", "title": "HR 的角色与三支柱（CIPD 视角）" },
+        { "id": "cipd-pp-l02", "title": "员工生命周期与 HR 服务设计" }
+      ]
+    },
+    {
+      "id": "cipd-culture",
+      "name": "Culture and behaviour（文化与行为）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-cul-l01", "title": "文化是什么：价值观、行为与奖励" },
+        { "id": "cipd-cul-l02", "title": "文化诊断与变革" }
+      ]
+    },
+    {
+      "id": "cipd-business-acumen",
+      "name": "Business acumen（商业敏锐度）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-biz-l01", "title": "看懂三张报表" },
+        { "id": "cipd-biz-l02", "title": "商业模式、价值链与人效" }
+      ]
+    },
+    {
+      "id": "cipd-evidence",
+      "name": "Evidence-based practice（循证实践）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-evi-l01", "title": "什么是循证 HR" },
+        { "id": "cipd-evi-l02", "title": "HR 数据指标与用数据讲故事" }
+      ]
+    },
+    {
+      "id": "cipd-technology",
+      "name": "Technology and people（技术与员工）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-tec-l01", "title": "HR 系统、自动化与 AI 工作流" },
+        { "id": "cipd-tec-l02", "title": "数据隐私、算法边界与员工信任" }
+      ]
+    },
+    {
+      "id": "cipd-change",
+      "name": "Change（变革）",
+      "source": "CIPD",
+      "group": "核心知识",
+      "lessons": [
+        { "id": "cipd-chg-l01", "title": "变革为什么会失败" },
+        { "id": "cipd-chg-l02", "title": "变革沟通、利益相关方与复盘" }
+      ]
+    },
+    {
+      "id": "cipd-od",
+      "name": "OD 与组织设计",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-od-l01", "title": "组织设计的四种形态与权责" },
+        { "id": "cipd-od-l02", "title": "组织诊断：六盒模型与七个 S" }
+      ]
+    },
+    {
+      "id": "cipd-workforce-planning",
+      "name": "Workforce planning（人力规划）",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-wfp-l01", "title": "人力规划：需求、供给与缺口" },
+        { "id": "cipd-wfp-l02", "title": "编制、预算与人效的联动" }
+      ]
+    },
+    {
+      "id": "cipd-people-analytics",
+      "name": "People analytics（人才分析）",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-pa-l01", "title": "HR 数据看板与五个基本指标" },
+        { "id": "cipd-pa-l02", "title": "离职率、人效与人才分析" }
+      ]
+    },
+    {
+      "id": "cipd-talent",
+      "name": "Talent management（人才管理）",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-tal-l01", "title": "人才盘点与九宫格" },
+        { "id": "cipd-tal-l02", "title": "继任规划与干部管理" }
+      ]
+    },
+    {
+      "id": "cipd-employee-experience",
+      "name": "Employee experience（员工体验）",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-ex-l01", "title": "员工体验与关键触点" },
+        { "id": "cipd-ex-l02", "title": "员工体验的衡量与改进" }
+      ]
+    },
+    {
+      "id": "cipd-strategic-reward",
+      "name": "Strategic reward（战略薪酬）",
+      "source": "CIPD",
+      "group": "专业领域",
+      "lessons": [
+        { "id": "cipd-rew-l01", "title": "薪酬战略与总回报" },
+        { "id": "cipd-rew-l02", "title": "长期激励与关键人才保留" }
+      ]
+    }
+  ]
+}

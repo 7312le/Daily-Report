@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shaun Daily Report · 2026-11-06</title>
-  <meta name="description" content="组织与人才：OD 视角：明年组织设计里的「项目经理岗」在蓝沃 AI 要不要单设｜伙伴动作：在下周蓝沃 AI 的明年组织设计预沟通上，用「项目… ｜ Agent：用 Agent 把「明年编制需求」收敛成可追问的预算问答助手 ｜ 经营：无授权影响：预算评审前，先把「编制总量」的分歧变成「结构」的分歧 ｜ HRD：授权分级：明年组织设计里，哪些决定你不该自己拍 ｜ 英语：We&#x27;re not asking for mo…">
-  <meta name="report-summary" content="组织与人才：OD 视角：明年组织设计里的「项目经理岗」在蓝沃 AI 要不要单设｜伙伴动作：在下周蓝沃 AI 的明年组织设计预沟通上，用「项目… ｜ Agent：用 Agent 把「明年编制需求」收敛成可追问的预算问答助手 ｜ 经营：无授权影响：预算评审前，先把「编制总量」的分歧变成「结构」的分歧 ｜ HRD：授权分级：明年组织设计里，哪些决定你不该自己拍 ｜ 英语：We&#x27;re not asking for mo…">
+  <title>每日 HR 系统课 · 2026-11-06</title>
+  <meta name="description" content="第 1/60 课：人力资源规划到底规划什么 ｜ 案例：CIPD 招聘与人才规划案例集 ｜ 小测：假设一家连锁门店（虚构示例）明年要新开 5 家店，HR 做…">
+  <meta name="report-summary" content="第 1/60 课：人力资源规划到底规划什么 ｜ 案例：CIPD 招聘与人才规划案例集 ｜ 小测：假设一家连锁门店（虚构示例）明年要新开 5 家店，HR 做…">
   <meta name="report-date" content="2026-11-06">
-  <meta property="og:title" content="Shaun Daily Report · 2026-11-06">
-  <meta property="og:description" content="组织与人才：OD 视角：明年组织设计里的「项目经理岗」在蓝沃 AI 要不要单设｜伙伴动作：在下周蓝沃 AI 的明年组织设计预沟通上，用「项目… ｜ Agent：用 Agent 把「明年编制需求」收敛成可追问的预算问答助手 ｜ 经营：无授权影响：预算评审前，先把「编制总量」的分歧变成「结构」的分歧 ｜ HRD：授权分级：明年组织设计里，哪些决定你不该自己拍 ｜ 英语：We&#x27;re not asking for mo…">
+  <meta property="og:title" content="每日 HR 系统课 · 2026-11-06">
+  <meta property="og:description" content="第 1/60 课：人力资源规划到底规划什么 ｜ 案例：CIPD 招聘与人才规划案例集 ｜ 小测：假设一家连锁门店（虚构示例）明年要新开 5 家店，HR 做…">
   <style>
     :root {
       --bg: #f4f6fb;
@@ -16,18 +16,20 @@
       --ink: #0f172a;
       --muted: #64748b;
       --line: #e2e8f0;
-      --hr: #2563eb;
-      --hr-soft: #eff6ff;
+      --lesson: #2563eb;
+      --lesson-soft: #eff6ff;
+      --case: #059669;
+      --case-soft: #ecfdf5;
+      --quiz: #d97706;
+      --quiz-soft: #fffbeb;
       --agent: #7c3aed;
       --agent-soft: #f5f3ff;
-      --mgmt: #059669;
-      --mgmt-soft: #ecfdf5;
-      --hrd: #be123c;
-      --hrd-soft: #fff1f2;
-      --english: #d97706;
-      --english-soft: #fffbeb;
-      --cognition: #0e7490;
-      --cognition-soft: #ecfeff;
+      --english: #ea580c;
+      --english-soft: #fff7ed;
+      --landing: #0e7490;
+      --landing-soft: #ecfeff;
+      --review: #be123c;
+      --review-soft: #fff1f2;
       --radius: 20px;
       --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -120,7 +122,7 @@
       font-weight: 600;
     }
 
-    .stages {
+    .progress {
       position: relative;
       margin: 0 0 8px;
       font-size: 12.5px;
@@ -129,7 +131,7 @@
       color: #93c5fd;
     }
 
-    .calendar {
+    .review-line {
       position: relative;
       margin: 0 0 8px;
       font-size: 12.5px;
@@ -137,10 +139,12 @@
       color: #fda4af;
     }
 
+    .review-line:empty { display: none; }
+
     .focus {
       position: relative;
       margin: 0;
-      max-width: 680px;
+      max-width: 700px;
       color: #cbd5e1;
       font-size: 14px;
       line-height: 1.7;
@@ -165,12 +169,12 @@
       box-shadow: var(--shadow);
     }
 
-    .card-hr { grid-column: span 2; border-top-color: var(--hr); }
+    .card-lesson { grid-column: span 2; border-top-color: var(--lesson); }
+    .card-case { grid-column: span 2; border-top-color: var(--case); }
+    .card-quiz { border-top-color: var(--quiz); }
     .card-agent { border-top-color: var(--agent); }
-    .card-mgmt { border-top-color: var(--mgmt); }
-    .card-hrd { grid-column: span 2; border-top-color: var(--hrd); }
     .card-english { grid-column: span 2; border-top-color: var(--english); }
-    .card-cognition { border-top-color: var(--cognition); }
+    .card-landing { border-top-color: var(--landing); }
     .card-wide { grid-column: span 2; }
 
     .card-head {
@@ -192,12 +196,12 @@
       background: #f1f5f9;
     }
 
-    .card-hr .card-icon { background: var(--hr-soft); }
+    .card-lesson .card-icon { background: var(--lesson-soft); }
+    .card-case .card-icon { background: var(--case-soft); }
+    .card-quiz .card-icon { background: var(--quiz-soft); }
     .card-agent .card-icon { background: var(--agent-soft); }
-    .card-mgmt .card-icon { background: var(--mgmt-soft); }
-    .card-hrd .card-icon { background: var(--hrd-soft); }
     .card-english .card-icon { background: var(--english-soft); }
-    .card-cognition .card-icon { background: var(--cognition-soft); }
+    .card-landing .card-icon { background: var(--landing-soft); }
 
     .card-kicker {
       margin: 0 0 3px;
@@ -220,17 +224,17 @@
       margin-left: 8px;
       padding: 1px 8px;
       border-radius: 999px;
-      background: var(--hr-soft);
-      color: var(--hr);
+      background: var(--lesson-soft);
+      color: var(--lesson);
       font-size: 11px;
       font-weight: 700;
       vertical-align: 2px;
     }
 
+    .card-case .card-badge { background: var(--case-soft); color: var(--case); }
+    .card-quiz .card-badge { background: var(--quiz-soft); color: var(--quiz); }
     .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
-    .card-mgmt .card-badge { background: var(--mgmt-soft); color: var(--mgmt); }
-    .card-hrd .card-badge { background: var(--hrd-soft); color: var(--hrd); }
-    .card-cognition .card-badge { background: var(--cognition-soft); color: var(--cognition); }
+    .card-landing .card-badge { background: var(--landing-soft); color: var(--landing); }
 
     /* ---------- Fields ---------- */
     .field { margin-bottom: 14px; }
@@ -251,25 +255,40 @@
       line-height: 1.75;
     }
 
-    .question-list {
+    /* ---------- Lists ---------- */
+    .bullet-list,
+    .step-list {
       margin: 0;
       padding: 0 0 0 4px;
       list-style: none;
-      counter-reset: q;
     }
 
-    .question-list li {
+    .bullet-list li,
+    .step-list li {
       position: relative;
-      padding-left: 26px;
-      margin-bottom: 6px;
+      padding-left: 18px;
+      margin-bottom: 5px;
       font-size: 14px;
       color: #334155;
       line-height: 1.7;
-      counter-increment: q;
     }
 
-    .question-list li::before {
-      content: counter(q);
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    .step-list { counter-reset: step; }
+
+    .step-list li {
+      padding-left: 28px;
+      counter-increment: step;
+    }
+
+    .step-list li::before {
+      content: counter(step);
       position: absolute;
       left: 0;
       top: 3px;
@@ -279,32 +298,39 @@
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #eef2ff;
-      color: #4338ca;
+      background: var(--lesson-soft);
+      color: var(--lesson);
       font-size: 10.5px;
       font-weight: 700;
     }
 
-    .fact-list {
+    /* ---------- Glossary ---------- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
       margin: 0;
-      padding: 0 0 0 4px;
-      list-style: none;
     }
 
-    .fact-list li {
-      position: relative;
-      padding-left: 18px;
-      margin-bottom: 6px;
-      font-size: 14px;
-      color: #334155;
-      line-height: 1.7;
+    .glossary-item {
+      padding: 8px 10px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
     }
 
-    .fact-list li::before {
-      content: "—";
-      position: absolute;
-      left: 0;
-      color: #94a3b8;
+    .glossary-item dt {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--lesson);
+    }
+
+    .glossary-item dd {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
     }
 
     /* ---------- Action ---------- */
@@ -312,7 +338,7 @@
       display: flex;
       gap: 10px;
       align-items: flex-start;
-      margin: 2px 0 14px;
+      margin: 2px 0 0;
       padding: 12px 14px;
       border-left: 3px solid #f59e0b;
       border-radius: 8px;
@@ -337,80 +363,143 @@
       line-height: 1.7;
     }
 
-    /* ---------- Business partner action ---------- */
-    .partner-box {
-      margin: 0 0 14px;
+    /* ---------- Review ---------- */
+    .review-strip {
+      margin: 0 0 16px;
       padding: 12px 14px;
-      border: 1px solid #bfdbfe;
-      border-left: 3px solid var(--hr);
-      border-radius: 10px;
-      background: var(--hr-soft);
+      border-left: 3px solid var(--review);
+      border-radius: 8px;
+      background: var(--review-soft);
     }
 
-    .partner-box .task-label {
-      color: var(--hr);
+    .review-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--review);
+      text-transform: uppercase;
     }
 
-    .partner-box p {
+    .review-strip p {
       margin: 0;
       font-size: 13.5px;
-      color: #1e293b;
+      color: #881337;
       line-height: 1.7;
     }
 
-    /* ---------- Output / milestone / influence ---------- */
-    .output-box,
-    .milestone-box,
-    .influence-box,
-    .deliverable-box {
-      margin-top: auto;
-      padding: 12px 14px;
+    /* ---------- Case ---------- */
+    .judgement-box {
+      margin: 4px 0 12px;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-left: 3px solid var(--case);
       border-radius: 10px;
-      border: 1px dashed transparent;
+      background: var(--case-soft);
     }
 
-    .output-box {
-      background: var(--hr-soft);
-      border-color: #bfdbfe;
-    }
-
-    .milestone-box {
-      background: var(--agent-soft);
-      border-color: #ddd6fe;
-    }
-
-    .influence-box {
-      background: var(--mgmt-soft);
-      border-color: #a7f3d0;
-    }
-
-    .deliverable-box {
-      background: var(--hrd-soft);
-      border-color: #fecdd3;
-    }
-
-    .task-label {
+    .judgement-label {
       display: block;
       margin-bottom: 3px;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.06em;
+      color: var(--case);
       text-transform: uppercase;
     }
 
-    .output-box .task-label { color: var(--hr); }
-    .milestone-box .task-label { color: var(--agent); }
-    .influence-box .task-label { color: var(--mgmt); }
-    .deliverable-box .task-label { color: var(--hrd); }
-
-    .output-box p,
-    .milestone-box p,
-    .influence-box p,
-    .deliverable-box p {
+    .judgement-box p {
       margin: 0;
-      font-size: 13.5px;
-      color: #1e293b;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #064e3b;
       line-height: 1.7;
+    }
+
+    .source-note {
+      margin: auto 0 0;
+      padding-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .source-note a {
+      color: var(--case);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--case);
+    }
+
+    .source-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz-options {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quiz-options li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .option-letter {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--quiz-soft);
+      color: var(--quiz);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      background: #f0fdf4;
+    }
+
+    .answer-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+
+    /* ---------- Agent ---------- */
+    .card-agent .action-box {
+      margin-top: auto;
     }
 
     /* ---------- English ---------- */
@@ -513,6 +602,24 @@
 
     .video-card:hover .video-arrow { transform: translate(2px, -2px); }
 
+    /* ---------- Landing ---------- */
+    .landing-question {
+      margin: 0 0 14px;
+      padding: 16px 18px;
+      border: 1px solid #a5f3fc;
+      border-left: 3px solid var(--landing);
+      border-radius: 10px;
+      background: var(--landing-soft);
+    }
+
+    .landing-question p {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #155e75;
+      line-height: 1.7;
+    }
+
     /* ---------- Preview ---------- */
     .preview {
       margin-top: 20px;
@@ -556,10 +663,13 @@
       .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
       .hero { padding: 28px 22px 24px; border-radius: 20px; }
       .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-      .card-hr, .card-hrd, .card-english, .card-wide { grid-column: span 1; }
+      .card-lesson, .card-case, .card-english, .card-landing, .card-wide {
+        grid-column: span 1;
+      }
       .card { padding: 20px 18px; }
       .english-grid { grid-template-columns: minmax(0, 1fr); }
       .english-video { grid-column: span 1; }
+      .glossary-list { grid-template-columns: minmax(0, 1fr); }
       .card-title { font-size: 17px; }
     }
   </style>
@@ -567,32 +677,31 @@
 <body>
   <div class="wrap">
     <header class="hero">
-      <p class="eyebrow">AI-Native HR · Daily Growth</p>
-      <h1>Shaun Daily Report · 2026-11-06</h1>
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课 · 2026-11-06</h1>
       <div class="meta">
         <span class="meta-date">2026-11-06</span>
         <span class="meta-weekday">星期五</span>
       </div>
-      <p class="stages">HR · L4 ｜ Agent · A4 ｜ 经营 · M5b ｜ HRD · 领导力</p>
-      <p class="calendar">年度节奏：11 月 · 明年人力规划与预算</p>
-      <p class="focus">OD 视角：明年组织设计里的「项目经理岗」在蓝沃 AI 要不要单设 ｜ 用 Agent 把「明年编制需求」收敛成可追问的预算问答助手 ｜ 无授权影响：预算评审前，先把「编制总量」的分歧变成「结构」的分歧 ｜ 授权分级：明年组织设计里，哪些决定你不该自己拍</p>
+      <p class="progress">领域 1/18 · 人社部四级 · 人力资源规划　｜　第 1/60 课</p>
+      <p class="review-line"></p>
+      <p class="focus">人力资源规划到底规划什么 ｜ 案例：CIPD 招聘与人才规划案例集</p>
     </header>
 
     <main class="grid">
-      <article class="card card-hr"><header class="card-head"><span class="card-icon" aria-hidden="true">🧭</span><div><p class="card-kicker">01 · 组织与人才 · L4</p><h2 class="card-title">OD 视角：明年组织设计里的「项目经理岗」在蓝沃 AI 要不要单设<span class="card-badge">OD</span></h2></div></header><div class="field"><p class="field-label">概念 / 工具</p><p class="field-text">项目型组织与产品型组织的岗位设置判据：看这个岗位是否承担独立的责任闭环（对交付结果负责、能配置资源、能被考核）。判断标准是三条同时成立才单设——有独立的交付结果、有跨部门资源调配权、有可量化的考核指标；只满足一条的，设成角色而不是岗位，避免管理层级膨胀。</p></div><div class="field"><p class="field-label">业务场景</p><p class="field-text">蓝沃 AI 正从按客户项目交付向产品化转型，交付团队里实际有一批人在做项目协调：既对接客户验证节奏，又拉算法和行业 know-how 的人。当前这个职责挂在技术负责人身上，等于让最贵的人做最杂的协调。明年组织设计要回答：单独设项目经理岗，还是设项目协调角色并入现有序列。</p></div><div class="field"><p class="field-label">诊断问题</p><ul class="question-list"><li>蓝沃 AI 今年交付的项目里，有几个是因为协调不到位而延期超过两周的？</li><li>现在谁在承担跨算法、实施、客户的协调？这个人有没有资源调配权，考核指标是什么？</li></ul></div><div class="partner-box"><span class="task-label">业务伙伴动作</span><p>在下周蓝沃 AI 的明年组织设计预沟通上，用「项目协调现在压在技术负责人身上，等于拿最贵的人力做最杂的协调，交付延期成本按项目数折算」向蓝沃 AI 负责人提出：先设 2 个项目经理岗试点、并入现有序列不新增层级，盯「项目按期交付率」和「技术负责人非技术事务时间占比」两个指标，三个月后复盘再决定是否固化。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚 30 分钟，把蓝沃 AI 现有交付项目按「是否因协调问题延期」列一张清单，粗算协调缺位的延期成本，按公司实际数据替换，得出单设岗还是设角色的判断。</p></div><div class="output-box"><span class="task-label">本周输出任务</span><p>一页纸《蓝沃 AI 项目经理岗设置建议》：设或不设、设成岗位还是角色、试点人数、考核指标、三个月复盘节点。</p></div></article>
-<article class="card card-agent"><header class="card-head"><span class="card-icon" aria-hidden="true">🤖</span><div><p class="card-kicker">02 · Agent 体系化 · A4</p><h2 class="card-title">用 Agent 把「明年编制需求」收敛成可追问的预算问答助手</h2></div></header><div class="field"><p class="field-label">核心概念</p><p class="field-text">预算问答 Agent 的核心不是生成数字，而是让业务负责人在提编制时被迫回答结构化追问：这个岗填哪个交付瓶颈、不增编的替代方案是什么、增量产出如何计量。用固定追问链约束回答，避免 Agent 顺着业务负责人的口径给背书。</p></div><div class="field"><p class="field-label">动手实验</p><p class="field-text">把两个事业部明年的编制申请按「岗位、申请理由、对应业务指标、不增编替代方案」整理成一份表，喂给 Agent 并设定三条固定追问；用 5 条已知有争议的申请做测试，看 Agent 能否追问出申请理由的空洞处。产出：一份带追问记录的编制申请评估表。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚 30 分钟，选 3 条最有争议的编制申请，让 Agent 跑一遍追问链，记录哪条申请的理由站不住。</p></div></article>
-<article class="card card-mgmt"><header class="card-head"><span class="card-icon" aria-hidden="true">📊</span><div><p class="card-kicker">03 · 经营与影响 · M5b</p><h2 class="card-title">无授权影响：预算评审前，先把「编制总量」的分歧变成「结构」的分歧</h2></div></header><div class="field"><p class="field-label">概念 / 指标</p><p class="field-text">预算谈判里的框架转换：当与财务在总量上僵持，把「要不要加人」重构为「同样总量下怎么分配」，用结构方案换总量让步。判断标准是——如果对方接受结构讨论，说明总量分歧已软化；如果对方仍守总量，则问题在信任而非数据。</p></div><div class="field"><p class="field-label">真实案例</p><p class="field-text">汇川技术的组织扩张长期围绕「人均产出」设定约束，在从通用自动化向新能源汽车电驱等新业务扩张时，采用新业务单独核算、老业务守住人效的方式分配编制，而不是整体摊薄人效。这是公开年报与公开访谈中可查的经营思路，具体数字按公司实际数据替换。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚 30 分钟，准备一页「总量 vs 结构」对照：左侧是财务关心的总量与人效，右侧是你能让步的结构调整项，标出哪 2 项可以让。</p></div></article>
-<article class="card card-hrd"><header class="card-head"><span class="card-icon" aria-hidden="true">🎯</span><div><p class="card-kicker">04 · HRD 实战</p><h2 class="card-title">授权分级：明年组织设计里，哪些决定你不该自己拍<span class="card-badge">领导力</span></h2></div></header><div class="field"><p class="field-label">框架 / 判断标准</p><p class="field-text">授权分级四档：我决定并告知、我决定前咨询、共同决定、我建议但对方决定。HR 一号位常犯的错是把本该共同决定的事（如事业部内部岗位设置）变成自己决定，占用了本该用于干部与继任的注意力。判断标准：这个决定出错时，谁承担后果——承担后果的人才是决定人。</p></div><div class="field"><p class="field-label">公司情境</p><p class="field-text">明年组织设计窗口，蓝沃 AI 想调研发内部小组划分，智能装备事业线想合并两个交付小组。前者属于产品型团队内部结构，后果由事业部负责人承担；后者涉及跨项目资源池，后果跨事业部。两类决定的授权档位应不同，但现在都被推到 HR 这里等拍板。</p></div><div class="action-box"><span class="action-label">今晚动作</span><p>今晚 30 分钟，把这两个决定按四档授权标注：蓝沃 AI 小组划分归入「我建议但对方决定」，智能装备两个小组合并归入「共同决定」，写出各自的边界条件和你会拦的红线。</p></div></article>
-<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语精进</p><h2 class="card-title">英语精进 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸查 4 个词并收藏到生词本：headcount（编制）、attrition（自然流失）、backfill（补员）、justify（论证合理性）；每个词查完后用公司编制规划语境各造一句，跟读发音 3 遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">We&#x27;re not asking for more headcount — we&#x27;re asking to reallocate it.（我们不是在要更多的人，而是在申请重新分配。）用于预算会上把总量诉求转为结构诉求。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">情景：向财务负责人解释明年的编制申请。让 AI 扮演坚持「人均产出不能降」的财务负责人，进行 6–8 轮对话。刻意练习：先用一句承认对方数据，再提出结构方案；避免一上来解释理由。练完记录自己哪一轮最容易滑回辩解口吻。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1Mf9EBPEGx/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · C1</span><span class="video-title">C2 高阶英语听力｜母语级对话</span><span class="video-task">任务：暂停跟读关键语句，摘录 3 个高阶表达并各造一句工作场景句，注意语调与停顿。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+      <article class="card card-lesson"><header class="card-head"><span class="card-icon" aria-hidden="true">📚</span><div><p class="card-kicker">01 · 今日一课 · 人社部四级 · 人力资源规划</p><h2 class="card-title">人力资源规划到底规划什么<span class="card-badge">第 1/60 课</span></h2></div></header><div class="field"><p class="field-label">一句话定义</p><p class="field-text">人力资源规划是算清未来要多少人、要什么人、人从哪来、缺口怎么补。</p></div><div class="field"><p class="field-label">为什么重要</p><p class="field-text">没有规划，招聘只能救火：缺人时急招、贵招，关键岗位断档时没人接。</p></div><div class="field"><p class="field-label">怎么用</p><ol class="step-list"><li>先列出未来 12 个月业务要做的 3 件大事，问每件事需要哪些岗位、各需要几个人。</li><li>把现有人员按岗位列出来，标出哪些人会走、哪些人可培养，算出净缺口。</li><li>对每个缺口写一条供给方案：内部培养、内部调动、外部招聘或流程优化，并标出时间点。</li></ol></div><div class="field"><p class="field-label">常见误区</p><ul class="bullet-list"><li>把人力资源规划当成写一份年度招聘计划，只数缺多少人，不看要什么能力、人从哪来。</li><li>只按过去人数做线性推算，业务方向变了还按老编制补人，补进来的人用不上。</li><li>规划做完就锁进抽屉，没有每季度对照实际人数和业务变化调整。</li></ul></div><div class="field"><p class="field-label">今日术语</p><dl class="glossary-list"><div class="glossary-item"><dt>人力资源规划</dt><dd>提前算清楚未来要多少人、要什么能力的人、这些人从哪来，而不是等缺人了再招。</dd></div><div class="glossary-item"><dt>净缺口</dt><dd>未来需要的人数减去现有能留下的人数，差多少就是要补多少。</dd></div><div class="glossary-item"><dt>内部供给</dt><dd>公司内部能补上缺口的人，包括可晋升、可调动、可培养的员工。</dd></div><div class="glossary-item"><dt>编制</dt><dd>公司批准某个岗位可以放几个人，是人数上的上限。</dd></div></dl></div><div class="action-box"><span class="action-label">今晚 10 分钟</span><p>今晚拿一张纸，写下你所在团队未来 6 个月最可能缺的 1 个岗位，写出需要几个人、内部有没有人能接、外部招要多久。</p></div></article>
+<article class="card card-case"><header class="card-head"><span class="card-icon" aria-hidden="true">🪞</span><div><p class="card-kicker">02 · 案例照镜子</p><h2 class="card-title">CIPD 招聘与人才规划案例集<span class="card-badge">公开案例</span></h2></div></header><div class="field"><p class="field-label">它解决什么问题</p><p class="field-text">招聘成本高、周期长、关键岗位留不住。</p></div><div class="field"><p class="field-label">它怎么做</p><p class="field-text">用聊天机器人处理申请、用技能提升和内部流动补缺口、用数据跟踪招聘与保留。</p></div><div class="field"><p class="field-label">公开信息能看到的结果</p><p class="field-text">案例集收录了 NHS England 等公开实践；具体数据以原文为准。</p></div><div class="field"><p class="field-label">能不能迁移</p><p class="field-text">招聘效率的杠杆常在流程前端和内部供给，不是只加招聘人员。</p></div><div class="judgement-box"><span class="judgement-label">一句判断</span><p>招聘问题，先看内部有没有可培养的人，再看外部市场。</p></div><p class="source-note">来源：<a href="https://www.cipd.org/globalassets/media/knowledge/knowledge-hub/reports/resourcing-and-talent-planning-case-studies-2022_tcm18-111501.pdf" target="_blank" rel="noopener noreferrer">CIPD 招聘与人才规划案例集（2022） ↗</a></p></article>
+<article class="card card-quiz card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">✅</span><div><p class="card-kicker">03 · 小测一题</p><h2 class="card-title">检验一下<span class="card-badge">3 选 1</span></h2></div></header><div class="field"><p class="field-label">情境</p><p class="field-text">假设一家连锁门店（虚构示例）明年要新开 5 家店，HR 做人力资源规划时第一步最该做什么？</p></div><div class="field"><p class="field-label">选项</p><ul class="quiz-options"><li><span class="option-letter">A</span><span>直接按现有门店人数乘以 5，算出要招多少人。</span></li><li><span class="option-letter">B</span><span>先问清新店卖什么、需要哪些岗位和能力，再算人数和来源。</span></li><li><span class="option-letter">C</span><span>先联系招聘网站，把招聘广告提前挂出去。</span></li></ul></div><div class="answer-box"><span class="answer-label">答案 B</span><p>B 先看业务需要什么岗位和能力，再算人数和供给来源，这是规划的核心。A 只按老编制线性放大，新店业务可能不同，人会招错。C 是执行动作，方向没定就挂广告，容易招来不对的人。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语 5 分钟</p><h2 class="card-title">英语 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸任务：查 workforce、headcount、gap、attrition 四个词，各抄一个例句并跟读 3 遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">We need to plan for the skills we will need, not just the number of people. 中文释义：我们要规划未来需要的能力，而不只是人数。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">让 AI 扮演业务负责人，你向他说明下一年的人力规划思路，练 3 轮，重点练如何先问业务需求再谈人数。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1Mf9EBPEGx/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · C1</span><span class="video-title">C2 高阶英语听力｜母语级对话</span><span class="video-task">任务：暂停跟读关键语句，摘录 3 个高阶表达并各造一句工作场景句，注意语调与停顿。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
     </main>
 
     <section class="preview">
       <p class="preview-label">明日预览</p>
-      <p class="preview-text">明日周六深度作业：领导力线出「明年组织调整沟通口径」交付物，认知拓展做本周决策复盘卡。</p>
+      <p class="preview-text">明日：第 2/60 课《岗位分析与岗位说明书》｜Agent 卡暂停｜英语 职场英语｜周六落地日</p>
     </section>
 
     <footer>
-      <span>自动生成于 2026-11-06 07:34（北京时间）</span>
+      <span>自动生成于 2026-11-06 09:23（北京时间）</span>
       <span>Shaun Daily Report</span>
     </footer>
   </div>

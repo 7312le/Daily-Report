@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated_at": "2026-11-06",
+  "lessons": {
+    "d01-l01": {
+      "covered_on": "2026-11-06",
+      "review_7_on": null,
+      "review_30_on": null
+    }
+  },
+  "cases": {
+    "alibaba-commissar": {
+      "used_on": "2026-11-06"
+    }
+  }
+}
