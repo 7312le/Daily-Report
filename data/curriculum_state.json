@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-11-07",
+  "updated_at": "2026-11-08",
   "lessons": {
     "mof-plan-l01": {
       "covered_on": "2026-11-06",
@@ -11,6 +11,11 @@
       "covered_on": "2026-11-07",
       "review_7_on": null,
       "review_30_on": null
+    },
+    "mof-plan-l03": {
+      "covered_on": "2026-11-08",
+      "review_7_on": null,
+      "review_30_on": null
     }
   },
   "cases": {
@@ -19,6 +24,9 @@
     },
     "alibaba-commissar": {
       "used_on": "2026-11-07"
+    },
+    "netflix-culture": {
+      "used_on": "2026-11-08"
     }
   }
 }

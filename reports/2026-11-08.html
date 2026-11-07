@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日 HR 系统课 · 2026-11-08</title>
+  <meta name="description" content="第 3/60 课：人力资源需求预测的三种方法 ｜ 案例：Netflix 的文化手册 ｜ 小测：假设一家快速扩张的连锁零售企业（虚构示例）要预测明年门店店…">
+  <meta name="report-summary" content="第 3/60 课：人力资源需求预测的三种方法 ｜ 案例：Netflix 的文化手册 ｜ 小测：假设一家快速扩张的连锁零售企业（虚构示例）要预测明年门店店…">
+  <meta name="report-date" content="2026-11-08">
+  <meta property="og:title" content="每日 HR 系统课 · 2026-11-08">
+  <meta property="og:description" content="第 3/60 课：人力资源需求预测的三种方法 ｜ 案例：Netflix 的文化手册 ｜ 小测：假设一家快速扩张的连锁零售企业（虚构示例）要预测明年门店店…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --lesson: #2563eb;
+      --lesson-soft: #eff6ff;
+      --case: #059669;
+      --case-soft: #ecfdf5;
+      --quiz: #d97706;
+      --quiz-soft: #fffbeb;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --english: #ea580c;
+      --english-soft: #fff7ed;
+      --landing: #0e7490;
+      --landing-soft: #ecfeff;
+      --review: #be123c;
+      --review-soft: #fff1f2;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .progress {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .review-line {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
+    .review-line:empty { display: none; }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 700px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-lesson { grid-column: span 2; border-top-color: var(--lesson); }
+    .card-case { grid-column: span 2; border-top-color: var(--case); }
+    .card-quiz { border-top-color: var(--quiz); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-landing { border-top-color: var(--landing); }
+    .card-wide { grid-column: span 2; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-lesson .card-icon { background: var(--lesson-soft); }
+    .card-case .card-icon { background: var(--case-soft); }
+    .card-quiz .card-icon { background: var(--quiz-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+    .card-landing .card-icon { background: var(--landing-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-case .card-badge { background: var(--case-soft); color: var(--case); }
+    .card-quiz .card-badge { background: var(--quiz-soft); color: var(--quiz); }
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-landing .card-badge { background: var(--landing-soft); color: var(--landing); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Lists ---------- */
+    .bullet-list,
+    .step-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .bullet-list li,
+    .step-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    .step-list { counter-reset: step; }
+
+    .step-list li {
+      padding-left: 28px;
+      counter-increment: step;
+    }
+
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    /* ---------- Glossary ---------- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin: 0;
+    }
+
+    .glossary-item {
+      padding: 8px 10px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+    }
+
+    .glossary-item dt {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--lesson);
+    }
+
+    .glossary-item dd {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Review ---------- */
+    .review-strip {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--review);
+      border-radius: 8px;
+      background: var(--review-soft);
+    }
+
+    .review-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--review);
+      text-transform: uppercase;
+    }
+
+    .review-strip p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #881337;
+      line-height: 1.7;
+    }
+
+    /* ---------- Case ---------- */
+    .judgement-box {
+      margin: 4px 0 12px;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-left: 3px solid var(--case);
+      border-radius: 10px;
+      background: var(--case-soft);
+    }
+
+    .judgement-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--case);
+      text-transform: uppercase;
+    }
+
+    .judgement-box p {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #064e3b;
+      line-height: 1.7;
+    }
+
+    .source-note {
+      margin: auto 0 0;
+      padding-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .source-note a {
+      color: var(--case);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--case);
+    }
+
+    .source-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz-options {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quiz-options li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .option-letter {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--quiz-soft);
+      color: var(--quiz);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      background: #f0fdf4;
+    }
+
+    .answer-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+
+    /* ---------- Agent ---------- */
+    .card-agent .action-box {
+      margin-top: auto;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Landing ---------- */
+    .landing-question {
+      margin: 0 0 14px;
+      padding: 16px 18px;
+      border: 1px solid #a5f3fc;
+      border-left: 3px solid var(--landing);
+      border-radius: 10px;
+      background: var(--landing-soft);
+    }
+
+    .landing-question p {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #155e75;
+      line-height: 1.7;
+    }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-lesson, .card-case, .card-english, .card-landing, .card-wide {
+        grid-column: span 1;
+      }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .glossary-list { grid-template-columns: minmax(0, 1fr); }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课 · 2026-11-08</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-08</span>
+        <span class="meta-weekday">星期日</span>
+      </div>
+      <p class="progress">领域 1/18 · 人社部三级 · 人力资源规划　｜　第 3/60 课</p>
+      <p class="review-line"></p>
+      <p class="focus">人力资源需求预测的三种方法 ｜ 案例：Netflix 的文化手册</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-lesson"><header class="card-head"><span class="card-icon" aria-hidden="true">📚</span><div><p class="card-kicker">01 · 今日一课 · 人社部三级 · 人力资源规划</p><h2 class="card-title">人力资源需求预测的三种方法<span class="card-badge">第 3/60 课</span></h2></div></header><div class="field"><p class="field-label">一句话定义</p><p class="field-text">人力资源需求预测的三种方法是：自上而下法、自下而上法和德尔菲法，用来估算未来需要多少人和什么能力。</p></div><div class="field"><p class="field-label">为什么重要</p><p class="field-text">招多了成本高，招少了业务卡壳；选对预测方法，才能把人力规划从感觉变成有依据的估算。</p></div><div class="field"><p class="field-label">怎么用</p><ol class="step-list"><li>先明确预测对象：是总人数、某类岗位人数，还是某种关键能力，避免笼统说缺人。</li><li>自上而下法：从业务目标倒推人均产出或编制比例，算出总需求，再拆到部门。</li><li>自下而上法：让各业务负责人按任务量逐岗报需求，HR 汇总校验；德尔菲法：匿名多轮征求专家意见，收敛出区间。</li></ol></div><div class="field"><p class="field-label">常见误区</p><ul class="bullet-list"><li>把预测当成精确数字：需求预测本质是带假设的区间，必须写清假设和触发条件。</li><li>只用一种方法：自上而下容易脱离一线，自下而上容易层层加码，德尔菲法耗时；成熟做法是交叉验证。</li><li>忽略内部供给：只算需要多少人，不算现有多少人、能补多少，预测就变成单纯要编制。</li></ul></div><div class="field"><p class="field-label">今日术语</p><dl class="glossary-list"><div class="glossary-item"><dt>需求预测</dt><dd>根据业务目标和效率假设，估算未来某个时间点需要多少人、什么能力。</dd></div><div class="glossary-item"><dt>自上而下法</dt><dd>先定公司总目标，再按比例或人均产出往下拆到部门。</dd></div><div class="glossary-item"><dt>自下而上法</dt><dd>从一线任务量出发，逐层往上汇总需要多少人。</dd></div><div class="glossary-item"><dt>德尔菲法</dt><dd>找一组专家匿名多轮打分，每轮汇总后再打，直到意见收敛。</dd></div></dl></div><div class="action-box"><span class="action-label">今晚 10 分钟</span><p>今晚 10 分钟：选一个你熟悉的岗位，分别用自上而下和自下而上各估一次明年人数，写下两个数字差异的原因。</p></div></article>
+<article class="card card-case"><header class="card-head"><span class="card-icon" aria-hidden="true">🪞</span><div><p class="card-kicker">02 · 案例照镜子</p><h2 class="card-title">Netflix 的文化手册<span class="card-badge">公开案例</span></h2></div></header><div class="field"><p class="field-label">它解决什么问题</p><p class="field-text">业务变化快，传统层级和流程拖慢决策。</p></div><div class="field"><p class="field-label">它怎么做</p><p class="field-text">公开的《文化手册》强调高绩效、直接反馈、自由与责任，减少审批，提高人才密度。</p></div><div class="field"><p class="field-label">公开信息能看到的结果</p><p class="field-text">公开报道常把它作为高绩效文化的样本；这套做法对人才密度和管理者能力要求很高。</p></div><div class="field"><p class="field-label">能不能迁移</p><p class="field-text">可迁移的是「把反馈说清楚、把责任给到位」，不是照搬「狼性」。</p></div><div class="judgement-box"><span class="judgement-label">一句判断</span><p>自由与责任是一体的；只讲自由不讲责任，文化会变成放任。</p></div><p class="source-note">来源：<a href="https://jobs.netflix.com/culture" target="_blank" rel="noopener noreferrer">Netflix 官方文化页面 ↗</a></p></article>
+<article class="card card-quiz card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">✅</span><div><p class="card-kicker">03 · 小测一题</p><h2 class="card-title">检验一下<span class="card-badge">3 选 1</span></h2></div></header><div class="field"><p class="field-label">情境</p><p class="field-text">假设一家快速扩张的连锁零售企业（虚构示例）要预测明年门店店长需求。业务计划新开 20 家店，但现有店长管理能力差异大。最合理的做法是？</p></div><div class="field"><p class="field-label">选项</p><ul class="quiz-options"><li><span class="option-letter">A</span><span>只按新开门店数乘以 1 名店长，直接得出需求。</span></li><li><span class="option-letter">B</span><span>用自上而下法按开店计划算总量，再用自下而上法让区域负责人逐店评估，交叉验证。</span></li><li><span class="option-letter">C</span><span>只让几位高管匿名多轮打分，取平均值作为最终需求。</span></li></ul></div><div class="answer-box"><span class="answer-label">答案 B</span><p>B 用两种方法交叉验证，既看业务计划总量，又吸收一线对店长能力差异的判断。A 只算数量、忽略现有店长能力差异和内部供给，容易高估或低估。C 只用德尔菲法，缺少业务计划锚点，且高管离一线远，容易变成拍脑袋。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语 5 分钟</p><h2 class="card-title">英语 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸词汇任务：forecast（预测）、headcount（人员编制）、assumption（假设）、validate（验证）、interval（区间）；每个词查释义后，各造一个与人力规划相关的句子。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">We forecast headcount based on clear assumptions, and validate the number with line managers. 我们基于明确假设预测人员编制，并与一线经理验证数字。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">AI Talk 情景：让 AI 扮演业务负责人，你练 3 轮，用英文说明需求预测的假设并回应对方对数字的质疑。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1dqNdeXE4h/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B1</span><span class="video-title">英语影子跟读｜职场高频口语 坚持磨耳朵</span><span class="video-task">任务：选 10 句职场高频句跟读，录音一遍后与原声对比，标出 2 处连读不清的地方。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：第 4/60 课《人力资源供给预测与供需平衡》｜Agent 卡暂停｜英语 职场英语</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-08 07:24（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>
