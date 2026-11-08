@@ -1,0 +1,91 @@
+{
+  "lesson": {
+    "one_liner": "供给预测是算未来有多少合适的人可用，供需平衡是让需求和供给在数量、结构、时间上对上。",
+    "why": "需求预测告诉你缺多少人，供给预测才告诉你内部能补多少、外面要招多少。不做供给预测，编制和招聘预算就是拍脑袋。",
+    "how_to_use": [
+      "先做内部供给盘点：按岗位序列列出在岗人数、关键岗位继任者、未来一年可能离职或晋升的人，形成一张内部可补人数表。",
+      "再估外部供给：针对补不上的缺口，看目标人才的招聘周期和市场供给松紧，估算每月能招到几人。",
+      "最后做平衡：把需求数减去内部可补数，得到净缺口，再分别用招聘、培养、调配、减少用工四种手段逐条填补，并标注时间点。"
+    ],
+    "misconceptions": [
+      "把供给预测等同于招聘计划：招聘只是补缺口的一种手段，内部晋升、岗位调配、流程自动化都能改变供给。",
+      "只算人数不算结构：总量够了但层级、技能不对口，等于没平衡。",
+      "一次算完就不管：供给预测是滚动的，离职率和招聘周期一变，结论就要重算。"
+    ],
+    "glossary": [
+      {
+        "term": "供给预测",
+        "plain": "估算未来某段时间里，公司内部和外部能提供多少符合要求的人。"
+      },
+      {
+        "term": "供需平衡",
+        "plain": "把要多少人（需求）和能有多少人（供给）放在一起比较，缺口补上、富余消化掉。"
+      },
+      {
+        "term": "净缺口",
+        "plain": "需求人数减掉内部能补上的人数，剩下的必须从外部解决的部分。"
+      },
+      {
+        "term": "继任者",
+        "plain": "现在还没上岗，但培养到位后能接替某个关键岗位的人。"
+      }
+    ],
+    "action": "今晚用 Excel 拉一张三列表：岗位、明年需求人数、内部可补人数，算出净缺口，明天带着这张表去和业务负责人对一次。",
+    "domain": "人力资源规划",
+    "title": "人力资源供给预测与供需平衡",
+    "lesson_no": 4,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "三级"
+  },
+  "quiz": {
+    "question": "假设一家公司（虚构示例）某岗位明年需要 20 人，现有 15 人，预计明年有 3 人离职、2 人可晋升到该岗位。按供需平衡的逻辑，下一步最该做什么？",
+    "options": [
+      "直接按 20 人启动外部招聘",
+      "先算净缺口为 6 人，再决定用招聘、培养还是调配来补",
+      "认为现有 15 人够用，暂不处理"
+    ],
+    "answer": "B",
+    "explanation": "需求 20 减现有可留用 12 人（15 减 3 离职）再减内部晋升可补 2 人，净缺口 6 人，应先算出缺口再选手段。A 忽略了内部供给，会多招人；C 忽略了离职和缺口，会导致人手不足。"
+  },
+  "english": {
+    "mode": "职场英语",
+    "words": "金山词霸任务：查 supply、forecast、gap、headcount、redeploy 五个词，各抄一句原文例句，并用自己的岗位造一句。",
+    "phrase": "句型：We forecast a net gap of X, which we plan to close through Y. 例句：We forecast a net gap of six engineers, which we plan to close through internal redeployment and targeted hiring. 中文释义：我们预测净缺口为六名工程师，计划通过内部调配和定向招聘来填补。",
+    "ai_talk": "让 AI 扮演业务负责人，你用英文汇报一次人力供需缺口，练 3 轮：第一轮说清缺口数字，第二轮解释填补手段，第三轮回应对方的质疑。",
+    "video": {
+      "platform": "B站",
+      "title": "会议开场英语怎么说？10 句职场高频表达｜盲听+拆解+跟读",
+      "url": "https://www.bilibili.com/video/BV1saY36dE4g/",
+      "duration": "",
+      "level": "B2",
+      "task": "先盲听一遍，再跟读 10 个开场句；挑 3 句写进你下一次会议的英文开场稿。"
+    }
+  },
+  "agent": null,
+  "landing": null,
+  "review": null,
+  "date": "2026-11-09",
+  "case": {
+    "title": "谷歌的 Project Oxygen",
+    "source": "Google re:Work 官方指南",
+    "source_url": "https://rework.withgoogle.com/guides/managers-identify-what-makes-a-great-manager/steps/learn/",
+    "source_type": "免费公开源",
+    "problem": "谷歌想弄清楚优秀管理者到底做了什么。",
+    "practice": "通过内部研究提炼出优秀管理者的行为清单，并据此设计培训和反馈。",
+    "result": "公开资料常把 Project Oxygen 作为「用数据研究管理」的样本；研究结论有具体情境。",
+    "transfer": "可迁移的是「先研究你们公司自己的优秀管理者」，不是照搬谷歌的清单。",
+    "judgement": "管理标准要从自己公司的证据里长出来。"
+  },
+  "progress": {
+    "domain": "人力资源规划",
+    "domain_index": 1,
+    "domain_total": 18,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "三级",
+    "lesson_no": 4,
+    "total": 60
+  },
+  "preview": "明日：第 5/60 课《组织与编制规划》｜Agent 卡暂停｜英语 职场英语"
+}

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日 HR 系统课 · 2026-11-09</title>
+  <meta name="description" content="第 4/60 课：人力资源供给预测与供需平衡 ｜ 案例：谷歌的 Project Oxygen ｜ 小测：假设一家公司（虚构示例）某岗位明年需要 20 人，现有 1…">
+  <meta name="report-summary" content="第 4/60 课：人力资源供给预测与供需平衡 ｜ 案例：谷歌的 Project Oxygen ｜ 小测：假设一家公司（虚构示例）某岗位明年需要 20 人，现有 1…">
+  <meta name="report-date" content="2026-11-09">
+  <meta property="og:title" content="每日 HR 系统课 · 2026-11-09">
+  <meta property="og:description" content="第 4/60 课：人力资源供给预测与供需平衡 ｜ 案例：谷歌的 Project Oxygen ｜ 小测：假设一家公司（虚构示例）某岗位明年需要 20 人，现有 1…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --lesson: #2563eb;
+      --lesson-soft: #eff6ff;
+      --case: #059669;
+      --case-soft: #ecfdf5;
+      --quiz: #d97706;
+      --quiz-soft: #fffbeb;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --english: #ea580c;
+      --english-soft: #fff7ed;
+      --landing: #0e7490;
+      --landing-soft: #ecfeff;
+      --review: #be123c;
+      --review-soft: #fff1f2;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .progress {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .review-line {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
+    .review-line:empty { display: none; }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 700px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-lesson { grid-column: span 2; border-top-color: var(--lesson); }
+    .card-case { grid-column: span 2; border-top-color: var(--case); }
+    .card-quiz { border-top-color: var(--quiz); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-landing { border-top-color: var(--landing); }
+    .card-wide { grid-column: span 2; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-lesson .card-icon { background: var(--lesson-soft); }
+    .card-case .card-icon { background: var(--case-soft); }
+    .card-quiz .card-icon { background: var(--quiz-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+    .card-landing .card-icon { background: var(--landing-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-case .card-badge { background: var(--case-soft); color: var(--case); }
+    .card-quiz .card-badge { background: var(--quiz-soft); color: var(--quiz); }
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-landing .card-badge { background: var(--landing-soft); color: var(--landing); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Lists ---------- */
+    .bullet-list,
+    .step-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .bullet-list li,
+    .step-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    .step-list { counter-reset: step; }
+
+    .step-list li {
+      padding-left: 28px;
+      counter-increment: step;
+    }
+
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    /* ---------- Glossary ---------- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin: 0;
+    }
+
+    .glossary-item {
+      padding: 8px 10px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+    }
+
+    .glossary-item dt {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--lesson);
+    }
+
+    .glossary-item dd {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Review ---------- */
+    .review-strip {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--review);
+      border-radius: 8px;
+      background: var(--review-soft);
+    }
+
+    .review-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--review);
+      text-transform: uppercase;
+    }
+
+    .review-strip p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #881337;
+      line-height: 1.7;
+    }
+
+    /* ---------- Case ---------- */
+    .judgement-box {
+      margin: 4px 0 12px;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-left: 3px solid var(--case);
+      border-radius: 10px;
+      background: var(--case-soft);
+    }
+
+    .judgement-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--case);
+      text-transform: uppercase;
+    }
+
+    .judgement-box p {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #064e3b;
+      line-height: 1.7;
+    }
+
+    .source-note {
+      margin: auto 0 0;
+      padding-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .source-note a {
+      color: var(--case);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--case);
+    }
+
+    .source-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz-options {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quiz-options li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .option-letter {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--quiz-soft);
+      color: var(--quiz);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      background: #f0fdf4;
+    }
+
+    .answer-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+
+    /* ---------- Agent ---------- */
+    .card-agent .action-box {
+      margin-top: auto;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Landing ---------- */
+    .landing-question {
+      margin: 0 0 14px;
+      padding: 16px 18px;
+      border: 1px solid #a5f3fc;
+      border-left: 3px solid var(--landing);
+      border-radius: 10px;
+      background: var(--landing-soft);
+    }
+
+    .landing-question p {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #155e75;
+      line-height: 1.7;
+    }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-lesson, .card-case, .card-english, .card-landing, .card-wide {
+        grid-column: span 1;
+      }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .glossary-list { grid-template-columns: minmax(0, 1fr); }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课 · 2026-11-09</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-09</span>
+        <span class="meta-weekday">星期一</span>
+      </div>
+      <p class="progress">领域 1/18 · 人社部三级 · 人力资源规划　｜　第 4/60 课</p>
+      <p class="review-line"></p>
+      <p class="focus">人力资源供给预测与供需平衡 ｜ 案例：谷歌的 Project Oxygen</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-lesson"><header class="card-head"><span class="card-icon" aria-hidden="true">📚</span><div><p class="card-kicker">01 · 今日一课 · 人社部三级 · 人力资源规划</p><h2 class="card-title">人力资源供给预测与供需平衡<span class="card-badge">第 4/60 课</span></h2></div></header><div class="field"><p class="field-label">一句话定义</p><p class="field-text">供给预测是算未来有多少合适的人可用，供需平衡是让需求和供给在数量、结构、时间上对上。</p></div><div class="field"><p class="field-label">为什么重要</p><p class="field-text">需求预测告诉你缺多少人，供给预测才告诉你内部能补多少、外面要招多少。不做供给预测，编制和招聘预算就是拍脑袋。</p></div><div class="field"><p class="field-label">怎么用</p><ol class="step-list"><li>先做内部供给盘点：按岗位序列列出在岗人数、关键岗位继任者、未来一年可能离职或晋升的人，形成一张内部可补人数表。</li><li>再估外部供给：针对补不上的缺口，看目标人才的招聘周期和市场供给松紧，估算每月能招到几人。</li><li>最后做平衡：把需求数减去内部可补数，得到净缺口，再分别用招聘、培养、调配、减少用工四种手段逐条填补，并标注时间点。</li></ol></div><div class="field"><p class="field-label">常见误区</p><ul class="bullet-list"><li>把供给预测等同于招聘计划：招聘只是补缺口的一种手段，内部晋升、岗位调配、流程自动化都能改变供给。</li><li>只算人数不算结构：总量够了但层级、技能不对口，等于没平衡。</li><li>一次算完就不管：供给预测是滚动的，离职率和招聘周期一变，结论就要重算。</li></ul></div><div class="field"><p class="field-label">今日术语</p><dl class="glossary-list"><div class="glossary-item"><dt>供给预测</dt><dd>估算未来某段时间里，公司内部和外部能提供多少符合要求的人。</dd></div><div class="glossary-item"><dt>供需平衡</dt><dd>把要多少人（需求）和能有多少人（供给）放在一起比较，缺口补上、富余消化掉。</dd></div><div class="glossary-item"><dt>净缺口</dt><dd>需求人数减掉内部能补上的人数，剩下的必须从外部解决的部分。</dd></div><div class="glossary-item"><dt>继任者</dt><dd>现在还没上岗，但培养到位后能接替某个关键岗位的人。</dd></div></dl></div><div class="action-box"><span class="action-label">今晚 10 分钟</span><p>今晚用 Excel 拉一张三列表：岗位、明年需求人数、内部可补人数，算出净缺口，明天带着这张表去和业务负责人对一次。</p></div></article>
+<article class="card card-case"><header class="card-head"><span class="card-icon" aria-hidden="true">🪞</span><div><p class="card-kicker">02 · 案例照镜子</p><h2 class="card-title">谷歌的 Project Oxygen<span class="card-badge">公开案例</span></h2></div></header><div class="field"><p class="field-label">它解决什么问题</p><p class="field-text">谷歌想弄清楚优秀管理者到底做了什么。</p></div><div class="field"><p class="field-label">它怎么做</p><p class="field-text">通过内部研究提炼出优秀管理者的行为清单，并据此设计培训和反馈。</p></div><div class="field"><p class="field-label">公开信息能看到的结果</p><p class="field-text">公开资料常把 Project Oxygen 作为「用数据研究管理」的样本；研究结论有具体情境。</p></div><div class="field"><p class="field-label">能不能迁移</p><p class="field-text">可迁移的是「先研究你们公司自己的优秀管理者」，不是照搬谷歌的清单。</p></div><div class="judgement-box"><span class="judgement-label">一句判断</span><p>管理标准要从自己公司的证据里长出来。</p></div><p class="source-note">来源：<a href="https://rework.withgoogle.com/guides/managers-identify-what-makes-a-great-manager/steps/learn/" target="_blank" rel="noopener noreferrer">Google re:Work 官方指南 ↗</a></p></article>
+<article class="card card-quiz card-wide"><header class="card-head"><span class="card-icon" aria-hidden="true">✅</span><div><p class="card-kicker">03 · 小测一题</p><h2 class="card-title">检验一下<span class="card-badge">3 选 1</span></h2></div></header><div class="field"><p class="field-label">情境</p><p class="field-text">假设一家公司（虚构示例）某岗位明年需要 20 人，现有 15 人，预计明年有 3 人离职、2 人可晋升到该岗位。按供需平衡的逻辑，下一步最该做什么？</p></div><div class="field"><p class="field-label">选项</p><ul class="quiz-options"><li><span class="option-letter">A</span><span>直接按 20 人启动外部招聘</span></li><li><span class="option-letter">B</span><span>先算净缺口为 6 人，再决定用招聘、培养还是调配来补</span></li><li><span class="option-letter">C</span><span>认为现有 15 人够用，暂不处理</span></li></ul></div><div class="answer-box"><span class="answer-label">答案 B</span><p>需求 20 减现有可留用 12 人（15 减 3 离职）再减内部晋升可补 2 人，净缺口 6 人，应先算出缺口再选手段。A 忽略了内部供给，会多招人；C 忽略了离职和缺口，会导致人手不足。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语 5 分钟</p><h2 class="card-title">英语 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸任务：查 supply、forecast、gap、headcount、redeploy 五个词，各抄一句原文例句，并用自己的岗位造一句。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">句型：We forecast a net gap of X, which we plan to close through Y. 例句：We forecast a net gap of six engineers, which we plan to close through internal redeployment and targeted hiring. 中文释义：我们预测净缺口为六名工程师，计划通过内部调配和定向招聘来填补。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">让 AI 扮演业务负责人，你用英文汇报一次人力供需缺口，练 3 轮：第一轮说清缺口数字，第二轮解释填补手段，第三轮回应对方的质疑。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1saY36dE4g/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">会议开场英语怎么说？10 句职场高频表达｜盲听+拆解+跟读</span><span class="video-task">任务：先盲听一遍，再跟读 10 个开场句；挑 3 句写进你下一次会议的英文开场稿。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：第 5/60 课《组织与编制规划》｜Agent 卡暂停｜英语 职场英语</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-09 07:25（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>

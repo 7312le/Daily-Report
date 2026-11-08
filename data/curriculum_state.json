@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-11-08",
+  "updated_at": "2026-11-09",
   "lessons": {
     "mof-plan-l01": {
       "covered_on": "2026-11-06",
@@ -16,6 +16,11 @@
       "covered_on": "2026-11-08",
       "review_7_on": null,
       "review_30_on": null
+    },
+    "mof-plan-l04": {
+      "covered_on": "2026-11-09",
+      "review_7_on": null,
+      "review_30_on": null
     }
   },
   "cases": {
@@ -27,6 +32,9 @@
     },
     "netflix-culture": {
       "used_on": "2026-11-08"
+    },
+    "google-oxygen": {
+      "used_on": "2026-11-09"
     }
   }
 }
