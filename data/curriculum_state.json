@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-11-09",
+  "updated_at": "2026-11-10",
   "lessons": {
     "mof-plan-l01": {
       "covered_on": "2026-11-06",
@@ -21,6 +21,11 @@
       "covered_on": "2026-11-09",
       "review_7_on": null,
       "review_30_on": null
+    },
+    "mof-plan-l05": {
+      "covered_on": "2026-11-10",
+      "review_7_on": null,
+      "review_30_on": null
     }
   },
   "cases": {
@@ -35,6 +40,9 @@
     },
     "google-oxygen": {
       "used_on": "2026-11-09"
+    },
+    "amazon-leadership": {
+      "used_on": "2026-11-10"
     }
   }
 }
