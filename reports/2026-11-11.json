@@ -1,0 +1,91 @@
+{
+  "lesson": {
+    "one_liner": "把人力资源计划翻译成业务语言，并让业务负责人愿意共同决策。",
+    "why": "HR 计划如果只讲编制和流程，业务不会买单；对齐战略才能让人力投入支撑业务目标。",
+    "how_to_use": [
+      "先问业务负责人：今年最重要的三个业务目标是什么，各需要什么关键能力。",
+      "把每个业务目标对应到人力动作：招什么人、培养什么能力、调整什么结构、花多少钱。",
+      "和业务负责人一起开一次 30 分钟对齐会，逐条确认优先级和负责人。"
+    ],
+    "misconceptions": [
+      "把对齐理解成 HR 把计划发给业务签字，业务没有参与判断。",
+      "只谈编制数量，不谈业务目标和能力缺口，计划变成人头表。"
+    ],
+    "glossary": [
+      {
+        "term": "业务规划",
+        "plain": "公司或业务线未来一段时间要做什么、做到什么程度、靠什么赚钱的计划。"
+      },
+      {
+        "term": "战略对齐",
+        "plain": "HR 做的事和业务目标能对上号，不是各干各的。"
+      },
+      {
+        "term": "HRBP",
+        "plain": "派驻到业务线的人力资源伙伴，帮业务负责人一起解决人的问题。"
+      }
+    ],
+    "action": "今晚用一页纸写下你所在业务线明年的一个目标，再写出它需要的两个关键能力和对应的人力动作。",
+    "domain": "人力资源规划",
+    "title": "人力资源战略与业务规划对齐",
+    "lesson_no": 6,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "一级"
+  },
+  "quiz": {
+    "question": "业务负责人说：明年要开两条新产线，但没提需要什么人。HR 最该先做什么？",
+    "options": [
+      "按现有编制比例直接给两条产线配人。",
+      "先和业务负责人确认新产线的目标、节奏和关键岗位能力要求。",
+      "等业务把人员需求表填好再启动招聘。"
+    ],
+    "answer": "B",
+    "explanation": "B 先对齐业务目标和能力要求，人力动作才有依据。A 只按比例配人，忽略新产线的能力差异，容易配错。C 把判断责任全推给业务，HR 没有参与共同决策，响应会慢。"
+  },
+  "english": {
+    "mode": "职场英语",
+    "words": "金山词霸词汇任务：查 align、workforce、initiative、stakeholder 四个词，各抄一个例句并跟读三遍。",
+    "phrase": "句型：We need to align our workforce plan with the business priorities. 例句：We need to align our workforce plan with the business priorities before Q1. 中文：我们需要在一季度前让人力计划与业务重点对齐。",
+    "ai_talk": "让 AI 扮演业务负责人，你扮演 HRBP，练三轮：第一轮问业务目标，第二轮确认关键能力，第三轮提出人力建议并请对方反馈。",
+    "video": {
+      "platform": "B站",
+      "title": "Love English Lab｜高级职场英语：会议、汇报和反馈中的真实表达",
+      "url": "https://www.bilibili.com/video/BV1EfGy6REcn/",
+      "duration": "",
+      "level": "B2",
+      "task": "记下 5 个用于「礼貌表达不同意见」的句型，各造一句你真实工作场景里的句子。"
+    }
+  },
+  "agent": {
+    "title": "业务目标与人力动作对齐小助手",
+    "goal": "输入业务目标，自动生成能力缺口和人力动作清单，供对齐会使用。",
+    "steps": "['输入：业务负责人写下一个业务目标和完成时间。', '处理：用现成 AI 对话工具，让模型列出该目标需要的三项关键能力和对应人力动作。', '输出：一页对齐清单，包含目标、能力、人力动作、负责人四列。']",
+    "action": "今晚用现成 AI 工具跑一次，拿清单找一位业务负责人确认其中一条是否准确。"
+  },
+  "landing": null,
+  "review": null,
+  "date": "2026-11-11",
+  "case": {
+    "title": "H&M 的 HR 转型",
+    "source": "SHRM 案例研究：From Support Function to Strategic Partner",
+    "source_url": "https://www.shrm.org/enterprise-solutions/insights/h-m-hr-transformation/case-study",
+    "source_type": "免费公开源",
+    "problem": "HR 被视为支持职能，响应慢，业务线各自为政。",
+    "practice": "把 HR 从支持职能转为战略伙伴，重组 HR 团队、统一流程、提升 HRBP 的业务能力。",
+    "result": "SHRM 案例把它描述为 HR 转型的样本；具体数据以原文为准。",
+    "transfer": "转型不是改组织图，而是改 HR 的交付方式和业务负责人的使用方式。",
+    "judgement": "HR 转型的第一步，是让业务负责人愿意把人的问题交给 HR 一起判断。"
+  },
+  "progress": {
+    "domain": "人力资源规划",
+    "domain_index": 1,
+    "domain_total": 18,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "一级",
+    "lesson_no": 6,
+    "total": 60
+  },
+  "preview": "明日：第 7/60 课《招聘流程与渠道选择》｜Agent 卡暂停｜英语 职场英语"
+}

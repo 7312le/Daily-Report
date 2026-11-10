@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日 HR 系统课 · 2026-11-11</title>
+  <meta name="description" content="第 6/60 课：人力资源战略与业务规划对齐 ｜ 案例：H&amp;M 的 HR 转型 ｜ 小测：业务负责人说：明年要开两条新产线，但没提需要什么人。HR…">
+  <meta name="report-summary" content="第 6/60 课：人力资源战略与业务规划对齐 ｜ 案例：H&amp;M 的 HR 转型 ｜ 小测：业务负责人说：明年要开两条新产线，但没提需要什么人。HR…">
+  <meta name="report-date" content="2026-11-11">
+  <meta property="og:title" content="每日 HR 系统课 · 2026-11-11">
+  <meta property="og:description" content="第 6/60 课：人力资源战略与业务规划对齐 ｜ 案例：H&amp;M 的 HR 转型 ｜ 小测：业务负责人说：明年要开两条新产线，但没提需要什么人。HR…">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --lesson: #2563eb;
+      --lesson-soft: #eff6ff;
+      --case: #059669;
+      --case-soft: #ecfdf5;
+      --quiz: #d97706;
+      --quiz-soft: #fffbeb;
+      --agent: #7c3aed;
+      --agent-soft: #f5f3ff;
+      --english: #ea580c;
+      --english-soft: #fff7ed;
+      --landing: #0e7490;
+      --landing-soft: #ecfeff;
+      --review: #be123c;
+      --review-soft: #fff1f2;
+      --radius: 20px;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      line-height: 1.75;
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(79, 124, 255, 0.13), transparent 65%),
+        radial-gradient(760px 380px at 94% 0%, rgba(18, 163, 122, 0.09), transparent 62%),
+        var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 38px 36px 32px;
+      border-radius: 26px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #1e3a8a 100%);
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96, 165, 250, 0.5), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      position: relative;
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #93c5fd;
+    }
+
+    .hero h1 {
+      position: relative;
+      margin: 0 0 14px;
+      font-size: clamp(26px, 4.6vw, 38px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .meta {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .meta-date {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #e2e8f0;
+    }
+
+    .meta-weekday {
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .progress {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #93c5fd;
+    }
+
+    .review-line {
+      position: relative;
+      margin: 0 0 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fda4af;
+    }
+
+    .review-line:empty { display: none; }
+
+    .focus {
+      position: relative;
+      margin: 0;
+      max-width: 700px;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Grid ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      padding: 24px 24px 22px;
+      border: 1px solid var(--line);
+      border-top: 4px solid transparent;
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-lesson { grid-column: span 2; border-top-color: var(--lesson); }
+    .card-case { grid-column: span 2; border-top-color: var(--case); }
+    .card-quiz { border-top-color: var(--quiz); }
+    .card-agent { border-top-color: var(--agent); }
+    .card-english { grid-column: span 2; border-top-color: var(--english); }
+    .card-landing { border-top-color: var(--landing); }
+    .card-wide { grid-column: span 2; }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      background: #f1f5f9;
+    }
+
+    .card-lesson .card-icon { background: var(--lesson-soft); }
+    .card-case .card-icon { background: var(--case-soft); }
+    .card-quiz .card-icon { background: var(--quiz-soft); }
+    .card-agent .card-icon { background: var(--agent-soft); }
+    .card-english .card-icon { background: var(--english-soft); }
+    .card-landing .card-icon { background: var(--landing-soft); }
+
+    .card-kicker {
+      margin: 0 0 3px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 11px;
+      font-weight: 700;
+      vertical-align: 2px;
+    }
+
+    .card-case .card-badge { background: var(--case-soft); color: var(--case); }
+    .card-quiz .card-badge { background: var(--quiz-soft); color: var(--quiz); }
+    .card-agent .card-badge { background: var(--agent-soft); color: var(--agent); }
+    .card-landing .card-badge { background: var(--landing-soft); color: var(--landing); }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 14px; }
+
+    .field-label {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Lists ---------- */
+    .bullet-list,
+    .step-list {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+    }
+
+    .bullet-list li,
+    .step-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #94a3b8;
+    }
+
+    .step-list { counter-reset: step; }
+
+    .step-list li {
+      padding-left: 28px;
+      counter-increment: step;
+    }
+
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--lesson-soft);
+      color: var(--lesson);
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    /* ---------- Glossary ---------- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin: 0;
+    }
+
+    .glossary-item {
+      padding: 8px 10px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+    }
+
+    .glossary-item dt {
+      margin: 0 0 2px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--lesson);
+    }
+
+    .glossary-item dd {
+      margin: 0;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* ---------- Action ---------- */
+    .action-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 2px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid #f59e0b;
+      border-radius: 8px;
+      background: #fffbeb;
+    }
+
+    .action-label {
+      flex: 0 0 auto;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #78350f;
+      line-height: 1.7;
+    }
+
+    /* ---------- Review ---------- */
+    .review-strip {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--review);
+      border-radius: 8px;
+      background: var(--review-soft);
+    }
+
+    .review-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--review);
+      text-transform: uppercase;
+    }
+
+    .review-strip p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #881337;
+      line-height: 1.7;
+    }
+
+    /* ---------- Case ---------- */
+    .judgement-box {
+      margin: 4px 0 12px;
+      padding: 14px 16px;
+      border: 1px solid #a7f3d0;
+      border-left: 3px solid var(--case);
+      border-radius: 10px;
+      background: var(--case-soft);
+    }
+
+    .judgement-label {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--case);
+      text-transform: uppercase;
+    }
+
+    .judgement-box p {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #064e3b;
+      line-height: 1.7;
+    }
+
+    .source-note {
+      margin: auto 0 0;
+      padding-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+
+    .source-note a {
+      color: var(--case);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--case);
+    }
+
+    .source-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Quiz ---------- */
+    .quiz-options {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quiz-options li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      border: 1px solid #eef2f7;
+      border-radius: 9px;
+      background: #fcfdff;
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .option-letter {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--quiz-soft);
+      color: var(--quiz);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box {
+      margin-top: auto;
+      padding: 12px 14px;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      background: #f0fdf4;
+    }
+
+    .answer-label {
+      display: inline-block;
+      margin-bottom: 3px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .answer-box p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      color: #166534;
+      line-height: 1.7;
+    }
+
+    /* ---------- Agent ---------- */
+    .card-agent .action-box {
+      margin-top: auto;
+    }
+
+    /* ---------- English ---------- */
+    .english-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .english-block {
+      padding: 16px 18px;
+      border: 1px solid #f1f5f9;
+      border-radius: 12px;
+      background: #fcfcfd;
+    }
+
+    .english-block h3 {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: var(--english);
+    }
+
+    .english-block .field-text {
+      font-size: 14px;
+    }
+
+    .english-video {
+      grid-column: span 2;
+      background: var(--english-soft);
+      border-color: #fde68a;
+    }
+
+    .video-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      border-color: #f59e0b;
+      box-shadow: 0 12px 26px rgba(217, 119, 6, 0.14);
+    }
+
+    .video-icon {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #fff7ed;
+      font-size: 22px;
+    }
+
+    .video-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .video-platform {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #b45309;
+    }
+
+    .video-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.55;
+    }
+
+    .video-task {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .video-arrow {
+      flex: 0 0 auto;
+      color: #d97706;
+      font-size: 17px;
+      font-weight: 700;
+      transition: transform 0.18s ease;
+    }
+
+    .video-card:hover .video-arrow { transform: translate(2px, -2px); }
+
+    /* ---------- Landing ---------- */
+    .landing-question {
+      margin: 0 0 14px;
+      padding: 16px 18px;
+      border: 1px solid #a5f3fc;
+      border-left: 3px solid var(--landing);
+      border-radius: 10px;
+      background: var(--landing-soft);
+    }
+
+    .landing-question p {
+      margin: 0;
+      font-size: 15.5px;
+      font-weight: 600;
+      color: #155e75;
+      line-height: 1.7;
+    }
+
+    /* ---------- Preview ---------- */
+    .preview {
+      margin-top: 20px;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .preview-label {
+      margin: 0 0 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .preview-text {
+      margin: 0;
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.75;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: #94a3b8;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { width: calc(100% - 28px); padding: 24px 0 44px; }
+      .hero { padding: 28px 22px 24px; border-radius: 20px; }
+      .grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .card-lesson, .card-case, .card-english, .card-landing, .card-wide {
+        grid-column: span 1;
+      }
+      .card { padding: 20px 18px; }
+      .english-grid { grid-template-columns: minmax(0, 1fr); }
+      .english-video { grid-column: span 1; }
+      .glossary-list { grid-template-columns: minmax(0, 1fr); }
+      .card-title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow">HR Systematic Learning · Daily</p>
+      <h1>每日 HR 系统课 · 2026-11-11</h1>
+      <div class="meta">
+        <span class="meta-date">2026-11-11</span>
+        <span class="meta-weekday">星期三</span>
+      </div>
+      <p class="progress">领域 1/18 · 人社部一级 · 人力资源规划　｜　第 6/60 课</p>
+      <p class="review-line"></p>
+      <p class="focus">人力资源战略与业务规划对齐 ｜ 案例：H&amp;M 的 HR 转型</p>
+    </header>
+
+    <main class="grid">
+      <article class="card card-lesson"><header class="card-head"><span class="card-icon" aria-hidden="true">📚</span><div><p class="card-kicker">01 · 今日一课 · 人社部一级 · 人力资源规划</p><h2 class="card-title">人力资源战略与业务规划对齐<span class="card-badge">第 6/60 课</span></h2></div></header><div class="field"><p class="field-label">一句话定义</p><p class="field-text">把人力资源计划翻译成业务语言，并让业务负责人愿意共同决策。</p></div><div class="field"><p class="field-label">为什么重要</p><p class="field-text">HR 计划如果只讲编制和流程，业务不会买单；对齐战略才能让人力投入支撑业务目标。</p></div><div class="field"><p class="field-label">怎么用</p><ol class="step-list"><li>先问业务负责人：今年最重要的三个业务目标是什么，各需要什么关键能力。</li><li>把每个业务目标对应到人力动作：招什么人、培养什么能力、调整什么结构、花多少钱。</li><li>和业务负责人一起开一次 30 分钟对齐会，逐条确认优先级和负责人。</li></ol></div><div class="field"><p class="field-label">常见误区</p><ul class="bullet-list"><li>把对齐理解成 HR 把计划发给业务签字，业务没有参与判断。</li><li>只谈编制数量，不谈业务目标和能力缺口，计划变成人头表。</li></ul></div><div class="field"><p class="field-label">今日术语</p><dl class="glossary-list"><div class="glossary-item"><dt>业务规划</dt><dd>公司或业务线未来一段时间要做什么、做到什么程度、靠什么赚钱的计划。</dd></div><div class="glossary-item"><dt>战略对齐</dt><dd>HR 做的事和业务目标能对上号，不是各干各的。</dd></div><div class="glossary-item"><dt>HRBP</dt><dd>派驻到业务线的人力资源伙伴，帮业务负责人一起解决人的问题。</dd></div></dl></div><div class="action-box"><span class="action-label">今晚 10 分钟</span><p>今晚用一页纸写下你所在业务线明年的一个目标，再写出它需要的两个关键能力和对应的人力动作。</p></div></article>
+<article class="card card-case"><header class="card-head"><span class="card-icon" aria-hidden="true">🪞</span><div><p class="card-kicker">02 · 案例照镜子</p><h2 class="card-title">H&amp;M 的 HR 转型<span class="card-badge">公开案例</span></h2></div></header><div class="field"><p class="field-label">它解决什么问题</p><p class="field-text">HR 被视为支持职能，响应慢，业务线各自为政。</p></div><div class="field"><p class="field-label">它怎么做</p><p class="field-text">把 HR 从支持职能转为战略伙伴，重组 HR 团队、统一流程、提升 HRBP 的业务能力。</p></div><div class="field"><p class="field-label">公开信息能看到的结果</p><p class="field-text">SHRM 案例把它描述为 HR 转型的样本；具体数据以原文为准。</p></div><div class="field"><p class="field-label">能不能迁移</p><p class="field-text">转型不是改组织图，而是改 HR 的交付方式和业务负责人的使用方式。</p></div><div class="judgement-box"><span class="judgement-label">一句判断</span><p>HR 转型的第一步，是让业务负责人愿意把人的问题交给 HR 一起判断。</p></div><p class="source-note">来源：<a href="https://www.shrm.org/enterprise-solutions/insights/h-m-hr-transformation/case-study" target="_blank" rel="noopener noreferrer">SHRM 案例研究：From Support Function to Strategic Partner ↗</a></p></article>
+<article class="card card-quiz"><header class="card-head"><span class="card-icon" aria-hidden="true">✅</span><div><p class="card-kicker">03 · 小测一题</p><h2 class="card-title">检验一下<span class="card-badge">3 选 1</span></h2></div></header><div class="field"><p class="field-label">情境</p><p class="field-text">业务负责人说：明年要开两条新产线，但没提需要什么人。HR 最该先做什么？</p></div><div class="field"><p class="field-label">选项</p><ul class="quiz-options"><li><span class="option-letter">A</span><span>按现有编制比例直接给两条产线配人。</span></li><li><span class="option-letter">B</span><span>先和业务负责人确认新产线的目标、节奏和关键岗位能力要求。</span></li><li><span class="option-letter">C</span><span>等业务把人员需求表填好再启动招聘。</span></li></ul></div><div class="answer-box"><span class="answer-label">答案 B</span><p>B 先对齐业务目标和能力要求，人力动作才有依据。A 只按比例配人，忽略新产线的能力差异，容易配错。C 把判断责任全推给业务，HR 没有参与共同决策，响应会慢。</p></div></article>
+<article class="card card-agent"><header class="card-head"><span class="card-icon" aria-hidden="true">🤖</span><div><p class="card-kicker">04 · Agent 小卡</p><h2 class="card-title">业务目标与人力动作对齐小助手</h2></div></header><div class="field"><p class="field-label">目标</p><p class="field-text">输入业务目标，自动生成能力缺口和人力动作清单，供对齐会使用。</p></div><div class="field"><p class="field-label">怎么做</p><p class="field-text">[&#x27;输入：业务负责人写下一个业务目标和完成时间。&#x27;, &#x27;处理：用现成 AI 对话工具，让模型列出该目标需要的三项关键能力和对应人力动作。&#x27;, &#x27;输出：一页对齐清单，包含目标、能力、人力动作、负责人四列。&#x27;]</p></div><div class="action-box"><span class="action-label">今晚 20 分钟</span><p>今晚用现成 AI 工具跑一次，拿清单找一位业务负责人确认其中一条是否准确。</p></div></article>
+<article class="card card-english"><header class="card-head"><span class="card-icon" aria-hidden="true">🌍</span><div><p class="card-kicker">05 · 英语 5 分钟</p><h2 class="card-title">英语 · 职场英语</h2></div></header><div class="english-grid"><section class="english-block"><h3>金山词霸 · 词汇任务</h3><p class="field-text">金山词霸词汇任务：查 align、workforce、initiative、stakeholder 四个词，各抄一个例句并跟读三遍。</p></section><section class="english-block"><h3>高频短语 / 句型</h3><p class="field-text">句型：We need to align our workforce plan with the business priorities. 例句：We need to align our workforce plan with the business priorities before Q1. 中文：我们需要在一季度前让人力计划与业务重点对齐。</p></section><section class="english-block"><h3>AI Talk · 情景对话</h3><p class="field-text">让 AI 扮演业务负责人，你扮演 HRBP，练三轮：第一轮问业务目标，第二轮确认关键能力，第三轮提出人力建议并请对方反馈。</p></section><section class="english-block english-video"><h3>今日英语短视频</h3><a class="video-card" href="https://www.bilibili.com/video/BV1EfGy6REcn/" target="_blank" rel="noopener noreferrer"><span class="video-icon" aria-hidden="true">📺</span><span class="video-main"><span class="video-platform">B站 · B2</span><span class="video-title">Love English Lab｜高级职场英语：会议、汇报和反馈中的真实表达</span><span class="video-task">任务：记下 5 个用于「礼貌表达不同意见」的句型，各造一句你真实工作场景里的句子。</span></span><span class="video-arrow" aria-hidden="true">↗</span></a></section></div></article>
+    </main>
+
+    <section class="preview">
+      <p class="preview-label">明日预览</p>
+      <p class="preview-text">明日：第 7/60 课《招聘流程与渠道选择》｜Agent 卡暂停｜英语 职场英语</p>
+    </section>
+
+    <footer>
+      <span>自动生成于 2026-11-11 07:25（北京时间）</span>
+      <span>Shaun Daily Report</span>
+    </footer>
+  </div>
+</body>
+</html>
