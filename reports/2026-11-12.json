@@ -1,0 +1,87 @@
+{
+  "lesson": {
+    "one_liner": "招聘流程是把岗位需求变成合格入职者的固定步骤，渠道选择是决定去哪找人。",
+    "why": "流程乱会漏人、拖时间；渠道错会招不到人或成本过高。两者决定招聘的速度和质量。",
+    "how_to_use": [
+      "先和用人经理确认三件事：岗位产出、到岗时间、预算，写成一张招聘需求单再启动。",
+      "把流程固定成五步：需求确认、渠道发布、筛选面试、offer、入职跟进，每步写清负责人和时限。",
+      "按岗位分层选渠道：稀缺专业岗走定向寻访和内部推荐，通用岗走公开职位发布，紧急岗先看内部调配。"
+    ],
+    "misconceptions": [
+      "以为渠道越多越好，结果每个渠道都投一点，筛选量爆炸但合格人少。",
+      "把流程做成审批链，每加一个签字环节就多几天，候选人被别家抢走。",
+      "只按历史习惯用同一个渠道，不记录各渠道的到面率和入职率，无法优化。"
+    ],
+    "glossary": [
+      {
+        "term": "招聘渠道",
+        "plain": "你发布岗位和接触候选人的地方，比如招聘网站、内部推荐、校园招聘、猎头。"
+      },
+      {
+        "term": "到面率",
+        "plain": "投递或联系的人里，实际来面试的比例，用来判断渠道质量。"
+      },
+      {
+        "term": "内部调配",
+        "plain": "不从外部招，而是在现有员工里调岗或晋升来填这个空缺。"
+      }
+    ],
+    "action": "今晚拿出一张纸，为手头一个在招岗位写出三个候选渠道，并标注每个渠道预计多久能带来第一批简历。",
+    "domain": "招聘与配置",
+    "title": "招聘流程与渠道选择",
+    "lesson_no": 7,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "四级"
+  },
+  "quiz": {
+    "question": "假设一家公司（虚构示例）接到一个为期半年的项目，需要临时增加 5 名执行人员，项目结束后可能不再需要。招聘负责人最合理的做法是？",
+    "options": [
+      "立刻按长期编制走完整招聘流程，签正式合同招 5 人",
+      "先评估内部调配和短期用工方式，再决定渠道和合同形式",
+      "同时投十个渠道，谁先来就用谁，先填满人数"
+    ],
+    "answer": "B",
+    "explanation": "B 先判断需求是阶段性还是长期，再匹配渠道和用工形式，符合今日案例的判断。A 把临时需求当长期编制，项目结束后会带来裁减压力。C 盲目铺渠道，不评估需求性质，筛选成本高且未必招到合适的人。"
+  },
+  "english": {
+    "mode": "职场英语",
+    "words": "金山词霸任务：查 sourcing、shortlist、time-to-fill、screening 四个词，各抄一句例句并朗读三遍。",
+    "phrase": "句型：We need to fill this role by ___ via ___. 例句：We need to fill this role by the end of next month via internal referral and targeted sourcing. 中文释义：我们需要在下月底前通过内部推荐和定向寻访补齐这个岗位。",
+    "ai_talk": "让 AI 扮演用人经理，你扮演招聘负责人，练 3 轮：确认岗位需求、说明渠道选择理由、汇报招聘进度。",
+    "video": {
+      "platform": "B站",
+      "title": "睡前商务英语单词 EP01｜初入职场：入职、会议、加班、报销",
+      "url": "https://www.bilibili.com/video/BV1Wg14B8Ea3/",
+      "duration": "",
+      "level": "B1",
+      "task": "跟读全部词汇，挑 5 个词在金山词霸里收藏并各造一句会议场景句。"
+    }
+  },
+  "agent": null,
+  "landing": null,
+  "review": null,
+  "date": "2026-11-12",
+  "case": {
+    "title": "招聘与保留的四种情境",
+    "source": "SHRM 免费教学案例：Four Recruitment and Retention Case Scenarios",
+    "source_url": "https://www.shrm.org/content/dam/en/shrm/membership/students/Four-Recruitment-Scenarios_SW.pdf",
+    "source_type": "免费公开源",
+    "problem": "赢得大单后，项目扩张带来招聘、解雇、裁员、工作量分配四类连锁问题。",
+    "practice": "用四个连续情境训练招聘渠道、人员配置、裁员沟通和工作量再分配决策。",
+    "result": "这是教学案例，不是真实公司结果；用于训练判断。",
+    "transfer": "招聘不是孤立动作，要和项目节奏、用工成本、留人一起算。",
+    "judgement": "招人之前先问：这个需求是阶段性的，还是会变成长期编制？"
+  },
+  "progress": {
+    "domain": "招聘与配置",
+    "domain_index": 2,
+    "domain_total": 18,
+    "source": "人社部",
+    "group": "六大模块",
+    "level": "四级",
+    "lesson_no": 7,
+    "total": 60
+  },
+  "preview": "明日：第 8/60 课《简历筛选与面试基础》｜Agent 卡暂停｜英语 职场英语"
+}
